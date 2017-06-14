@@ -1,5 +1,5 @@
 #include<KrUIManager.h>
-
+//消息转发函数 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) {
 	switch(Message) {
 		case WM_DESTROY: {
@@ -16,7 +16,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) 
 
 
 
-bool KrUIManager::Initialize(HINSTANCE hInstance)
+bool      KrUIManager::Initialize(HINSTANCE hInstance)
 {
 	m_hInstance=hInstance;
 	memset(&wc,0,sizeof(wc));
@@ -35,9 +35,6 @@ bool KrUIManager::Initialize(HINSTANCE hInstance)
 	}
 	
 	return true;
-	
-	
-	
 	//TODO
 }
 
@@ -60,13 +57,13 @@ KrWindow* KrUIManager::AddWindow(LPCTSTR lpWindowName,int x,int y,int width,int 
 }
 
 
-KrWindow* KrWindow::AddWindow(LPCTSTR lpWindowName,int x,int y,int width,int height)
+KrWindow* KrUIManager::AddWindow(LPCTSTR lpWindowName,int x,int y,int width,int height)
 {
 	return AddWindow(lpWindowName,x,y,width,height,WS_BORDER);
 }
 
 
-LPCTSTR KrUIManager::GetWindowClassName()
+LPCTSTR   KrUIManager::GetWindowClassName()
 {
 	return m_lpWindowClassName;
 }
@@ -76,3 +73,13 @@ HINSTANCE KrUIManager::GetHINSTANCE()
 {
 	return m_hInstance;
 } 
+
+
+
+
+
+
+
+
+
+

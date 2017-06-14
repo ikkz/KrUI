@@ -125,5 +125,24 @@ void KrWindow::SetHeight(int height)
 } 
 
 
+void KrWindow::Show()
+{
+	ShowWindow(m_hwnd,SW_SHOW);
+	m_bVisible=true;
+}
+
+
+void KrWindow::Hide()
+{
+	ShowWindow(m_hwnd,SW_HIDE);
+	m_bVisible=false;
+}
+
+
+bool IsVisible()
+{
+	return m_bVisible;
+}
+
 
 
