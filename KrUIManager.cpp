@@ -1,5 +1,5 @@
 #include<KrUIManager.h>
-//消息转发函数 
+
 LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) {
 	switch(Message) {
 		case WM_DESTROY: {
