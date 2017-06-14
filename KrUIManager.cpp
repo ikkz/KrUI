@@ -35,10 +35,14 @@ bool KrUIManager::Initialize(HINSTANCE hInstance)
 	}
 	
 	return true;
+	
+	
+	
+	//TODO
 }
 
 
-KrWindow* KrUIManager::CreateWindow(LPCTSTR lpWindowName,int x,int y,int width,int height,DWORD dwStyle)
+KrWindow* KrUIManager::AddWindow(LPCTSTR lpWindowName,int x,int y,int width,int height,DWORD dwStyle)
 {
 	KrWindow* pKrWindow=new KrWindow;
 	if(!pKrWindow) return false;
@@ -50,14 +54,15 @@ KrWindow* KrUIManager::CreateWindow(LPCTSTR lpWindowName,int x,int y,int width,i
 	rect.bottom=y + height;
 	pKrWindow->SetRect(&rect);
 	pKrWindow->SetStyle(dwStyle);
+	pKrWindow->Create();
 	m_WndList.push_back(pKrWindow);
 	return pKrWindow;
 }
 
 
-KrWindow* CreateWindow(LPCTSTR lpWindowName,int x,int y,int width,int height)
+KrWindow* KrWindow::AddWindow(LPCTSTR lpWindowName,int x,int y,int width,int height)
 {
-	return CreateWindow(lpWindowName,x,y,width,height,WS_BORDER);
+	return AddWindow(lpWindowName,x,y,width,height,WS_BORDER);
 }
 
 
@@ -67,4 +72,7 @@ LPCTSTR KrUIManager::GetWindowClassName()
 }
 
 	
-
+HINSTANCE KrUIManager::GetHINSTANCE()
+{
+	return m_hInstance;
+} 
