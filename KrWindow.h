@@ -4,30 +4,34 @@
 class KrWindow
 {
 	private:
-		LPCTSTR m_lpWindowName;//窗口名称 
-		HWND    m_hwnd=NULL;//窗口句柄 
-		RECT    m_rect;//窗口矩形 
-		DWORD   m_dwStyle;//窗口风格 
+		LPCTSTR m_lpWindowName;//
+		HWND    m_hwnd=NULL;//
+		RECT    m_rect;// 
+		DWORD   m_dwStyle;//
 		bool    m_bVisible=false;
 	public:
-		LPCTSTR GetWindowName();//获取窗口名称 
-		void    SetWindowName(LPCTSTR lpWindowName);//设置窗口名称 
-		HWND    GetHWND();//获取窗口句柄 
-		RECT*   GetRect();//获取窗口矩形 
-		void    SetRect(RECT* pRect); //设置窗口矩形 
- 		void    SetStyle(DWORD dwStyle);//设置窗口风格 
- 		bool    Create();//创建真实窗口 
+		LPCTSTR GetWindowName();//
+		void    SetWindowName(LPCTSTR lpWindowName);//
+		HWND    GetHWND();//
+		RECT*   GetRect();//
+		void    SetRect(RECT* pRect); //
+		void    UpdateRect();//
+ 		void    SetStyle(DWORD dwStyle);//
+ 		bool    Create();//
+		void    Destroy();//浠呬粎灏嗙獥鍙ｄ粠鍐呭瓨涓竻闄わ紝涓嶄粠list涓皢绐楀彛鍒犻櫎
  		int     GetX();//
  		int     GetY();//
  		int     GetWidth();//
- 		int     GetHeight;//
+ 		int     GetHeight();//
  		void    SetX(int x);//
  		void    SetY(int y);//
  		void    SetWidth(int width);//
  		void    SetHeight(int height);//
- 		void    Show();//显示窗口 
- 		void    Hide();//隐藏窗口 
- 		bool    IsVisible();//窗口是否可见 
+ 		void    Show();//
+ 		void    Hide();//
+ 		bool    IsVisible();//
+		bool	IsCreated();//
+		
 }
 
 

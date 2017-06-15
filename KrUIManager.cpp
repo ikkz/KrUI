@@ -1,18 +1,17 @@
 #include<KrUIManager.h>
-//消息转发函数 
+
 LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) {
-	switch(Message) {
-		case WM_DESTROY: {
-			PostQuitMessage(0);
-			break;
-		}
-		
-		default:
-			return DefWindowProc(hwnd, Message, wParam, lParam);
-	}
-	return 0;
+
+	return ui.HandleMessage(hwnd,Message,wParam,lParam);
 }
 
+
+static KrUIManager* KrUIManager::GetpKrUIManager()
+{
+	if(m_pKrUIManager==NULL)
+		m_pKrUIManager=new KrUIManager();
+	return m_pKrUIManager;
+}
 
 
 
@@ -75,11 +74,33 @@ HINSTANCE KrUIManager::GetHINSTANCE()
 } 
 
 
+int  MsgLoop()
+{
+	while(GetMessage(&msg, NULL, 0, 0) > 0)
+	{
+		TranslateMessage(&msg); 
+		DispatchMessage(&msg);
+	}
+	return msg.wParam;
+}
 
 
+LRESULT   KrUIManager::HandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+{
+	
+	switch(Message) {
+		case WM_DESTROY: {
+			PostQuitMessage(0);
+			break;
+		}
+		
+		default:
+			return DefWindowProc(hwnd, Message, wParam, lParam);
+	}
+	return 0;
+	
 
 
-
-
+}
 
 

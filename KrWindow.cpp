@@ -28,14 +28,17 @@ RECT* KrWindow::GetRect()
 
 void KrWindow::SetRect(RECT* pRect)
 { 
-	MoveWindow(m_hwnd,pRect->left,pRect->top,pRect->right-pRect->left,pRect->bottom-pRect->top,TRUE);
 	m_rect.left=pRect->left;
 	m_rect.right=pRect->right;
 	m_rect.top=pRect->top;
 	m_rect.bottom=pRect->bottom;
+	UpdateRect();
 }
 
-
+void KrWindow::UpdateRect()
+{
+	MoveWindow(m_hwnd,m_rect.left,m_rect.top,m_rect.right-m_rect.left,m_rect.bottom-m_rect.top,TRUE);	
+}
 
 void KrWindow::SetStyle(DWORD dwStyle)
 {
@@ -46,10 +49,10 @@ void KrWindow::SetStyle(DWORD dwStyle)
 
 bool KrWindow::Create()
 {
-	HWND hwnd = CreateWindow(ui.GetWindowClassName(),m_lpWindowName,m_dwStyle,
+	HWND hwnd = CreateWindow(GetpKrUIManager()->GetWindowClassName(),m_lpWindowName,m_dwStyle,
 							rect.left,rect.top,
 							rect.right-rect.left,rect.bottom-rect.top,
-							NULL,NULL,ui.GetHINSTANCE(),NULL);
+							NULL,NULL,GetpKrUIManager()->GetHINSTANCE(),NULL);
 	if(!hwnd) return false;
 	m_hwnd=hwnd;
 	return true;
@@ -86,42 +89,34 @@ int KrWindow::GetHeight()
 
 void KrWindow::SetX(int x)
 {
-	RECT rect;
-	rect=*GetRect();
-	rect.left=x;
+	int width=GetWidth();
 	m_rect.left=x;
-	SetRect(&rect);
+	m_rect.right=x+width;
+	UpdateRect();
 } 
 
 
 void KrWindow::SetY(int y)
 {
-	RECT rect;
-	rect=*GetRect();
-	rect.top=y;
+	int height=GetHeight();
 	m_rect.top=y;
-	SetRect(&rect);
+	m_rect.bottom=y+height;
+	UpdateRect();
 } 
 
 
 void KrWindow::SetWidth(int width)
 {
-	RECT rect;
-	rect=*GetRect();
-	rect.right=rect.left+width;
-	m_rect.right=rect.right;
-	SetRect(&rect);
+	m_rect.right=m_rect.left+width;
+	UpdateRect();
 } 
 
 
 
 void KrWindow::SetHeight(int height)
 {
-	RECT rect;
-	rect=*GetRect();
-	rect.bottom=rect.top+height;
-	m_rect.bottom=rect.bottom;
-	SetRect(&rect);
+	m_rect.bottom=m_rect.top+height;
+	UpdateRect();
 } 
 
 
@@ -139,10 +134,21 @@ void KrWindow::Hide()
 }
 
 
-bool IsVisible()
+bool KrWindow::IsVisible()
 {
 	return m_bVisible;
 }
 
 
+bool KrWindow::IsCreated()
+{
+	return m_hwnd;
+}
+
+
+void KrWindow::Destroy()
+{
+	SendMessage(m_hwnd,WM_CLOSE,0,0);
+	m_hwnd=NULL;
+}
 
