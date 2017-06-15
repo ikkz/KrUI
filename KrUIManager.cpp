@@ -74,7 +74,7 @@ HINSTANCE KrUIManager::GetHINSTANCE()
 } 
 
 
-int  MsgLoop()
+int  KrUIManager::MessageLoop()
 {
 	while(GetMessage(&msg, NULL, 0, 0) > 0)
 	{
