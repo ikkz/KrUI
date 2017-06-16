@@ -1,5 +1,5 @@
-#include<KrUIManager.h>
-
+#include"KrUIManager.h"
+#include<windows.h>
 LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) {
 
 	return ui.HandleMessage(hwnd,Message,wParam,lParam);
@@ -38,7 +38,7 @@ bool      KrUIManager::Initialize(HINSTANCE hInstance)
 }
 
 
-KrWindow* KrUIManager::AddWindow(LPCTSTR lpWindowName,int x,int y,int width,int height,DWORD dwStyle)
+KrWindow* KrUIManager::AddWindow(LPCSTR lpWindowName,int x,int y,int width,int height,DWORD dwStyle)
 {
 	KrWindow* pKrWindow=new KrWindow;
 	if(!pKrWindow) return false;
@@ -56,7 +56,7 @@ KrWindow* KrUIManager::AddWindow(LPCTSTR lpWindowName,int x,int y,int width,int 
 }
 
 
-KrWindow* KrUIManager::AddWindow(LPCTSTR lpWindowName,int x,int y,int width,int height)
+KrWindow* KrUIManager::AddWindow(LPCSTR lpWindowName,int x,int y,int width,int height)
 {
 	return AddWindow(lpWindowName,x,y,width,height,WS_BORDER);
 }
@@ -74,7 +74,7 @@ HINSTANCE KrUIManager::GetHINSTANCE()
 } 
 
 
-int  KrUIManager::MessageLoop()
+int  MsgLoop()
 {
 	while(GetMessage(&msg, NULL, 0, 0) > 0)
 	{

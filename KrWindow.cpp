@@ -1,17 +1,21 @@
-#include<KrWindow.h>
+#include<windows.h>
+#include"KrUIManager.h"
+#include"KrWindow.h"
 
 
-LPCTSTR KrWindow::GetWindowName()
+
+LPCSTR KrWindow::GetWindowName()
 {
 	return m_lpWindowName;
 }
 
-
-void KrWindow::SetWindowName(LPCTSTR lpWindowName)
+void KrWindow::SetWindowName(LPCSTR lpWindowName)
 {
 	SetWindowText(m_hwnd,lpWindowName);
 	m_lpWindowName=lpWindowName;
 }
+
+
 
 
 HWND KrWindow::GetHWND()
@@ -43,16 +47,16 @@ void KrWindow::UpdateRect()
 void KrWindow::SetStyle(DWORD dwStyle)
 {
 	m_dwStyle=dwStyle;
-	SetWindowLong(hWnd, GWL_STYLE,dwStyle); 
+	SetWindowLong(m_hwnd, GWL_STYLE,dwStyle); 
 }
 
 
 bool KrWindow::Create()
 {
-	HWND hwnd = CreateWindow(GetpKrUIManager()->GetWindowClassName(),m_lpWindowName,m_dwStyle,
-							rect.left,rect.top,
-							rect.right-rect.left,rect.bottom-rect.top,
-							NULL,NULL,GetpKrUIManager()->GetHINSTANCE(),NULL);
+	HWND hwnd = CreateWindow(KrUIManager::GetpKrUIManager()->GetWindowClassName(),m_lpWindowName,m_dwStyle,
+							m_rect.left,m_rect.top,
+							m_rect.right-m_rect.left,m_rect.bottom-m_rect.top,
+							NULL,NULL,KrUIManager::GetpKrUIManager()->GetHINSTANCE(),NULL);
 	if(!hwnd) return false;
 	m_hwnd=hwnd;
 	return true;
@@ -151,4 +155,8 @@ void KrWindow::Destroy()
 	SendMessage(m_hwnd,WM_CLOSE,0,0);
 	m_hwnd=NULL;
 }
+
+
+
+
 

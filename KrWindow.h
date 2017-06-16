@@ -1,17 +1,23 @@
-#include<windows>
+#ifndef _KRWINDOW_H
+#define _KRWINDOW_H
+
+
+
+#include<windows.h>
+
 
 
 class KrWindow
 {
 	private:
-		LPCTSTR m_lpWindowName;//
-		HWND    m_hwnd=NULL;//
+		LPCSTR  m_lpWindowName;//
+		HWND    m_hwnd;//
 		RECT    m_rect;// 
 		DWORD   m_dwStyle;//
-		bool    m_bVisible=false;
+		bool    m_bVisible;
 	public:
-		LPCTSTR GetWindowName();//
-		void    SetWindowName(LPCTSTR lpWindowName);//
+		LPCSTR  GetWindowName();//
+		void    SetWindowName(LPCSTR lpWindowName);//
 		HWND    GetHWND();//
 		RECT*   GetRect();//
 		void    SetRect(RECT* pRect); //
@@ -33,6 +39,4 @@ class KrWindow
 		bool	IsCreated();//
 		
 }
-
-
-
+#endif
