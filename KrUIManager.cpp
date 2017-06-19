@@ -112,8 +112,8 @@ namespace KrUI{
 
 	LRESULT   KrUIManager::HandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-		it = m_WndList.begin();
-		for (; it != m_WndList.end(); ++it)
+		
+		for (list<KrWindow*>::iterator it = m_WndList.begin(); it != m_WndList.end(); ++it)
 		{
 			if (hwnd==(*it)->GetHWND())
 			{
@@ -136,7 +136,14 @@ namespace KrUI{
 	}
 
 
-
+	KrUIManager::~KrUIManager()
+	{
+		for (list<KrWindow*>::iterator it = m_WndList.begin(); it != m_WndList.end(); ++it)
+		{
+			(*it)->Destroy(false);
+			delete (*it);
+		}
+	}
 
 
 

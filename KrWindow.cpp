@@ -182,24 +182,39 @@ namespace KrUI{
 	}
 
 
+	void    KrWindow::RegMsg(UINT msg, MSGFUNC func)
+	{
+		for (map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.begin(); it != m_MsgFuncMap.end(); ++it)
+		{
+			if (it->first==msg)
+			{
+				it->second = func;
+			}
+		}
+		m_MsgFuncMap.insert(map<UINT,MSGFUNC>::value_type(msg, func));
+	}
 
 
 
 
 	LRESULT  KrWindow::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
+
+		for (map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.begin(); it != m_MsgFuncMap.end(); ++it)
+		{
+			if (it->first == Message)
+			{
+				(*it->second)(this,wParam, lParam);
+			}
+		}
+
+
+
 		switch (Message)
 		{
 		case WM_DESTROY: 
 		   		   	Destroy(true);
 					break;
-		case WM_LBUTTONDOWN:
-			//SetX(0); SetY(0);
-			//SetWidth(50); SetHeight(50);
-// 			Hide();
-// 			Sleep(5000);
-// 			Show();
-		//	MessageBox(m_hwnd, m_lpWindowName, m_lpWindowName, MB_OK);
 			break;
 		default:
 			return DefWindowProc(m_hwnd, Message, wParam, lParam);
@@ -207,6 +222,5 @@ namespace KrUI{
 		return 0;
 
 	}
-
 
 }

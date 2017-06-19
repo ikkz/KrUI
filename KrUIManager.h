@@ -22,6 +22,7 @@ namespace KrUI{
 		LRESULT   HandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);//处理消息
 		int		  GetWindowNum();
 		void	  DeleteWindow(KrWindow* pKrWindow);
+		~KrUIManager();
 	private:
 		KrUIManager(){ m_lpWindowClassName = L"KrUI"; }
 		static KrUIManager* m_pKrUIManager;
@@ -30,8 +31,6 @@ namespace KrUI{
 		HINSTANCE       m_hInstance;//
 		MSG				m_msg;
 		list<KrWindow*>  m_WndList;//
-		list<KrWindow*>::iterator it;
-
 	};
 
 }

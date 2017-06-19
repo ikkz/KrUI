@@ -2,18 +2,9 @@
 #define _KRCONTROL_H
 
 
-
-
-
-
-
-
 #include"KrWindow.h"
 
-
-
 namespace KrUI{
-
 
 	class KrControl
 	{
@@ -34,17 +25,5 @@ namespace KrUI{
 	};
 
 
-
-
-
-
-
-
-
 }
-
-
-
-
-
 #endif
