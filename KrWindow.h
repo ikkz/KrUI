@@ -52,6 +52,7 @@ namespace KrUI{
 		void    RegMsg(UINT msg, MSGFUNC func);
 
 		KrControl* AddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height);
+		~KrWindow();
 
 	};
 

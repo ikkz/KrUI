@@ -208,8 +208,6 @@ namespace KrUI{
 	}
 
 
-
-
 	LRESULT  KrWindow::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		
@@ -217,14 +215,11 @@ namespace KrUI{
 		{
 			 (*it)->HandleMessage(Message, wParam, lParam);
 		}
-
-
 		map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.find(Message);
 		if (it!=m_MsgFuncMap.end())
 		{
 			(*it->second)(this, wParam, lParam);
 		}
-
 		switch (Message)
 		{
 		case WM_DESTROY: 
@@ -268,5 +263,11 @@ namespace KrUI{
 		return pKrCtrl;
 	}
 
-
+	KrWindow::~KrWindow()
+	{
+		for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end(); it++)
+		{
+			delete (*it);
+		}
+	}
 }

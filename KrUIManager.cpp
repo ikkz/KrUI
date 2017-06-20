@@ -42,25 +42,6 @@ namespace KrUI{
 		//TODO
 	}
 
-/*
-	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle)
-	{
-		KrWindow* pKrWindow = new KrWindow;
-		if (!pKrWindow) return false;
-		pKrWindow->SetWindowName(lpWindowName);
-		RECT rect;
-		rect.left = x;
-		rect.top = y;
-		rect.right = x + width;
-		rect.bottom = y + height;
-		pKrWindow->SetRect(&rect);
-		pKrWindow->SetStyle(dwStyle);
-		pKrWindow->Create();
-		m_WndList.push_back(pKrWindow);
-		return pKrWindow;
-	}
-*/
-
 
 	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height)
 	{
