@@ -144,36 +144,53 @@ namespace KrUI{
 
 	void KrControl::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-		if (Message==WM_MOUSEMOVE)
+		switch (Message)
 		{
-			POINT ptMouse;
-			ptMouse.x = GET_X_LPARAM(lParam);
-			ptMouse.y = GET_Y_LPARAM(lParam);
-			bool bMouseIn = PtInRect(&m_rect, ptMouse);
-			if (m_bMouseIn == false && bMouseIn == true)
-			{
-				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
-				CallMsgFunc(KM_MOUSEENTER, wParam, lParam);
-			}
-			else if (m_bMouseIn == true && bMouseIn == false)
-			{
-				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUSELEAVE, NULL, NULL);
-				CallMsgFunc(KM_MOUSELEAVE, wParam, lParam);
-			}
-			m_bMouseIn = bMouseIn;
+		case WM_MOUSEMOVE:
+		{
+			 POINT ptMouse;
+			 ptMouse.x = GET_X_LPARAM(lParam);
+			 ptMouse.y = GET_Y_LPARAM(lParam);
+			 bool bMouseIn = (bool)PtInRect(&m_rect, ptMouse);
+			 if (m_bMouseIn == false && bMouseIn == true)
+			 {
+				 //SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
+				 CallMsgFunc(KM_BEFORE_MOUSEENTER, wParam, lParam);
+				 CallMsgFunc(KM_MOUSEENTER, wParam, lParam);
+				 CallMsgFunc(KM_AFTER_MOUSEENTER, wParam, lParam);
+			 }
+			 else if (m_bMouseIn == true && bMouseIn == false)
+			 {
+				 //SendMessage(m_pKrWindow->GetHWND(), KM_MOUSELEAVE, NULL, NULL);
+				 CallMsgFunc(KM_BEFORE_MOUSELEAVE, wParam, lParam);
+				 CallMsgFunc(KM_MOUSELEAVE, wParam, lParam);
+				 CallMsgFunc(KM_AFTER_MOUSELEAVE, wParam, lParam);
+			 }
+			 m_bMouseIn = bMouseIn;
+			 break;
 		}
-		CallMsgFunc(Message, wParam, lParam);
-		
+		case WM_LBUTTONDOWN:
+			CallMsgFunc(KM_BEFORE_LBTNDOWN, wParam, lParam);
+			CallMsgFunc(KM_LBTNDOWN, wParam, lParam);
+			CallMsgFunc(KM_AFTER_LBTNDOWN, wParam, lParam);
+			break;
+		case WM_LBUTTONUP:
+			CallMsgFunc(KM_BEFORE_LBTNUP, wParam, lParam);
+			CallMsgFunc(KM_LBTNUP, wParam, lParam);
+			CallMsgFunc(KM_AFTER_LBTNUP, wParam, lParam);
+			break;
+		default:
+			CallMsgFunc(Message, wParam, lParam);
+			break;
+		}
 	}
 
 	void  KrControl::CallMsgFunc(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-		for (map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.begin(); it != m_MsgFuncMap.end(); it++)
+		map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.find(Message);
+		if (it != m_MsgFuncMap.end())
 		{
-			if (it->first == Message)
-			{
-				it->second(this, wParam, lParam);
-			}
+			(*it->second)(this, wParam, lParam);
 		}
 	}
 

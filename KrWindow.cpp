@@ -1,9 +1,6 @@
 
 #include"KrWindow.h"
 
-#include"KrUIManager.h"
-
-
 namespace KrUI{
 
 	KrWindow::KrWindow()
@@ -222,15 +219,11 @@ namespace KrUI{
 		}
 
 
-		for (map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.begin(); it != m_MsgFuncMap.end(); ++it)
+		map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.find(Message);
+		if (it!=m_MsgFuncMap.end())
 		{
-			if (it->first == Message)
-			{
-				(*it->second)(this,wParam, lParam);
-			}
+			(*it->second)(this, wParam, lParam);
 		}
-
-
 
 		switch (Message)
 		{
@@ -246,21 +239,33 @@ namespace KrUI{
 	}
 
 
-	KrControl* KrWindow::AddControl(LPCWSTR lpName, int x, int y, int width, int height)
-{
-		KrControl* pKrControl = new KrControl;
-		if (!pKrControl)return false;
-		pKrControl->SetCtrlType(KR_CTRL);
-		pKrControl->SetWindow(this);
-		pKrControl->SetName(lpName);
+	KrControl* KrWindow::AddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height)
+	{
 		RECT rect;
 		rect.left = x;
 		rect.top = y;
 		rect.right = x + width;
 		rect.bottom = y + height;
-		pKrControl->SetRect(&rect);
-		m_CtrlList.push_back(pKrControl);
-		return pKrControl;
+		KrControl* pKrCtrl = NULL;
+		switch (iCtrlType)
+		{
+		case KR_CTRL:
+			pKrCtrl = new KrControl;
+			break;
+		case KR_BUTTON:
+
+			break;
+		default:
+			return NULL;
+			break;
+		}
+		if (!pKrCtrl)return NULL;
+		pKrCtrl->SetCtrlType(iCtrlType);
+		pKrCtrl->SetWindow(this);
+		pKrCtrl->SetName(lpName);
+		pKrCtrl->SetRect(&rect);
+		m_CtrlList.push_back(pKrCtrl);
+		return pKrCtrl;
 	}
 
 
