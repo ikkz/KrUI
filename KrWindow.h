@@ -1,18 +1,17 @@
 #ifndef _KRWINDOW_H
 #define _KRWINDOW_H
 
-
-#include "KrControl.h"
-#include<windows.h>
 #include <list>
 #include <map>
+#include<windows.h>
+#include "KrControl.h"
+#include "KrUIManager.h"
+
 using namespace std;
 
 namespace KrUI{
 
-
-	typedef LRESULT(*MSGFUNC)(void* pObject,WPARAM wParam, LPARAM lParam);
-
+	class KrControl;
 	class KrWindow
 	{
 	private:
@@ -23,7 +22,10 @@ namespace KrUI{
 		bool    m_bVisible;//
 		map<UINT, MSGFUNC> m_MsgFuncMap;//
 		list<KrControl*> m_CtrlList;
+		HDC    m_hdc;
 	public:
+		KrWindow();
+		HDC      GetKrDC();
 		LPCWSTR  GetWindowName();//
 		void    SetWindowName(LPCWSTR lpWindowName);//
 		HWND    GetHWND();//
@@ -49,7 +51,7 @@ namespace KrUI{
 
 		void    RegMsg(UINT msg, MSGFUNC func);
 
-		KrControl*	AddControl(KrCtrlType ctrltype, LPCWSTR lpName, int x, int y, int width, int height);
+		KrControl* AddControl(LPCWSTR lpName, int x, int y, int width, int height);
 
 	};
 

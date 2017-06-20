@@ -1,22 +1,34 @@
 #ifndef _KRCONTROL_H
 #define _KRCONTROL_H
 
-
 #include"KrWindow.h"
+#include "KrUIManager.h"
+#include "KrWindow.h"
+#include<windowsx.h>
+#include <map>
+using namespace std;
 
 namespace KrUI{
 
-	enum KrCtrlType{kr_ctrl};
 
+	class KrWindow;
+	typedef LRESULT(*MSGFUNC)(void* pObject, WPARAM wParam, LPARAM lParam);
 
 	class KrControl
 	{
 	private:
+		UINT      m_type;
+		KrWindow* m_pKrWindow;
 		LPCWSTR m_lpCtrlName;
 		RECT m_rect;
 		bool m_bVisible;
+		bool m_bMouseIn;
 		map<UINT, MSGFUNC> m_MsgFuncMap;
 	public:
+		void    SetCtrlType(UINT type);
+		UINT    GetCtrlType();
+		void    SetWindow(KrWindow* pKrWindow);//
+		KrWindow* GetWindow();
 		void	SetName(LPCWSTR lpCtrlName);//
 		LPCWSTR GetName();//
 		RECT*   GetRect();//
@@ -34,6 +46,10 @@ namespace KrUI{
 		bool  IsVisible();
 		void  Show();
 		void  Hide();
+		void  HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+		void  CallMsgFunc(UINT Message, WPARAM wParam, LPARAM lParam);
+
+
 	};
 
 

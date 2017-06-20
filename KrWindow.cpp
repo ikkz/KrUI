@@ -1,8 +1,24 @@
-#include<windows.h>
-#include"KrUIManager.h"
+
 #include"KrWindow.h"
 
+#include"KrUIManager.h"
+
+
 namespace KrUI{
+
+	KrWindow::KrWindow()
+	{
+		m_hdc = NULL;
+	}
+
+	HDC KrWindow::GetKrDC()
+	{
+		if (m_hdc==NULL)
+		{
+			m_hdc = GetDC(m_hwnd);
+		}
+		return m_hdc;
+	}
 
 	LPCWSTR KrWindow::GetWindowName()
 	{
@@ -199,6 +215,12 @@ namespace KrUI{
 
 	LRESULT  KrWindow::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
+		
+		for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end();it++)
+		{
+			 (*it)->HandleMessage(Message, wParam, lParam);
+		}
+
 
 		for (map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.begin(); it != m_MsgFuncMap.end(); ++it)
 		{
@@ -224,10 +246,12 @@ namespace KrUI{
 	}
 
 
-	KrControl*	KrWindow::AddControl(KrCtrlType ctrltype, LPCWSTR lpName, int x, int y, int width, int height)
-	{
+	KrControl* KrWindow::AddControl(LPCWSTR lpName, int x, int y, int width, int height)
+{
 		KrControl* pKrControl = new KrControl;
 		if (!pKrControl)return false;
+		pKrControl->SetCtrlType(KR_CTRL);
+		pKrControl->SetWindow(this);
 		pKrControl->SetName(lpName);
 		RECT rect;
 		rect.left = x;

@@ -1,13 +1,25 @@
 #ifndef _KRUIMANAGER_H
 #define _KRUIMANAGER_H
 
+#define KM_MOUSEENTER WM_APP+1
+#define KM_MOUSELEAVE WM_APP+2
+
+//控件类型
+#define KR_CTRL 0
+
+
+
 
 #include<list>
 #include<windows.h>
 #include"KrWindow.h"
+
+
 using namespace std;
 namespace KrUI{
 
+	class KrWindow;
+	typedef LRESULT(*MSGFUNC)(void* pObject, WPARAM wParam, LPARAM lParam);
 
 	class KrUIManager
 	{

@@ -1,5 +1,4 @@
 #include"KrUIManager.h"
-#include<windows.h>
 
 namespace KrUI{
 
