@@ -223,4 +223,21 @@ namespace KrUI{
 
 	}
 
+
+	KrControl*	KrWindow::AddControl(KrCtrlType ctrltype, LPCWSTR lpName, int x, int y, int width, int height)
+	{
+		KrControl* pKrControl = new KrControl;
+		if (!pKrControl)return false;
+		pKrControl->SetName(lpName);
+		RECT rect;
+		rect.left = x;
+		rect.top = y;
+		rect.right = x + width;
+		rect.bottom = y + height;
+		pKrControl->SetRect(&rect);
+		m_CtrlList.push_back(pKrControl);
+		return pKrControl;
+	}
+
+
 }

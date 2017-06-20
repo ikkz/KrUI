@@ -16,7 +16,7 @@ namespace KrUI{
 		m_rect.right = pRect->right;
 		m_rect.top = pRect->top;
 		m_rect.bottom = pRect->bottom;
-		Update();
+		Draw();
 	}
 
 
@@ -53,7 +53,7 @@ namespace KrUI{
 		int width = GetWidth();
 		m_rect.left = x;
 		m_rect.right = x + width;
-		Update();
+		Draw();
 	}
 
 
@@ -62,14 +62,14 @@ namespace KrUI{
 		int height = GetHeight();
 		m_rect.top = y;
 		m_rect.bottom = y + height;
-		Update();
+		Draw();
 	}
 
 
 	void KrControl::SetWidth(int width)
 	{
 		m_rect.right = m_rect.left + width;
-		Update();
+		Draw();
 	}
 
 
@@ -77,14 +77,57 @@ namespace KrUI{
 	void KrControl::SetHeight(int height)
 	{
 		m_rect.bottom = m_rect.top + height;
-		Update();
+		Draw();
 	}
 
 
-	void    KrControl::Update()
+	void    KrControl::Draw()
 	{
 
 	}
+
+	void	KrControl::SetName(LPCWSTR lpCtrlName)
+	{
+		m_lpCtrlName = lpCtrlName;
+	}
+
+	LPCWSTR KrControl::GetName()
+	{
+		return m_lpCtrlName;
+	}
+
+
+	void    KrControl::RegMsg(UINT msg, MSGFUNC func)
+	{
+		for (map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.begin(); it != m_MsgFuncMap.end(); ++it)
+		{
+			if (it->first == msg)
+			{
+				it->second = func;
+			}
+		}
+		m_MsgFuncMap.insert(map<UINT, MSGFUNC>::value_type(msg, func));
+	}
+
+
+	bool KrControl::IsVisible()
+	{
+		return m_bVisible;
+	}
+
+
+	void KrControl::Hide()
+	{
+		m_bVisible = false;
+	}
+
+	void KrControl::Show()
+	{
+		m_bVisible = true;
+	}
+
+
+
 
 
 

@@ -21,7 +21,8 @@ namespace KrUI{
 		RECT    m_rect;// 
 		DWORD   m_dwStyle;//
 		bool    m_bVisible;//
-		map<UINT, MSGFUNC> m_MsgFuncMap;
+		map<UINT, MSGFUNC> m_MsgFuncMap;//
+		list<KrControl*> m_CtrlList;
 	public:
 		LPCWSTR  GetWindowName();//
 		void    SetWindowName(LPCWSTR lpWindowName);//
@@ -47,6 +48,8 @@ namespace KrUI{
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 
 		void    RegMsg(UINT msg, MSGFUNC func);
+
+		KrControl*	AddControl(KrCtrlType ctrltype, LPCWSTR lpName, int x, int y, int width, int height);
 
 	};
 
