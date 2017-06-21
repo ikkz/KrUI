@@ -212,14 +212,12 @@ namespace KrUI{
 
 	void    KrWindow::KrRegMsg(UINT msg, MSGFUNC func)
 	{
-		for (map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.begin(); it != m_MsgFuncMap.end(); ++it)
+		map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.find(msg);
+		if (it != m_MsgFuncMap.end())
 		{
-			if (it->first==msg)
-			{
-				it->second = func;
-			}
+			it->second = func;
 		}
-		m_MsgFuncMap.insert(map<UINT,MSGFUNC>::value_type(msg, func));
+		m_MsgFuncMap.insert(map<UINT, MSGFUNC>::value_type(msg, func));
 	}
 
 
@@ -239,6 +237,7 @@ namespace KrUI{
 		switch (Message)
 		{
 		case WM_PAINT:
+		case WM_NCPAINT:
 			PAINTSTRUCT ps;
 			BeginPaint(m_hwnd, &ps);
 			KrReDraw(&(ps.rcPaint));
