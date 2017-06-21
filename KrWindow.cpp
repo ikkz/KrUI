@@ -2,77 +2,92 @@
 #include"KrWindow.h"
 
 namespace KrUI{
+// 
+// 
+// 	LRESULT redraw(void* pObj, WPARAM wParam, LPARAM lParam)
+// 	{
+// 		((KrWindow*)pObj)->KrReDraw(NULL);
+// 		return 0;
+// 	}
+// 
+
 
 	KrWindow::KrWindow()
 	{
-		m_hdc = NULL;
+		m_bVisible = false;
+		m_hDC = NULL;
+		m_DefaultColor = RGB(0,122,204);
+		m_BorderWidth = 2;
+		m_hPen = CreatePen(PS_SOLID,m_BorderWidth,m_DefaultColor);
+		SelectObject(KrGetDC(), m_hPen);
+	//	KrRegMsg(WM_MOUSEMOVE, redraw);
 	}
 
-	HDC KrWindow::GetKrDC()
+	HDC KrWindow::KrGetDC()
 	{
-		if (m_hdc==NULL)
+		if (m_hDC==NULL)
 		{
-			m_hdc = GetDC(m_hwnd);
+			m_hDC = GetDC(m_hwnd);
 		}
-		return m_hdc;
+		return m_hDC;
 	}
 
-	LPCWSTR KrWindow::GetWindowName()
+	LPCWSTR KrWindow::KrGetWindowName()
 	{
 		return m_lpWindowName;
 	}
 
-	void KrWindow::SetWindowName(LPCWSTR lpWindowName)
+	void KrWindow::KrSetWindowName(LPCWSTR lpWindowName)
 	{
-		if (IsCreated())SetWindowText(m_hwnd, lpWindowName);
+		if (KrIsCreated())SetWindowText(m_hwnd, lpWindowName);
 		m_lpWindowName = lpWindowName;
 	}
 
 
 
 
-	HWND KrWindow::GetHWND()
+	HWND KrWindow::KrGetHWND()
 	{
 		return m_hwnd;
 	}
 
 
-	RECT* KrWindow::GetRect()
+	RECT* KrWindow::KrGetRect()
 	{
 		return &m_rect;
 	}
 
 
-	void KrWindow::SetRect(RECT* pRect)
+	void KrWindow::KrSetRect(RECT* pRect)
 	{
 		m_rect.left = pRect->left;
 		m_rect.right = pRect->right;
 		m_rect.top = pRect->top;
 		m_rect.bottom = pRect->bottom;
-		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
+		if (KrIsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
 
 
 
 
-	void KrWindow::SetStyle(DWORD dwStyle)
+	void KrWindow::KrSetStyle(DWORD dwStyle)
 	{
 		m_dwStyle = dwStyle;
-		if (IsCreated())SetWindowLong(m_hwnd, GWL_STYLE, dwStyle);
+		if (KrIsCreated())SetWindowLong(m_hwnd, GWL_STYLE, dwStyle);
 	}
-	DWORD KrWindow::GetStyle()
+	DWORD KrWindow::KrGetStyle()
 	{
 		return m_dwStyle;
 	}
 
 
-	bool KrWindow::Create()
+	bool KrWindow::KrCreate()
 	{
-		HWND hwnd = CreateWindow(KrUIManager::GetpKrUIManager()->GetWindowClassName(), m_lpWindowName, m_dwStyle,
+		HWND hwnd = CreateWindow(KrUIManager::KrGetpKrUIManager()->KrGetWindowClassName(), m_lpWindowName, m_dwStyle,
 			m_rect.left, m_rect.top,
 			m_rect.right - m_rect.left, m_rect.bottom - m_rect.top,
-			NULL, NULL, KrUIManager::GetpKrUIManager()->GetHINSTANCE(), NULL);
+			NULL, NULL, KrUIManager::KrGetpKrUIManager()->KrGetHINSTANCE(), NULL);
 		if (!hwnd) return false;
 		m_hwnd = hwnd;
 		GetWindowRect(hwnd, &m_rect);
@@ -81,73 +96,73 @@ namespace KrUI{
 
 
 
-	int KrWindow::GetX()
+	int KrWindow::KrGetX()
 	{
 		return m_rect.left;
 	}
 
 
 
-	int KrWindow::GetY()
+	int KrWindow::KrGetY()
 	{
 		return m_rect.top;
 	}
 
 
 
-	int KrWindow::GetWidth()
+	int KrWindow::KrGetWidth()
 	{
 		return m_rect.right - m_rect.left;
 	}
 
 
 
-	int KrWindow::GetHeight()
+	int KrWindow::KrGetHeight()
 	{
 		return m_rect.bottom - m_rect.top;
 	}
 
 
-	void KrWindow::SetX(int x)
+	void KrWindow::KrSetX(int x)
 	{
-		int width = GetWidth();
+		int width = KrGetWidth();
 		m_rect.left = x;
 		m_rect.right = x + width;
-		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
+		if (KrIsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
 
 
-	void KrWindow::SetY(int y)
+	void KrWindow::KrSetY(int y)
 	{
-		int height = GetHeight();
+		int height = KrGetHeight();
 		m_rect.top = y;
 		m_rect.bottom = y + height;
-		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
+		if (KrIsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
 
 
-	void KrWindow::SetWidth(int width)
+	void KrWindow::KrSetWidth(int width)
 	{
 		m_rect.right = m_rect.left + width;
-		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
+		if (KrIsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
 
 
 
-	void KrWindow::SetHeight(int height)
+	void KrWindow::KrSetHeight(int height)
 	{
 		m_rect.bottom = m_rect.top + height;
-		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
+		if (KrIsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
 
 
-	void KrWindow::Show()
+	void KrWindow::KrShow()
 	{
-		if (IsCreated())
+		if (KrIsCreated())
 		{
 			ShowWindow(m_hwnd, SW_SHOW);
 			m_bVisible = true;
@@ -156,9 +171,9 @@ namespace KrUI{
 	}
 
 
-	void KrWindow::Hide()
+	void KrWindow::KrHide()
 	{
-		if (IsCreated())
+		if (KrIsCreated())
 		{
 			ShowWindow(m_hwnd, SW_HIDE);
 			m_bVisible = false;
@@ -167,13 +182,13 @@ namespace KrUI{
 	}
 
 
-	bool KrWindow::IsVisible()
+	bool KrWindow::KrIsVisible()
 	{
 		return m_bVisible;
 	}
 
 
-	bool KrWindow::IsCreated()
+	bool KrWindow::KrIsCreated()
 	{
 		if (m_hwnd==NULL)
 		{
@@ -183,19 +198,19 @@ namespace KrUI{
 	}
 
 
-	void KrWindow::Destroy(bool bDelete)
+	void KrWindow::KrDestroy(bool bDelete)
 	{
 		SendMessage(m_hwnd, WM_CLOSE, 0, 0);
 		m_hwnd = NULL;
 		if (bDelete)
 		{
-			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
+			KrUIManager::KrGetpKrUIManager()->KrDeleteWindow(this);
 		}
-		if (KrUIManager::GetpKrUIManager()->GetWindowNum() == 0)PostQuitMessage(0);
+		if (KrUIManager::KrGetpKrUIManager()->KrGetWindowNum() == 0)PostQuitMessage(0);
 	}
 
 
-	void    KrWindow::RegMsg(UINT msg, MSGFUNC func)
+	void    KrWindow::KrRegMsg(UINT msg, MSGFUNC func)
 	{
 		for (map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.begin(); it != m_MsgFuncMap.end(); ++it)
 		{
@@ -208,13 +223,14 @@ namespace KrUI{
 	}
 
 
-	LRESULT  KrWindow::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
+	LRESULT  KrWindow::KrHandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		
 		for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end();it++)
 		{
-			 (*it)->HandleMessage(Message, wParam, lParam);
+			 (*it)->KrHandleMessage(Message, wParam, lParam);
 		}
+
 		map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.find(Message);
 		if (it!=m_MsgFuncMap.end())
 		{
@@ -222,9 +238,14 @@ namespace KrUI{
 		}
 		switch (Message)
 		{
+		case WM_PAINT:
+			PAINTSTRUCT ps;
+			BeginPaint(m_hwnd, &ps);
+			KrReDraw(&(ps.rcPaint));
+			EndPaint(m_hwnd, &ps);
+			break;
 		case WM_DESTROY: 
-		   		   	Destroy(true);
-					break;
+			KrDestroy(true);
 			break;
 		default:
 			return DefWindowProc(m_hwnd, Message, wParam, lParam);
@@ -234,7 +255,7 @@ namespace KrUI{
 	}
 
 
-	KrControl* KrWindow::AddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height)
+	KrControl* KrWindow::KrAddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height)
 	{
 		RECT rect;
 		rect.left = x;
@@ -255,10 +276,10 @@ namespace KrUI{
 			break;
 		}
 		if (!pKrCtrl)return NULL;
-		pKrCtrl->SetCtrlType(iCtrlType);
-		pKrCtrl->SetWindow(this);
-		pKrCtrl->SetName(lpName);
-		pKrCtrl->SetRect(&rect);
+		pKrCtrl->KrSetCtrlType(iCtrlType);
+		pKrCtrl->KrSetWindow(this);
+		pKrCtrl->KrSetName(lpName);
+		pKrCtrl->KrSetRect(&rect);
 		m_CtrlList.push_back(pKrCtrl);
 		return pKrCtrl;
 	}
@@ -269,5 +290,41 @@ namespace KrUI{
 		{
 			delete (*it);
 		}
+		ReleaseDC(m_hwnd, m_hDC);
 	}
+
+	void KrWindow::KrReDraw(RECT* pRect)
+	{
+		//画背景
+
+
+		//画标题（包括最大化最小化关闭按钮）
+
+
+		//画边框
+		Rectangle(m_hDC, m_rect.left, m_rect.top, m_rect.right, m_rect.bottom);
+//		MessageBox(m_hwnd, L"收到WM_PAINT", L"消息", MB_OK);
+		//画控件
+
+
+	}
+
+	void	KrWindow::KrSetBorderWidth(UINT BorderWidth)
+	{
+		m_BorderWidth = BorderWidth;
+	}
+
+	void	KrWindow::KrSetDefaultColor(COLORREF color)
+	{
+		m_DefaultColor = color;
+	}
+
+	void	KrWindow::KrSelectPen(HPEN hPen)
+	{
+		DeleteObject(m_hPen);
+		m_hPen = hPen;
+		SelectObject(KrGetDC(), m_hPen);
+	}
+
+
 }

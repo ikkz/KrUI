@@ -4,13 +4,14 @@ namespace KrUI{
 
 	KrUIManager* KrUIManager::m_pKrUIManager = NULL;
 
+
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-		return  KrUIManager::GetpKrUIManager()->HandleMessage(hwnd, Message, wParam, lParam);
+		return  KrUIManager::KrGetpKrUIManager()->KrHandleMessage(hwnd, Message, wParam, lParam);
 	}
 
 
-	 KrUIManager* KrUIManager::GetpKrUIManager()
+	 KrUIManager* KrUIManager::KrGetpKrUIManager()
 	{
 		if (m_pKrUIManager == NULL)
 			m_pKrUIManager = new KrUIManager();
@@ -18,8 +19,7 @@ namespace KrUI{
 	}
 
 
-
-	bool      KrUIManager::Initialize(HINSTANCE hInstance)
+	bool      KrUIManager::KrInitialize(HINSTANCE hInstance)
 	{
 		
 		m_hInstance = hInstance;
@@ -29,7 +29,7 @@ namespace KrUI{
 		m_wc.hInstance = m_hInstance;
 		m_wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 		m_wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-		m_wc.lpszClassName = GetWindowClassName();
+		m_wc.lpszClassName = KrGetWindowClassName();
 		m_wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 		m_wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
@@ -43,74 +43,71 @@ namespace KrUI{
 	}
 
 
-	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height)
+	KrWindow* KrUIManager::KrAddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height)
 	{
 		KrWindow* pKrWindow = new KrWindow;
 		if (!pKrWindow) return false;
-		pKrWindow->SetWindowName(lpWindowName);
+		pKrWindow->KrSetWindowName(lpWindowName);
 		RECT rect;
 		rect.left = x;
 		rect.top = y;
 		rect.right = x + width;
 		rect.bottom = y + height;
-		pKrWindow->SetRect(&rect);
-		pKrWindow->SetStyle(NULL);
-		pKrWindow->Create();
-		LONG_PTR style = GetWindowLongPtr(pKrWindow->GetHWND(), GWL_STYLE);
+		pKrWindow->KrSetRect(&rect);
+		pKrWindow->KrSetStyle(NULL);
+		pKrWindow->KrCreate();
+		LONG_PTR style = GetWindowLongPtr(pKrWindow->KrGetHWND(), GWL_STYLE);
 		style = style&~WS_CAPTION&~WS_SYSMENU&~WS_SIZEBOX&~WS_BORDER;
-		SetWindowLongPtr(pKrWindow->GetHWND(), GWL_STYLE,style);
+		SetWindowLongPtr(pKrWindow->KrGetHWND(), GWL_STYLE,style);
 		m_WndList.push_back(pKrWindow);
 		return pKrWindow;
 	}
 
 
-	LPCTSTR   KrUIManager::GetWindowClassName()
+	LPCTSTR   KrUIManager::KrGetWindowClassName()
 	{
 		return m_lpWindowClassName;
 	}
 
 
-	HINSTANCE KrUIManager::GetHINSTANCE()
+	HINSTANCE KrUIManager::KrGetHINSTANCE()
 	{
 		return m_hInstance;
 	}
 
 
-	int  KrUIManager::MessageLoop()
+	int  KrUIManager::KrMessageLoop()
 	{
-
 		while (GetMessage(&m_msg,NULL,0,0)!=0)
 		{
-
 			TranslateMessage(&m_msg);
-
 			DispatchMessage(&m_msg);
 		}
 		return m_msg.wParam;
 	}
 
 
-	LRESULT   KrUIManager::HandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+	LRESULT   KrUIManager::KrHandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		
-		for (list<KrWindow*>::iterator it = m_WndList.begin(); it != m_WndList.end(); ++it)
+		for (list<KrWindow*>::iterator it = m_WndList.begin(); it != m_WndList.end(); it++)
 		{
-			if (hwnd==(*it)->GetHWND())
+			if (hwnd==(*it)->KrGetHWND())
 			{
-				return (*it)->HandleMessage(Message, wParam, lParam);
+				return (*it)->KrHandleMessage(Message, wParam, lParam);
 			}
 		}
 		return TRUE;
 	}
 
 
-	int KrUIManager::GetWindowNum()
+	int KrUIManager::KrGetWindowNum()
 	{
 		return m_WndList.size();
 	}
 
 
-	void KrUIManager::DeleteWindow(KrWindow* pKrWindow)
+	void KrUIManager::KrDeleteWindow(KrWindow* pKrWindow)
 	{
 		m_WndList.remove(pKrWindow);
 	}
@@ -118,9 +115,9 @@ namespace KrUI{
 
 	KrUIManager::~KrUIManager()
 	{
-		for (list<KrWindow*>::iterator it = m_WndList.begin(); it != m_WndList.end(); ++it)
+		for (list<KrWindow*>::iterator it = m_WndList.begin(); it != m_WndList.end(); it++)
 		{
-			(*it)->Destroy(false);
+			(*it)->KrDestroy(false);
 			delete (*it);
 		}
 	}

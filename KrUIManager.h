@@ -53,16 +53,16 @@ namespace KrUI{
 	class KrUIManager
 	{
 	public:
-		static KrUIManager* GetpKrUIManager();
-		bool      Initialize(HINSTANCE hInstance);//
-		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle);// 
-		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height);//
-		LPCTSTR   GetWindowClassName();//
-		HINSTANCE GetHINSTANCE();//
-		int       MessageLoop();//
-		LRESULT   HandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);//处理消息
-		int		  GetWindowNum();
-		void	  DeleteWindow(KrWindow* pKrWindow);
+		static KrUIManager* KrGetpKrUIManager();
+		bool      KrInitialize(HINSTANCE hInstance);//
+		KrWindow* KrAddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle);// 
+		KrWindow* KrAddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height);//
+		LPCTSTR   KrGetWindowClassName();//
+		HINSTANCE KrGetHINSTANCE();//
+		int       KrMessageLoop();//
+		LRESULT   KrHandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);//处理消息
+		int		  KrGetWindowNum();
+		void	  KrDeleteWindow(KrWindow* pKrWindow);
 		~KrUIManager();
 	private:
 		KrUIManager(){ m_lpWindowClassName = L"KrUI"; }

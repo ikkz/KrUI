@@ -22,38 +22,44 @@ namespace KrUI{
 		bool    m_bVisible;//
 		map<UINT, MSGFUNC> m_MsgFuncMap;//
 		list<KrControl*> m_CtrlList;
-		HDC    m_hdc;
+		HDC    m_hDC;
+		COLORREF m_DefaultColor;
+		UINT    m_BorderWidth;
+		HPEN   m_hPen;
 	public:
 		KrWindow();
-		HDC      GetKrDC();
-		LPCWSTR  GetWindowName();//
-		void    SetWindowName(LPCWSTR lpWindowName);//
-		HWND    GetHWND();//
-		RECT*   GetRect();//
-		void    SetRect(RECT* pRect); //
-		void    SetStyle(DWORD dwStyle);//
-		DWORD	GetStyle();//
-		bool    Create();//
-		void    Destroy(bool bDelete);//
-		int     GetX();//
-		int     GetY();//
-		int     GetWidth();//
-		int     GetHeight();//
-		void    SetX(int x);//
-		void    SetY(int y);//
-		void    SetWidth(int width);//
-		void    SetHeight(int height);//
-		void    Show();//
-		void    Hide();//
-		bool    IsVisible();//
-		bool	IsCreated();//
-		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+		LPCWSTR  KrGetWindowName();//
+		void    KrSetWindowName(LPCWSTR lpWindowName);//
+		HWND    KrGetHWND();//
+		RECT*   KrGetRect();//
+		void    KrSetRect(RECT* pRect); //
+		void    KrSetStyle(DWORD dwStyle);//
+		DWORD	KrGetStyle();//
+		bool    KrCreate();//
+		void    KrDestroy(bool bDelete);//
+		int     KrGetX();//
+		int     KrGetY();//
+		int     KrGetWidth();//
+		int     KrGetHeight();//
+		void    KrSetX(int x);//
+		void    KrSetY(int y);//
+		void    KrSetWidth(int width);//
+		void    KrSetHeight(int height);//
+		void    KrShow();//
+		void    KrHide();//
+		bool    KrIsVisible();//
+		bool	KrIsCreated();//
+		LRESULT KrHandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+		void    KrRegMsg(UINT msg, MSGFUNC func);
+		KrControl* KrAddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height);
 
-		void    RegMsg(UINT msg, MSGFUNC func);
+		HDC      KrGetDC();
+		void    KrReDraw(RECT* pRect);
+		void	KrSetDefaultColor(COLORREF color);
+		void	KrSetBorderWidth(UINT BorderWidth);
+		void	KrSelectPen(HPEN hPen);
 
-		KrControl* AddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height);
 		~KrWindow();
-
 	};
 
 }

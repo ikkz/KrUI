@@ -25,29 +25,30 @@ namespace KrUI{
 		bool m_bMouseIn;
 		map<UINT, MSGFUNC> m_MsgFuncMap;
 	public:
-		void    SetCtrlType(UINT type);
-		UINT    GetCtrlType();
-		void    SetWindow(KrWindow* pKrWindow);//
-		KrWindow* GetWindow();
-		void	SetName(LPCWSTR lpCtrlName);//
-		LPCWSTR GetName();//
-		RECT*   GetRect();//
-		void    SetRect(RECT* pRect); //
-		int     GetX();//
-		int     GetY();//
-		int     GetWidth();//
-		int     GetHeight();//
-		void    SetX(int x);//
-		void    SetY(int y);//
-		void    SetWidth(int width);//
-		void    SetHeight(int height);//
-		void    RegMsg(UINT msg, MSGFUNC func);
-		void  virtual  Draw();
-		bool  IsVisible();
-		void  Show();
-		void  Hide();
-		void  HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
-		void  CallMsgFunc(UINT Message, WPARAM wParam, LPARAM lParam);
+		KrControl();
+		void    KrSetCtrlType(UINT type);
+		UINT    KrGetCtrlType();
+		void    KrSetWindow(KrWindow* pKrWindow);//
+		KrWindow* KrGetWindow();
+		void	KrSetName(LPCWSTR lpCtrlName);//
+		LPCWSTR KrGetName();//
+		RECT*   KrGetRect();//
+		void    KrSetRect(RECT* pRect); //
+		int     KrGetX();//
+		int     KrGetY();//
+		int     KrGetWidth();//
+		int     KrGetHeight();//
+		void    KrSetX(int x);//
+		void    KrSetY(int y);//
+		void    KrSetWidth(int width);//
+		void    KrSetHeight(int height);//
+		void    KrRegMsg(UINT msg, MSGFUNC func);
+		void  virtual  KrDraw();
+		bool  KrIsVisible();
+		void  KrShow();
+		void  KrHide();
+		void  KrHandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+		void  KrCallMsgFunc(UINT Message, WPARAM wParam, LPARAM lParam);
 
 
 	};
