@@ -54,5 +54,5 @@ namespace KrUI{
 	};
 
 
-}
+}//namespace KrUI
 #endif

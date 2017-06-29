@@ -21,6 +21,7 @@ namespace KrUI{
 		m_hPen = CreatePen(PS_SOLID,m_BorderWidth,m_DefaultColor);
 		SelectObject(KrGetDC(), m_hPen);
 	//	KrRegMsg(WM_MOUSEMOVE, redraw);
+		m_bMouseDown = false;
 	}
 
 	HDC KrWindow::KrGetDC()
@@ -236,20 +237,58 @@ namespace KrUI{
 		}
 		switch (Message)
 		{
+		
+		case WM_LBUTTONDOWN:
+			ReleaseCapture();
+			SendMessage(m_hwnd, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
+			break;
+		case WM_MOUSEMOVE:
+			if (m_bMouseDown)
+			{
+				GetWindowRect(m_hwnd, &m_rect);
+			}
+			break;
+// 		case WM_LBUTTONDOWN:
+// 			m_bMouseDown = true;
+// 			m_ptMouseDown.x = GET_X_LPARAM(lParam);
+// 			m_ptMouseDown.y = GET_Y_LPARAM(lParam);
+// 			break;
+// 		case WM_LBUTTONUP:
+// 			m_bMouseDown = false;
+// 			break;
+// 		case WM_MOUSEMOVE:
+// 			if (m_bMouseDown)
+// 			{
+// 				m_ptMouse.x = GET_X_LPARAM(lParam);
+// 				m_ptMouse.y = GET_Y_LPARAM(lParam);
+// 				KrSetX(m_ptMouse.x - (m_ptMouseDown.x - m_rect.left));
+// 				KrSetY(m_ptMouse.y - (m_ptMouseDown.y - m_rect.top));
+// 			}
+// 			break;
+// 		case WM_MOUSELEAVE:
+// 
+// 			if (m_bMouseDown)
+// 			{
+// 				GetCursorPos(&m_ptMouse);
+// 				m_ptMouse.x = m_ptMouse.x - m_rect.left;
+// 				m_ptMouse.y = m_ptMouse.y - m_rect.top;
+// 				KrSetX(m_ptMouse.x - (m_ptMouseDown.x - m_rect.left));
+// 				KrSetY(m_ptMouse.y - (m_ptMouseDown.y - m_rect.top));
+// 			}
 		case WM_PAINT:
-		case WM_NCPAINT:
+		{
 			PAINTSTRUCT ps;
-			BeginPaint(m_hwnd, &ps);
-			KrReDraw(&(ps.rcPaint));
+			HDC dc = BeginPaint(m_hwnd, &ps);
+			KrReDraw(&ps.rcPaint);
 			EndPaint(m_hwnd, &ps);
 			break;
+		}
 		case WM_DESTROY: 
 			KrDestroy(true);
 			break;
-		default:
-			return DefWindowProc(m_hwnd, Message, wParam, lParam);
+		
 		}
-		return 0;
+		return DefWindowProc(m_hwnd, Message, wParam, lParam);
 
 	}
 
@@ -294,17 +333,20 @@ namespace KrUI{
 
 	void KrWindow::KrReDraw(RECT* pRect)
 	{
-		//画背景
+		if (m_bVisible)
+		{
+			//画背景
 
 
-		//画标题（包括最大化最小化关闭按钮）
+			//画标题（包括最大化最小化关闭按钮）
 
 
-		//画边框
-		Rectangle(m_hDC, m_rect.left, m_rect.top, m_rect.right, m_rect.bottom);
-//		MessageBox(m_hwnd, L"收到WM_PAINT", L"消息", MB_OK);
-		//画控件
-
+			//画边框
+			GetWindowRect(m_hwnd, &m_rect);
+			Rectangle(m_hDC, m_rect.left, m_rect.top, m_rect.right, m_rect.bottom);
+			//		MessageBox(m_hwnd, L"收到WM_PAINT", L"消息", MB_OK);
+			//画控件
+		}
 
 	}
 

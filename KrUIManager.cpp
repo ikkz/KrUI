@@ -60,6 +60,10 @@ namespace KrUI{
 		style = style&~WS_CAPTION&~WS_SYSMENU&~WS_SIZEBOX&~WS_BORDER;
 		SetWindowLongPtr(pKrWindow->KrGetHWND(), GWL_STYLE,style);
 		m_WndList.push_back(pKrWindow);
+		if (m_WndList.size()==1)
+		{
+			_beginthread(PaintThread, NULL, NULL);
+		}
 		return pKrWindow;
 	}
 

@@ -42,7 +42,7 @@
 #include<list>
 #include<windows.h>
 #include"KrWindow.h"
-
+#include <process.h>
 
 using namespace std;
 namespace KrUI{
@@ -63,6 +63,7 @@ namespace KrUI{
 		LRESULT   KrHandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);//处理消息
 		int		  KrGetWindowNum();
 		void	  KrDeleteWindow(KrWindow* pKrWindow);
+		void	  KrReDraw();
 		~KrUIManager();
 	private:
 		KrUIManager(){ m_lpWindowClassName = L"KrUI"; }
@@ -74,7 +75,12 @@ namespace KrUI{
 		list<KrWindow*>  m_WndList;//
 	};
 
-}
+	void __cdecl PaintThread(void* param)
+	{
+		KrUIManager::KrGetpKrUIManager()->KrReDraw();
+	}
 
+
+}//namespace KrUI
 
 #endif

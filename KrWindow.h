@@ -20,6 +20,9 @@ namespace KrUI{
 		RECT    m_rect;// 
 		DWORD   m_dwStyle;//
 		bool    m_bVisible;//
+		POINT  m_ptMouse;
+		POINT  m_ptMouseDown;
+		bool   m_bMouseDown;
 		map<UINT, MSGFUNC> m_MsgFuncMap;//
 		list<KrControl*> m_CtrlList;
 		HDC    m_hDC;
@@ -62,6 +65,6 @@ namespace KrUI{
 		~KrWindow();
 	};
 
-}
+}//namespace KrUI
 
 #endif
