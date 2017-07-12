@@ -2,7 +2,7 @@
 #include "KrWindow.h"
 
 using namespace KrUI;
-KrUIManager* pUI = KrUIManager::GetpKrUIManager();
+KrUIManager* pUI = KrUIManager::KrGetpKrUIManager();
 /*typedef LRESULT(*MSGFUNC)(void* pObject, WPARAM wParam, LPARAM lParam);*/
 
 
@@ -15,12 +15,13 @@ LRESULT name(void* pObject, WPARAM wParam, LPARAM lParam)
 
 LRESULT func1(void* pObject, WPARAM wParam, LPARAM lParam)
 {
-	MessageBox(((KrControl*)pObject)->GetWindow()->GetHWND(), L"鼠标进入", ((KrControl*)pObject)->GetName(), MB_OK);
+	MessageBox(((KrControl*)pObject)->KrGetWindow()->KrGetHWND(), L"鼠标进入", ((KrControl*)pObject)->KrGetName(), MB_OK);
 	return true;
 }
 LRESULT func2(void* pObject, WPARAM wParam, LPARAM lParam)
 {
-	MessageBox(((KrControl*)pObject)->GetWindow()->GetHWND(), L"鼠标JINGRUQIAN", ((KrControl*)pObject)->GetName(), MB_OK);
+	MessageBox(((KrControl*)pObject)->KrGetWindow()->KrGetHWND(), L"mouseclick", ((KrControl*)pObject)->KrGetName(), MB_OK);
+	KrUIManager::KrGetpKrUIManager()->KrAddWindow(L"haha", 50, 50, 300, 300)->KrShow();
 	return true;
 }
 
@@ -28,31 +29,15 @@ LRESULT func2(void* pObject, WPARAM wParam, LPARAM lParam)
 KrControl* pCtrl;
 
 
-LRESULT func3(void* pObject, WPARAM wParam, LPARAM lParam)
-{
-	Rectangle(pCtrl->GetWindow()->GetKrDC(), pCtrl->GetRect()->left, pCtrl->GetRect()->top, pCtrl->GetRect()->right, pCtrl->GetRect()->bottom);
-	return true;
-}
-
-
-
-LRESULT func4(void* pObject, WPARAM wParam, LPARAM lParam)
-{
-	Rectangle(pCtrl->GetWindow()->GetKrDC(), 100,50,50,50);
-	return true;
-}
-
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
 
-	pUI->Initialize(hInstance);
-	KrWindow* pWnd = pUI->AddWindow(L"caption", CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT);
-	pWnd->Show();
+	pUI->KrInitialize(hInstance);
+	KrWindow* pWnd = pUI->KrAddWindow(L"caption", 400, 300, 500, 400);
+	pWnd->KrShow();
 
-    pCtrl=pWnd->AddControl(KR_CTRL, L"ctrl", 50, 50, 50, 50);
-	pWnd->RegMsg(WM_LBUTTONDOWN, func3);
-	pCtrl->RegMsg(KM_MOUSEENTER, func1);
-	pCtrl->RegMsg(KM_BEFORE_MOUSEENTER, func2);
+    pCtrl=pWnd->KrAddControl(KR_CTRL, L"ctrl", 50, 50, 50, 50);
+	pCtrl->KrRegMsg(KM_LBTNDOWN, func2);
 	//pCtrl->RegMsg(KM_MOUSELEAVE, func2);
-	return pUI->MessageLoop();
+	return pUI->KrMessageLoop();
 }

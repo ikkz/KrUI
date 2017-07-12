@@ -15,23 +15,11 @@ namespace KrUI{
 	KrWindow::KrWindow()
 	{
 		m_bVisible = false;
-		m_hDC = NULL;
-		m_DefaultColor = RGB(0,122,204);
-		m_BorderWidth = 2;
-		m_hPen = CreatePen(PS_SOLID,m_BorderWidth,m_DefaultColor);
-		SelectObject(KrGetDC(), m_hPen);
 	//	KrRegMsg(WM_MOUSEMOVE, redraw);
 		m_bMouseDown = false;
 	}
 
-	HDC KrWindow::KrGetDC()
-	{
-		if (m_hDC==NULL)
-		{
-			m_hDC = GetDC(m_hwnd);
-		}
-		return m_hDC;
-	}
+
 
 	LPCWSTR KrWindow::KrGetWindowName()
 	{
@@ -275,6 +263,7 @@ namespace KrUI{
 // 				KrSetX(m_ptMouse.x - (m_ptMouseDown.x - m_rect.left));
 // 				KrSetY(m_ptMouse.y - (m_ptMouseDown.y - m_rect.top));
 // 			}
+
 		case WM_PAINT:
 		{
 			PAINTSTRUCT ps;
@@ -286,10 +275,11 @@ namespace KrUI{
 		case WM_DESTROY: 
 			KrDestroy(true);
 			break;
-		
+		default:
+			return DefWindowProc(m_hwnd, Message, wParam, lParam);
 		}
-		return DefWindowProc(m_hwnd, Message, wParam, lParam);
 
+		return 0;
 	}
 
 
@@ -328,7 +318,6 @@ namespace KrUI{
 		{
 			delete (*it);
 		}
-		ReleaseDC(m_hwnd, m_hDC);
 	}
 
 	void KrWindow::KrReDraw(RECT* pRect)
@@ -342,30 +331,13 @@ namespace KrUI{
 
 
 			//画边框
-			GetWindowRect(m_hwnd, &m_rect);
-			Rectangle(m_hDC, m_rect.left, m_rect.top, m_rect.right, m_rect.bottom);
+			
 			//		MessageBox(m_hwnd, L"收到WM_PAINT", L"消息", MB_OK);
 			//画控件
 		}
 
 	}
 
-	void	KrWindow::KrSetBorderWidth(UINT BorderWidth)
-	{
-		m_BorderWidth = BorderWidth;
-	}
-
-	void	KrWindow::KrSetDefaultColor(COLORREF color)
-	{
-		m_DefaultColor = color;
-	}
-
-	void	KrWindow::KrSelectPen(HPEN hPen)
-	{
-		DeleteObject(m_hPen);
-		m_hPen = hPen;
-		SelectObject(KrGetDC(), m_hPen);
-	}
 
 
 }

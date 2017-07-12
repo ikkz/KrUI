@@ -42,7 +42,7 @@
 #include<list>
 #include<windows.h>
 #include"KrWindow.h"
-#include <process.h>
+
 
 using namespace std;
 namespace KrUI{
@@ -75,10 +75,6 @@ namespace KrUI{
 		list<KrWindow*>  m_WndList;//
 	};
 
-	void __cdecl PaintThread(void* param)
-	{
-		KrUIManager::KrGetpKrUIManager()->KrReDraw();
-	}
 
 
 }//namespace KrUI

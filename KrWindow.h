@@ -25,10 +25,6 @@ namespace KrUI{
 		bool   m_bMouseDown;
 		map<UINT, MSGFUNC> m_MsgFuncMap;//
 		list<KrControl*> m_CtrlList;
-		HDC    m_hDC;
-		COLORREF m_DefaultColor;
-		UINT    m_BorderWidth;
-		HPEN   m_hPen;
 	public:
 		KrWindow();
 		LPCWSTR  KrGetWindowName();//
@@ -56,12 +52,7 @@ namespace KrUI{
 		void    KrRegMsg(UINT msg, MSGFUNC func);
 		KrControl* KrAddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height);
 
-		HDC      KrGetDC();
 		void    KrReDraw(RECT* pRect);
-		void	KrSetDefaultColor(COLORREF color);
-		void	KrSetBorderWidth(UINT BorderWidth);
-		void	KrSelectPen(HPEN hPen);
-
 		~KrWindow();
 	};
 
