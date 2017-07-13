@@ -1,3 +1,11 @@
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
+
+
+
+
+
 #ifndef _KRUIMANAGER_H
 #define _KRUIMANAGER_H
 
@@ -38,7 +46,6 @@
 #define KR_LABEL 2
 #define KR_BUTTON 3
 
-
 #include<list>
 #include<windows.h>
 #include"KrWindow.h"
@@ -53,17 +60,17 @@ namespace KrUI{
 	class KrUIManager
 	{
 	public:
-		static KrUIManager* KrGetpKrUIManager();
-		bool      KrInitialize(HINSTANCE hInstance);//
-		KrWindow* KrAddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle);// 
-		KrWindow* KrAddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height);//
-		LPCTSTR   KrGetWindowClassName();//
-		HINSTANCE KrGetHINSTANCE();//
-		int       KrMessageLoop();//
-		LRESULT   KrHandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);//处理消息
-		int		  KrGetWindowNum();
-		void	  KrDeleteWindow(KrWindow* pKrWindow);
-		void	  KrReDraw();
+		static KrUIManager* GetpKrUIManager();
+		bool      Initialize(HINSTANCE hInstance);//
+		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle);// 
+		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height);//
+		LPCTSTR   GetWindowClassName();//
+		HINSTANCE GetHINSTANCE();//
+		int       MessageLoop();//
+		LRESULT   HandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);//处理消息
+		int		  GetWindowNum();
+		void	  DeleteWindow(KrWindow* pKrWindow);
+		void	  ReDraw();
 		~KrUIManager();
 	private:
 		KrUIManager(){ m_lpWindowClassName = L"KrUI"; }

@@ -10,116 +10,116 @@ namespace KrUI{
 	}
 
 
-	void    KrControl::KrSetCtrlType(UINT type)
+	void    KrControl::SetCtrlType(UINT type)
 	{
 		m_type = type;
 	}
-	UINT    KrControl::KrGetCtrlType()
+	UINT    KrControl::GetCtrlType()
 	{
 		return m_type;
 	}
 
 
-	void KrControl::KrSetWindow(KrWindow* pKrWindow)
+	void KrControl::SetWindow(KrWindow* pKrWindow)
 	{
 		m_pKrWindow = pKrWindow;
 	}
 
-	KrWindow* KrControl::KrGetWindow()
+	KrWindow* KrControl::GetWindow()
 	{
 		return m_pKrWindow;
 	}
 
-	RECT* KrControl::KrGetRect()
+	RECT* KrControl::GetRect()
 	{
 		return &m_rect;
 	}
 
 
-	void KrControl::KrSetRect(RECT* pRect)
+	void KrControl::SetRect(RECT* pRect)
 	{
 		m_rect.left = pRect->left;
 		m_rect.right = pRect->right;
 		m_rect.top = pRect->top;
 		m_rect.bottom = pRect->bottom;
-		KrDraw();
+		Draw();
 	}
 
 
 
-	int KrControl::KrGetX()
+	int KrControl::GetX()
 	{
 		return m_rect.left;
 	}
 
 
 
-	int KrControl::KrGetY()
+	int KrControl::GetY()
 	{
 		return m_rect.top;
 	}
 
 
 
-	int KrControl::KrGetWidth()
+	int KrControl::GetWidth()
 	{
 		return m_rect.right - m_rect.left;
 	}
 
 
 
-	int KrControl::KrGetHeight()
+	int KrControl::GetHeight()
 	{
 		return m_rect.bottom - m_rect.top;
 	}
 
 
-	void KrControl::KrSetX(int x)
+	void KrControl::SetX(int x)
 	{
-		int width = KrGetWidth();
+		int width = GetWidth();
 		m_rect.left = x;
 		m_rect.right = x + width;
-		KrDraw();
+		Draw();
 	}
 
 
-	void KrControl::KrSetY(int y)
+	void KrControl::SetY(int y)
 	{
-		int height = KrGetHeight();
+		int height = GetHeight();
 		m_rect.top = y;
 		m_rect.bottom = y + height;
-		KrDraw();
+		Draw();
 	}
 
 
-	void KrControl::KrSetWidth(int width)
+	void KrControl::SetWidth(int width)
 	{
 		m_rect.right = m_rect.left + width;
-		KrDraw();
+		Draw();
 	}
 
 
 
-	void KrControl::KrSetHeight(int height)
+	void KrControl::SetHeight(int height)
 	{
 		m_rect.bottom = m_rect.top + height;
-		KrDraw();
+		Draw();
 	}
 
 
 
-	void	KrControl::KrSetName(LPCWSTR lpCtrlName)
+	void	KrControl::SetName(LPCWSTR lpCtrlName)
 	{
 		m_lpCtrlName = lpCtrlName;
 	}
 
-	LPCWSTR KrControl::KrGetName()
+	LPCWSTR KrControl::GetName()
 	{
 		return m_lpCtrlName;
 	}
 
 
-	void    KrControl::KrRegMsg(UINT msg, MSGFUNC func)
+	void    KrControl::RegMsg(UINT msg, MSGFUNC func)
 	{
 		map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.find(msg);
 		if (it != m_MsgFuncMap.end())
@@ -131,24 +131,24 @@ namespace KrUI{
 	}
 
 
-	bool KrControl::KrIsVisible()
+	bool KrControl::IsVisible()
 	{
 		return m_bVisible;
 	}
 
 
-	void KrControl::KrHide()
+	void KrControl::Hide()
 	{
 		m_bVisible = false;
 	}
 
-	void KrControl::KrShow()
+	void KrControl::Show()
 	{
 		m_bVisible = true;
 	}
 
 
-	void KrControl::KrHandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
+	void KrControl::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		switch (Message)
 		{
@@ -161,16 +161,16 @@ namespace KrUI{
 							 if (m_bMouseIn == false && bMouseIn == TRUE)
 							 {
 								 //SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
-								 KrCallMsgFunc(KM_BEFORE_MOUSEENTER, wParam, lParam);
-								 KrCallMsgFunc(KM_MOUSEENTER, wParam, lParam);
-								 KrCallMsgFunc(KM_AFTER_MOUSEENTER, wParam, lParam);
+								 CallMsgFunc(KM_BEFORE_MOUSEENTER, wParam, lParam);
+								 CallMsgFunc(KM_MOUSEENTER, wParam, lParam);
+								 CallMsgFunc(KM_AFTER_MOUSEENTER, wParam, lParam);
 							 }
 							 else if (m_bMouseIn == true && bMouseIn == false)
 							 {
 								 //SendMessage(m_pKrWindow->GetHWND(), KM_MOUSELEAVE, NULL, NULL);
-								 KrCallMsgFunc(KM_BEFORE_MOUSELEAVE, wParam, lParam);
-								 KrCallMsgFunc(KM_MOUSELEAVE, wParam, lParam);
-								 KrCallMsgFunc(KM_AFTER_MOUSELEAVE, wParam, lParam);
+								 CallMsgFunc(KM_BEFORE_MOUSELEAVE, wParam, lParam);
+								 CallMsgFunc(KM_MOUSELEAVE, wParam, lParam);
+								 CallMsgFunc(KM_AFTER_MOUSELEAVE, wParam, lParam);
 							 }
 							 m_bMouseIn = bMouseIn;
 							 break;
@@ -182,9 +182,9 @@ namespace KrUI{
 							BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
 							if (bMouseIn)
 							{
-								KrCallMsgFunc(KM_BEFORE_LBTNDOWN, wParam, lParam);
-								KrCallMsgFunc(KM_LBTNDOWN, wParam, lParam);
-								KrCallMsgFunc(KM_AFTER_LBTNDOWN, wParam, lParam);
+								CallMsgFunc(KM_BEFORE_LBTNDOWN, wParam, lParam);
+								CallMsgFunc(KM_LBTNDOWN, wParam, lParam);
+								CallMsgFunc(KM_AFTER_LBTNDOWN, wParam, lParam);
 							}
 							   break;
 		}
@@ -195,19 +195,19 @@ namespace KrUI{
 							BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
 							if (bMouseIn)
 							{
-								KrCallMsgFunc(KM_BEFORE_LBTNUP, wParam, lParam);
-								KrCallMsgFunc(KM_LBTNUP, wParam, lParam);
-								KrCallMsgFunc(KM_AFTER_LBTNUP, wParam, lParam);
+								CallMsgFunc(KM_BEFORE_LBTNUP, wParam, lParam);
+								CallMsgFunc(KM_LBTNUP, wParam, lParam);
+								CallMsgFunc(KM_AFTER_LBTNUP, wParam, lParam);
 							}
 							 break;
 		}
 		default:
-			KrCallMsgFunc(Message, wParam, lParam);
+			CallMsgFunc(Message, wParam, lParam);
 			break;
 		}
 	}
 
-	void  KrControl::KrCallMsgFunc(UINT Message, WPARAM wParam, LPARAM lParam)
+	void  KrControl::CallMsgFunc(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.find(Message);
 		if (it != m_MsgFuncMap.end())
@@ -216,7 +216,7 @@ namespace KrUI{
 		}
 	}
 
-	void KrControl::KrDraw()
+	void KrControl::Draw()
 	{
 
 	}

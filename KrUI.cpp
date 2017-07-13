@@ -2,7 +2,7 @@
 #include "KrWindow.h"
 
 using namespace KrUI;
-KrUIManager* pUI = KrUIManager::KrGetpKrUIManager();
+KrUIManager* pUI = KrUIManager::GetpKrUIManager();
 /*typedef LRESULT(*MSGFUNC)(void* pObject, WPARAM wParam, LPARAM lParam);*/
 
 
@@ -15,14 +15,14 @@ LRESULT name(void* pObject, WPARAM wParam, LPARAM lParam)
 
 LRESULT func1(void* pObject, WPARAM wParam, LPARAM lParam)
 {
-	MessageBox(((KrControl*)pObject)->KrGetWindow()->KrGetHWND(), L"鼠标进入", ((KrControl*)pObject)->KrGetName(), MB_OK);
+	MessageBox(((KrControl*)pObject)->GetWindow()->GetHWND(), L"鼠标进入", ((KrControl*)pObject)->GetName(), MB_OK);
 	return true;
 }
 LRESULT func2(void* pObject, WPARAM wParam, LPARAM lParam)
 {
-	MessageBox(((KrControl*)pObject)->KrGetWindow()->KrGetHWND(), L"mouseclick", ((KrControl*)pObject)->KrGetName(), MB_OK);
-	KrUIManager::KrGetpKrUIManager()->KrAddWindow(L"haha", 50, 50, 300, 300)->KrShow();
-	return true;
+	MessageBox(((KrControl*)pObject)->GetWindow()->GetHWND(), L"mouseclick", ((KrControl*)pObject)->GetName(), MB_OK);
+	KrUIManager::GetpKrUIManager()->AddWindow(L"haha", 50, 50, 300, 300)->Show();
+	return true; 
 }
 
 
@@ -32,12 +32,13 @@ KrControl* pCtrl;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
 
-	pUI->KrInitialize(hInstance);
-	KrWindow* pWnd = pUI->KrAddWindow(L"caption", 400, 300, 500, 400);
-	pWnd->KrShow();
+	pUI->Initialize(hInstance);
+	KrWindow* pWnd = pUI->AddWindow(L"caption", 400, 300, 500, 400);
+	pWnd->Show();
 
-    pCtrl=pWnd->KrAddControl(KR_CTRL, L"ctrl", 50, 50, 50, 50);
-	pCtrl->KrRegMsg(KM_LBTNDOWN, func2);
+    pCtrl=pWnd->AddControl(KR_CTRL, L"ctrl", 50, 50, 50, 50);
+	pCtrl->RegMsg(KM_LBTNDOWN, func2);
+
 	//pCtrl->RegMsg(KM_MOUSELEAVE, func2);
-	return pUI->KrMessageLoop();
+	return pUI->MessageLoop();
 }

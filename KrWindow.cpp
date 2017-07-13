@@ -21,62 +21,62 @@ namespace KrUI{
 
 
 
-	LPCWSTR KrWindow::KrGetWindowName()
+	LPCWSTR KrWindow::GetWindowName()
 	{
 		return m_lpWindowName;
 	}
 
-	void KrWindow::KrSetWindowName(LPCWSTR lpWindowName)
+	void KrWindow::SetWindowName(LPCWSTR lpWindowName)
 	{
-		if (KrIsCreated())SetWindowText(m_hwnd, lpWindowName);
+		if (IsCreated())SetWindowText(m_hwnd, lpWindowName);
 		m_lpWindowName = lpWindowName;
 	}
 
 
 
 
-	HWND KrWindow::KrGetHWND()
+	HWND KrWindow::GetHWND()
 	{
 		return m_hwnd;
 	}
 
 
-	RECT* KrWindow::KrGetRect()
+	RECT* KrWindow::GetRect()
 	{
 		return &m_rect;
 	}
 
 
-	void KrWindow::KrSetRect(RECT* pRect)
+	void KrWindow::SetRect(RECT* pRect)
 	{
 		m_rect.left = pRect->left;
 		m_rect.right = pRect->right;
 		m_rect.top = pRect->top;
 		m_rect.bottom = pRect->bottom;
-		if (KrIsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
+		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
 
 
 
 
-	void KrWindow::KrSetStyle(DWORD dwStyle)
+	void KrWindow::SetStyle(DWORD dwStyle)
 	{
 		m_dwStyle = dwStyle;
-		if (KrIsCreated())SetWindowLong(m_hwnd, GWL_STYLE, dwStyle);
+		if (IsCreated())SetWindowLong(m_hwnd, GWL_STYLE, dwStyle);
 	}
-	DWORD KrWindow::KrGetStyle()
+	DWORD KrWindow::GetStyle()
 	{
 		return m_dwStyle;
 	}
 
 
-	bool KrWindow::KrCreate()
+	bool KrWindow::Create()
 	{
-		HWND hwnd = CreateWindow(KrUIManager::KrGetpKrUIManager()->KrGetWindowClassName(), m_lpWindowName, m_dwStyle,
+		HWND hwnd = CreateWindow(KrUIManager::GetpKrUIManager()->GetWindowClassName(), m_lpWindowName, m_dwStyle,
 			m_rect.left, m_rect.top,
 			m_rect.right - m_rect.left, m_rect.bottom - m_rect.top,
-			NULL, NULL, KrUIManager::KrGetpKrUIManager()->KrGetHINSTANCE(), NULL);
+			NULL, NULL, KrUIManager::GetpKrUIManager()->GetHINSTANCE(), NULL);
 		if (!hwnd) return false;
 		m_hwnd = hwnd;
 		GetWindowRect(hwnd, &m_rect);
@@ -85,73 +85,73 @@ namespace KrUI{
 
 
 
-	int KrWindow::KrGetX()
+	int KrWindow::GetX()
 	{
 		return m_rect.left;
 	}
 
 
 
-	int KrWindow::KrGetY()
+	int KrWindow::GetY()
 	{
 		return m_rect.top;
 	}
 
 
 
-	int KrWindow::KrGetWidth()
+	int KrWindow::GetWidth()
 	{
 		return m_rect.right - m_rect.left;
 	}
 
 
 
-	int KrWindow::KrGetHeight()
+	int KrWindow::GetHeight()
 	{
 		return m_rect.bottom - m_rect.top;
 	}
 
 
-	void KrWindow::KrSetX(int x)
+	void KrWindow::SetX(int x)
 	{
-		int width = KrGetWidth();
+		int width = GetWidth();
 		m_rect.left = x;
 		m_rect.right = x + width;
-		if (KrIsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
+		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
 
 
-	void KrWindow::KrSetY(int y)
+	void KrWindow::SetY(int y)
 	{
-		int height = KrGetHeight();
+		int height = GetHeight();
 		m_rect.top = y;
 		m_rect.bottom = y + height;
-		if (KrIsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
+		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
 
 
-	void KrWindow::KrSetWidth(int width)
+	void KrWindow::SetWidth(int width)
 	{
 		m_rect.right = m_rect.left + width;
-		if (KrIsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
+		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
 
 
 
-	void KrWindow::KrSetHeight(int height)
+	void KrWindow::SetHeight(int height)
 	{
 		m_rect.bottom = m_rect.top + height;
-		if (KrIsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
+		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
 
 
-	void KrWindow::KrShow()
+	void KrWindow::Show()
 	{
-		if (KrIsCreated())
+		if (IsCreated())
 		{
 			ShowWindow(m_hwnd, SW_SHOW);
 			m_bVisible = true;
@@ -160,9 +160,9 @@ namespace KrUI{
 	}
 
 
-	void KrWindow::KrHide()
+	void KrWindow::Hide()
 	{
-		if (KrIsCreated())
+		if (IsCreated())
 		{
 			ShowWindow(m_hwnd, SW_HIDE);
 			m_bVisible = false;
@@ -171,13 +171,13 @@ namespace KrUI{
 	}
 
 
-	bool KrWindow::KrIsVisible()
+	bool KrWindow::IsVisible()
 	{
 		return m_bVisible;
 	}
 
 
-	bool KrWindow::KrIsCreated()
+	bool KrWindow::IsCreated()
 	{
 		if (m_hwnd==NULL)
 		{
@@ -187,19 +187,19 @@ namespace KrUI{
 	}
 
 
-	void KrWindow::KrDestroy(bool bDelete)
+	void KrWindow::Destroy(bool bDelete)
 	{
 		SendMessage(m_hwnd, WM_CLOSE, 0, 0);
 		m_hwnd = NULL;
 		if (bDelete)
 		{
-			KrUIManager::KrGetpKrUIManager()->KrDeleteWindow(this);
+			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
 		}
-		if (KrUIManager::KrGetpKrUIManager()->KrGetWindowNum() == 0)PostQuitMessage(0);
+		if (KrUIManager::GetpKrUIManager()->GetWindowNum() == 0)PostQuitMessage(0);
 	}
 
 
-	void    KrWindow::KrRegMsg(UINT msg, MSGFUNC func)
+	void    KrWindow::RegMsg(UINT msg, MSGFUNC func)
 	{
 		map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.find(msg);
 		if (it != m_MsgFuncMap.end())
@@ -210,12 +210,12 @@ namespace KrUI{
 	}
 
 
-	LRESULT  KrWindow::KrHandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
+	LRESULT  KrWindow::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		
 		for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end();it++)
 		{
-			 (*it)->KrHandleMessage(Message, wParam, lParam);
+			 (*it)->HandleMessage(Message, wParam, lParam);
 		}
 
 		map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.find(Message);
@@ -268,12 +268,12 @@ namespace KrUI{
 		{
 			PAINTSTRUCT ps;
 			HDC dc = BeginPaint(m_hwnd, &ps);
-			KrReDraw(&ps.rcPaint);
+			ReDraw(&ps.rcPaint);
 			EndPaint(m_hwnd, &ps);
 			break;
 		}
 		case WM_DESTROY: 
-			KrDestroy(true);
+			Destroy(true);
 			break;
 		default:
 			return DefWindowProc(m_hwnd, Message, wParam, lParam);
@@ -283,7 +283,7 @@ namespace KrUI{
 	}
 
 
-	KrControl* KrWindow::KrAddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height)
+	KrControl* KrWindow::AddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height)
 	{
 		RECT rect;
 		rect.left = x;
@@ -304,10 +304,10 @@ namespace KrUI{
 			break;
 		}
 		if (!pKrCtrl)return NULL;
-		pKrCtrl->KrSetCtrlType(iCtrlType);
-		pKrCtrl->KrSetWindow(this);
-		pKrCtrl->KrSetName(lpName);
-		pKrCtrl->KrSetRect(&rect);
+		pKrCtrl->SetCtrlType(iCtrlType);
+		pKrCtrl->SetWindow(this);
+		pKrCtrl->SetName(lpName);
+		pKrCtrl->SetRect(&rect);
 		m_CtrlList.push_back(pKrCtrl);
 		return pKrCtrl;
 	}
@@ -320,7 +320,7 @@ namespace KrUI{
 		}
 	}
 
-	void KrWindow::KrReDraw(RECT* pRect)
+	void KrWindow::ReDraw(RECT* pRect)
 	{
 		if (m_bVisible)
 		{
