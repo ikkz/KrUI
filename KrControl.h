@@ -1,5 +1,5 @@
-#ifndef _KRCONTROL_H
-#define _KRCONTROL_H
+#ifndef KRCONTROL_H
+#define KRCONTROL_H
 
 #include"KrWindow.h"
 #include "KrUIManager.h"
@@ -55,4 +55,5 @@ namespace KrUI{
 
 
 }//namespace KrUI
-#endif
+
+#endif// !KRCONTROL_H

@@ -1,6 +1,6 @@
 
 #include"KrWindow.h"
-
+#include <windows.h>
 namespace KrUI{
 // 
 // 
@@ -17,6 +17,10 @@ namespace KrUI{
 		m_bVisible = false;
 	//	KrRegMsg(WM_MOUSEMOVE, redraw);
 		m_bMouseDown = false;
+
+		m_DC = NULL;
+		m_TempDC = NULL;
+		m_hbmp = NULL;
 	}
 
 
@@ -74,12 +78,19 @@ namespace KrUI{
 	bool KrWindow::Create()
 	{
 		HWND hwnd = CreateWindow(KrUIManager::GetpKrUIManager()->GetWindowClassName(), m_lpWindowName, m_dwStyle,
-			m_rect.left, m_rect.top,
-			m_rect.right - m_rect.left, m_rect.bottom - m_rect.top,
+			m_rect.left, m_rect.top,m_rect.right - m_rect.left, m_rect.bottom - m_rect.top,
 			NULL, NULL, KrUIManager::GetpKrUIManager()->GetHINSTANCE(), NULL);
 		if (!hwnd) return false;
 		m_hwnd = hwnd;
 		GetWindowRect(hwnd, &m_rect);
+
+		m_DC = GetDC(m_hwnd);
+		m_TempDC = CreateCompatibleDC(m_DC);
+		m_hbmp = CreateCompatibleBitmap(m_TempDC,GetWidth(),GetHeight());
+		SelectObject(m_TempDC, m_hbmp);
+
+		m_pGraphics = new Graphics(m_TempDC);
+
 		return true;
 	}
 
@@ -191,6 +202,14 @@ namespace KrUI{
 	{
 		SendMessage(m_hwnd, WM_CLOSE, 0, 0);
 		m_hwnd = NULL;
+
+		DeleteObject(m_DC);
+		DeleteObject(m_TempDC);
+		DeleteObject(m_hbmp);
+		m_DC = NULL;
+		m_TempDC = NULL;
+		m_hbmp = NULL;
+
 		if (bDelete)
 		{
 			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
@@ -236,6 +255,14 @@ namespace KrUI{
 				GetWindowRect(m_hwnd, &m_rect);
 			}
 			break;
+		case WM_SIZE:
+			GetWindowRect(m_hwnd, &m_rect);
+
+			DeleteObject(m_hbmp);
+			m_hbmp = CreateCompatibleBitmap(m_TempDC, GetWidth(), GetHeight());
+			SelectObject(m_TempDC, m_hbmp);
+
+			break;
 // 		case WM_LBUTTONDOWN:
 // 			m_bMouseDown = true;
 // 			m_ptMouseDown.x = GET_X_LPARAM(lParam);
@@ -264,14 +291,14 @@ namespace KrUI{
 // 				KrSetY(m_ptMouse.y - (m_ptMouseDown.y - m_rect.top));
 // 			}
 
-		case WM_PAINT:
-		{
-			PAINTSTRUCT ps;
-			HDC dc = BeginPaint(m_hwnd, &ps);
-			ReDraw(&ps.rcPaint);
-			EndPaint(m_hwnd, &ps);
-			break;
-		}
+// 		case WM_PAINT:
+// 		{
+// 			PAINTSTRUCT ps;
+// 			HDC dc = BeginPaint(m_hwnd, &ps);
+// 			ReDraw(&ps.rcPaint);
+// 			EndPaint(m_hwnd, &ps);
+// 			break;
+// 		}
 		case WM_DESTROY: 
 			Destroy(true);
 			break;
@@ -318,6 +345,12 @@ namespace KrUI{
 		{
 			delete (*it);
 		}
+
+		DeleteObject(m_DC);
+		DeleteObject(m_TempDC);
+		m_DC = NULL;
+		m_TempDC = NULL;
+
 	}
 
 	void KrWindow::ReDraw(RECT* pRect)
@@ -331,9 +364,17 @@ namespace KrUI{
 
 
 			//画边框
-			
+
 			//		MessageBox(m_hwnd, L"收到WM_PAINT", L"消息", MB_OK);
 			//画控件
+			if (pRect!=NULL)
+			{
+				BitBlt(m_DC, pRect->left, pRect->top, pRect->right - pRect->left, pRect->bottom - pRect->top, m_TempDC, pRect->left, pRect->top, SRCCOPY);
+			}
+			else
+			{
+				BitBlt(m_DC, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, m_TempDC, m_rect.left, m_rect.top, SRCCOPY);
+			}
 		}
 
 	}

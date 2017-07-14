@@ -1,8 +1,12 @@
 #include"KrUIManager.h"
 
 namespace KrUI{
-
+	
 	KrUIManager* KrUIManager::m_pKrUIManager = NULL;
+
+
+	GdiplusStartupInput gdiplusStartupInput;
+	ULONG_PTR           gdiplusToken;
 
 
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
@@ -21,7 +25,7 @@ namespace KrUI{
 
 	bool      KrUIManager::Initialize(HINSTANCE hInstance)
 	{
-		
+		//注册窗口类
 		m_hInstance = hInstance;
 		memset(&m_wc, 0, sizeof(m_wc));
 		m_wc.cbSize = sizeof(WNDCLASSEX);
@@ -32,11 +36,13 @@ namespace KrUI{
 		m_wc.lpszClassName = GetWindowClassName();
 		m_wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 		m_wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-
 		if (!RegisterClassEx(&m_wc))
 		{
 			return false;
 		}
+
+		//初始化gdi+
+		GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
 		return true;
 		//TODO
@@ -83,6 +89,7 @@ namespace KrUI{
 			TranslateMessage(&m_msg);
 			DispatchMessage(&m_msg);
 		}
+		GdiplusShutdown(gdiplusToken);
 		return m_msg.wParam;
 	}
 
@@ -110,6 +117,7 @@ namespace KrUI{
 	void KrUIManager::DeleteWindow(KrWindow* pKrWindow)
 	{
 		m_WndList.remove(pKrWindow);
+		pKrWindow->Destroy(false);
 	}
 
 

@@ -37,7 +37,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	pWnd->Show();
 
     pCtrl=pWnd->AddControl(KR_CTRL, L"ctrl", 50, 50, 50, 50);
-	pCtrl->RegMsg(KM_LBTNDOWN, func2);
+	pCtrl->RegMsg(WM_LBUTTONDOWN, func2);
 
 	//pCtrl->RegMsg(KM_MOUSELEAVE, func2);
 	return pUI->MessageLoop();

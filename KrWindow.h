@@ -1,13 +1,14 @@
-#ifndef _KRWINDOW_H
-#define _KRWINDOW_H
+#ifndef KRWINDOW_H
+#define KRWINDOW_H
 
 #include <list>
 #include <map>
 #include<windows.h>
 #include "KrControl.h"
 #include "KrUIManager.h"
-
+#include <gdiplus.h>
 using namespace std;
+using namespace Gdiplus;
 
 namespace KrUI{
 
@@ -25,6 +26,11 @@ namespace KrUI{
 		bool   m_bMouseDown;
 		map<UINT, MSGFUNC> m_MsgFuncMap;//
 		list<KrControl*> m_CtrlList;
+
+		HDC    m_DC;
+		HDC    m_TempDC;
+		HBITMAP m_hbmp;
+		Graphics* m_pGraphics;
 	public:
 		KrWindow();
 		LPCWSTR  GetWindowName();//
@@ -58,4 +64,4 @@ namespace KrUI{
 
 }//namespace KrUI
 
-#endif
+#endif// !KRWINDOW_H

@@ -177,29 +177,29 @@ namespace KrUI{
 		}
 		case WM_LBUTTONDOWN:
 		{					POINT ptMouse;
-							ptMouse.x = GET_X_LPARAM(lParam);
-							ptMouse.y = GET_Y_LPARAM(lParam);
-							BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
-							if (bMouseIn)
-							{
-								CallMsgFunc(KM_BEFORE_LBTNDOWN, wParam, lParam);
-								CallMsgFunc(KM_LBTNDOWN, wParam, lParam);
-								CallMsgFunc(KM_AFTER_LBTNDOWN, wParam, lParam);
-							}
-							   break;
+		ptMouse.x = GET_X_LPARAM(lParam);
+		ptMouse.y = GET_Y_LPARAM(lParam);
+		BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
+		if (bMouseIn)
+		{
+			CallMsgFunc(KM_BEFORE_LBTNDOWN, wParam, lParam);
+			CallMsgFunc(KM_LBTNDOWN, wParam, lParam);
+			CallMsgFunc(KM_AFTER_LBTNDOWN, wParam, lParam);
+		}
+		break;
 		}
 		case WM_LBUTTONUP:
 		{					POINT ptMouse;
-							ptMouse.x = GET_X_LPARAM(lParam);
-							ptMouse.y = GET_Y_LPARAM(lParam);
-							BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
-							if (bMouseIn)
-							{
-								CallMsgFunc(KM_BEFORE_LBTNUP, wParam, lParam);
-								CallMsgFunc(KM_LBTNUP, wParam, lParam);
-								CallMsgFunc(KM_AFTER_LBTNUP, wParam, lParam);
-							}
-							 break;
+		ptMouse.x = GET_X_LPARAM(lParam);
+		ptMouse.y = GET_Y_LPARAM(lParam);
+		BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
+		if (bMouseIn)
+		{
+			CallMsgFunc(KM_BEFORE_LBTNUP, wParam, lParam);
+			CallMsgFunc(KM_LBTNUP, wParam, lParam);
+			CallMsgFunc(KM_AFTER_LBTNUP, wParam, lParam);
+		}
+		break;
 		}
 		default:
 			CallMsgFunc(Message, wParam, lParam);
