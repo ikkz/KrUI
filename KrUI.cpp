@@ -20,7 +20,7 @@ LRESULT func1(void* pObject, WPARAM wParam, LPARAM lParam)
 }
 LRESULT func2(void* pObject, WPARAM wParam, LPARAM lParam)
 {
-	MessageBox(((KrControl*)pObject)->GetWindow()->GetHWND(), L"mouseclick", ((KrControl*)pObject)->GetName(), MB_OK);
+	MessageBox(((KrControl*)pObject)->GetWindow()->GetHWND(), L"Êó±êµã»÷", ((KrControl*)pObject)->GetName(), MB_OK);
 	KrUIManager::GetpKrUIManager()->AddWindow(L"haha", 50, 50, 300, 300)->Show();
 	return true; 
 }

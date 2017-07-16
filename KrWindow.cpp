@@ -88,9 +88,10 @@ namespace KrUI{
 		m_TempDC = CreateCompatibleDC(m_DC);
 		m_hbmp = CreateCompatibleBitmap(m_TempDC,GetWidth(),GetHeight());
 		SelectObject(m_TempDC, m_hbmp);
+		
 
-		m_pGraphics = new Graphics(m_TempDC);
-
+		m_pGraphics = new Graphics(m_TempDC);;
+		
 		return true;
 	}
 
@@ -209,7 +210,8 @@ namespace KrUI{
 		m_DC = NULL;
 		m_TempDC = NULL;
 		m_hbmp = NULL;
-
+		if (m_pGraphics != NULL)delete m_pGraphics;
+		m_pGraphics = NULL;
 		if (bDelete)
 		{
 			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
@@ -244,7 +246,6 @@ namespace KrUI{
 		}
 		switch (Message)
 		{
-		
 		case WM_LBUTTONDOWN:
 			ReleaseCapture();
 			SendMessage(m_hwnd, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
@@ -256,8 +257,10 @@ namespace KrUI{
 			}
 			break;
 		case WM_SIZE:
+			//改变窗口的大小
 			GetWindowRect(m_hwnd, &m_rect);
 
+			//改变位图的大小
 			DeleteObject(m_hbmp);
 			m_hbmp = CreateCompatibleBitmap(m_TempDC, GetWidth(), GetHeight());
 			SelectObject(m_TempDC, m_hbmp);
@@ -291,14 +294,14 @@ namespace KrUI{
 // 				KrSetY(m_ptMouse.y - (m_ptMouseDown.y - m_rect.top));
 // 			}
 
-// 		case WM_PAINT:
-// 		{
-// 			PAINTSTRUCT ps;
-// 			HDC dc = BeginPaint(m_hwnd, &ps);
-// 			ReDraw(&ps.rcPaint);
-// 			EndPaint(m_hwnd, &ps);
-// 			break;
-// 		}
+		case WM_PAINT:
+		{
+			PAINTSTRUCT ps;
+			HDC dc = BeginPaint(m_hwnd, &ps);
+			ReDraw(&ps.rcPaint);
+			EndPaint(m_hwnd, &ps);
+			break;
+		}
 		case WM_DESTROY: 
 			Destroy(true);
 			break;
@@ -350,23 +353,17 @@ namespace KrUI{
 		DeleteObject(m_TempDC);
 		m_DC = NULL;
 		m_TempDC = NULL;
-
+		if (m_pGraphics != NULL)delete m_pGraphics;
+		m_pGraphics = NULL;
 	}
 
 	void KrWindow::ReDraw(RECT* pRect)
 	{
 		if (m_bVisible)
 		{
-			//画背景
 
-
-			//画标题（包括最大化最小化关闭按钮）
-
-
-			//画边框
-
-			//		MessageBox(m_hwnd, L"收到WM_PAINT", L"消息", MB_OK);
-			//画控件
+			Pen pen(Color(255, 0, 0, 255));
+			m_pGraphics->DrawRectangle(&pen,0,0,GetWidth(),GetHeight());
 			if (pRect!=NULL)
 			{
 				BitBlt(m_DC, pRect->left, pRect->top, pRect->right - pRect->left, pRect->bottom - pRect->top, m_TempDC, pRect->left, pRect->top, SRCCOPY);
@@ -376,9 +373,26 @@ namespace KrUI{
 				BitBlt(m_DC, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, m_TempDC, m_rect.left, m_rect.top, SRCCOPY);
 			}
 		}
-
 	}
 
 
 
 }
+
+
+/*
+
+//画背景
+
+
+//画标题（包括最大化最小化关闭按钮）
+
+
+//画边框
+SolidBrush sb(Color( 255, 0, 0));
+m_pGraphics->FillRectangle(&sb,0,0,GetWidth(),GetHeight());
+//		MessageBox(m_hwnd, L"收到WM_PAINT", L"消息", MB_OK);
+//画控件
+
+*/
+

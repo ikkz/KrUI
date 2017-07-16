@@ -32,7 +32,7 @@ namespace KrUI{
 		m_wc.lpfnWndProc = WndProc;
 		m_wc.hInstance = m_hInstance;
 		m_wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-		m_wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+		m_wc.hbrBackground =GetStockBrush(WHITE_BRUSH);
 		m_wc.lpszClassName = GetWindowClassName();
 		m_wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 		m_wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
