@@ -14,16 +14,20 @@ namespace KrUI{
 
 	KrWindow::KrWindow()
 	{
-		m_bVisible = false;
 	//	KrRegMsg(WM_MOUSEMOVE, redraw);
 		m_bMouseDown = false;
 
 		m_DC = NULL;
 		m_TempDC = NULL;
 		m_hbmp = NULL;
+
+		
 	}
 
-
+	HDC KrWindow::GetTempDC()
+	{
+		return m_TempDC;
+	}
 
 	LPCWSTR KrWindow::GetWindowName()
 	{
@@ -359,7 +363,6 @@ namespace KrUI{
 			Pen pen(c);
 			pen.SetWidth(3);
 			m_pGraphics->DrawRectangle(&pen,10,10,50,50);
-
 
 
 			if (pRect!=NULL)

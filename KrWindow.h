@@ -13,6 +13,7 @@ using namespace Gdiplus;
 namespace KrUI{
 
 	class KrControl;
+
 	class KrWindow
 	{
 	private:
@@ -31,6 +32,7 @@ namespace KrUI{
 		HDC    m_TempDC;
 		HBITMAP m_hbmp;
 		Graphics* m_pGraphics;
+
 	public:
 		KrWindow();
 		LPCWSTR  GetWindowName();//
@@ -60,7 +62,10 @@ namespace KrUI{
 
 		void    ReDraw(RECT* pRect);
 
+		HDC		GetTempDC();
 	};
+
+
 
 }//namespace KrUI
 

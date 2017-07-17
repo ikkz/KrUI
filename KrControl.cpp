@@ -42,7 +42,7 @@ namespace KrUI{
 		m_rect.right = pRect->right;
 		m_rect.top = pRect->top;
 		m_rect.bottom = pRect->bottom;
-		Draw();
+		UpdateRect();
 	}
 
 
@@ -79,7 +79,7 @@ namespace KrUI{
 		int width = GetWidth();
 		m_rect.left = x;
 		m_rect.right = x + width;
-		Draw();
+		UpdateRect();
 	}
 
 
@@ -88,14 +88,14 @@ namespace KrUI{
 		int height = GetHeight();
 		m_rect.top = y;
 		m_rect.bottom = y + height;
-		Draw();
+		UpdateRect();
 	}
 
 
 	void KrControl::SetWidth(int width)
 	{
 		m_rect.right = m_rect.left + width;
-		Draw();
+		UpdateRect();
 	}
 
 
@@ -103,7 +103,7 @@ namespace KrUI{
 	void KrControl::SetHeight(int height)
 	{
 		m_rect.bottom = m_rect.top + height;
-		Draw();
+		UpdateRect();
 	}
 
 
@@ -216,7 +216,7 @@ namespace KrUI{
 		}
 	}
 
-	void KrControl::Draw()
+	void KrControl::UpdateRect()
 	{
 
 	}

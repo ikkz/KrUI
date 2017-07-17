@@ -14,9 +14,10 @@ namespace KrUI{
 	class KrWindow;
 	typedef LRESULT(*MSGFUNC)(void* pObject, WPARAM wParam, LPARAM lParam);
 
+	//不可直接使用此类！！！请使用其派生类！！！
 	class KrControl
 	{
-	private:
+	public:
 		UINT      m_type;
 		KrWindow* m_pKrWindow;
 		LPCWSTR m_lpCtrlName;
@@ -43,13 +44,12 @@ namespace KrUI{
 		void    SetWidth(int width);//
 		void    SetHeight(int height);//
 		void    RegMsg(UINT msg, MSGFUNC func);
-		void  virtual  Draw();
 		bool  IsVisible();
-		void  Show();
+		virtual void  Show();
 		void  Hide();
-		void  HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+		virtual void  HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		void  CallMsgFunc(UINT Message, WPARAM wParam, LPARAM lParam);
-
+		virtual void  UpdateRect();
 	};
 
 
