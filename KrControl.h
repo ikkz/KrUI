@@ -50,7 +50,6 @@ namespace KrUI{
 		void  HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		void  CallMsgFunc(UINT Message, WPARAM wParam, LPARAM lParam);
 
-
 	};
 
 

@@ -117,7 +117,6 @@ namespace KrUI{
 	void KrUIManager::DeleteWindow(KrWindow* pKrWindow)
 	{
 		m_WndList.remove(pKrWindow);
-		pKrWindow->Destroy(false);
 	}
 
 
@@ -125,7 +124,7 @@ namespace KrUI{
 	{
 		for (list<KrWindow*>::iterator it = m_WndList.begin(); it != m_WndList.end(); it++)
 		{
-			(*it)->Destroy(false);
+			(*it)->Destroy();
 			delete (*it);
 		}
 	}

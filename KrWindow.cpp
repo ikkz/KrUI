@@ -199,11 +199,10 @@ namespace KrUI{
 	}
 
 
-	void KrWindow::Destroy(bool bDelete)
-	{
-		SendMessage(m_hwnd, WM_CLOSE, 0, 0);
-		m_hwnd = NULL;
+	void KrWindow::Destroy()
+{
 
+		m_hwnd = NULL;
 		DeleteObject(m_DC);
 		DeleteObject(m_TempDC);
 		DeleteObject(m_hbmp);
@@ -212,12 +211,16 @@ namespace KrUI{
 		m_hbmp = NULL;
 		if (m_pGraphics != NULL)delete m_pGraphics;
 		m_pGraphics = NULL;
-		if (bDelete)
+		KrUIManager::GetpKrUIManager()->DeleteWindow(this);
+		for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end(); it++)
 		{
-			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
+			delete (*it);
 		}
+		SendMessage(m_hwnd, WM_CLOSE, 0, 0);
 		if (KrUIManager::GetpKrUIManager()->GetWindowNum() == 0)PostQuitMessage(0);
+		delete this;
 	}
+
 
 
 	void    KrWindow::RegMsg(UINT msg, MSGFUNC func)
@@ -303,7 +306,7 @@ namespace KrUI{
 			break;
 		}
 		case WM_DESTROY: 
-			Destroy(true);
+			Destroy();
 			break;
 		default:
 			return DefWindowProc(m_hwnd, Message, wParam, lParam);
@@ -342,28 +345,23 @@ namespace KrUI{
 		return pKrCtrl;
 	}
 
-	KrWindow::~KrWindow()
-	{
-		for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end(); it++)
-		{
-			delete (*it);
-		}
 
-		DeleteObject(m_DC);
-		DeleteObject(m_TempDC);
-		m_DC = NULL;
-		m_TempDC = NULL;
-		if (m_pGraphics != NULL)delete m_pGraphics;
-		m_pGraphics = NULL;
-	}
 
 	void KrWindow::ReDraw(RECT* pRect)
 	{
 		if (m_bVisible)
 		{
 
-			Pen pen(Color(255, 0, 0, 255));
-			m_pGraphics->DrawRectangle(&pen,0,0,GetWidth(),GetHeight());
+			Color c;
+			c.SetValue(0xff7986cb);
+			SolidBrush sb(Color(255,255,255, 255));
+			m_pGraphics->FillRectangle(&sb, 0, 0, GetWidth(), GetHeight());
+			Pen pen(c);
+			pen.SetWidth(3);
+			m_pGraphics->DrawRectangle(&pen,10,10,50,50);
+
+
+
 			if (pRect!=NULL)
 			{
 				BitBlt(m_DC, pRect->left, pRect->top, pRect->right - pRect->left, pRect->bottom - pRect->top, m_TempDC, pRect->left, pRect->top, SRCCOPY);

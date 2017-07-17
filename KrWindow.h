@@ -41,7 +41,7 @@ namespace KrUI{
 		void    SetStyle(DWORD dwStyle);//
 		DWORD	GetStyle();//
 		bool    Create();//
-		void    Destroy(bool bDelete);//
+		void	Destroy();//
 		int     GetX();//
 		int     GetY();//
 		int     GetWidth();//
@@ -59,7 +59,7 @@ namespace KrUI{
 		KrControl* AddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height);
 
 		void    ReDraw(RECT* pRect);
-		~KrWindow();
+
 	};
 
 }//namespace KrUI
