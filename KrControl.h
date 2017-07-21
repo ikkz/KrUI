@@ -14,10 +14,10 @@ namespace KrUI{
 	class KrWindow;
 	typedef LRESULT(*MSGFUNC)(void* pObject, WPARAM wParam, LPARAM lParam);
 
-	//²»¿ÉÖ±½ÓÊ¹ÓÃ´ËÀà£¡£¡£¡ÇëÊ¹ÓÃÆäÅÉÉúÀà£¡£¡£¡
+	//ä¸å¯ç›´æ¥ä½¿ç”¨æ­¤ç±»ï¼ï¼ï¼è¯·ä½¿ç”¨å…¶æ´¾ç”Ÿç±»ï¼ï¼ï¼
 	class KrControl
 	{
-	public:
+	protected:
 		UINT      m_type;
 		KrWindow* m_pKrWindow;
 		LPCWSTR m_lpCtrlName;
