@@ -320,7 +320,7 @@ namespace KrUI{
 	}
 
 
-	KrControl* KrWindow::AddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height)
+	KrControl* KrWindow::AddControl(KrCtrlType CtrlType, LPCWSTR lpName, int x, int y, int width, int height)
 	{
 		RECT rect;
 		rect.left = x;
@@ -328,12 +328,12 @@ namespace KrUI{
 		rect.right = x + width;
 		rect.bottom = y + height;
 		KrControl* pKrCtrl = NULL;
-		switch (iCtrlType)
+		switch (CtrlType)
 		{
-		case KR_CTRL:
+		case KrCtrlType::Control:
 			pKrCtrl = new KrControl;
 			break;
-		case KR_BUTTON:
+		case KrCtrlType::Button:
 
 			break;
 		default:
@@ -341,7 +341,7 @@ namespace KrUI{
 			break;
 		}
 		if (!pKrCtrl)return NULL;
-		pKrCtrl->SetCtrlType(iCtrlType);
+		pKrCtrl->SetCtrlType(CtrlType);
 		pKrCtrl->SetWindow(this);
 		pKrCtrl->SetName(lpName);
 		pKrCtrl->SetRect(&rect);
@@ -355,14 +355,16 @@ namespace KrUI{
 	{
 		if (m_bVisible)
 		{
-
-			Color c;
-			c.SetValue(0xff7986cb);
+			for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end(); it++)
+			{
+				(*it)->Draw(m_pGraphics);
+			}
+			
 			SolidBrush sb(Color(255,255,255, 255));
 			m_pGraphics->FillRectangle(&sb, 0, 0, GetWidth(), GetHeight());
-			Pen pen(c);
+			Pen pen(Color(0,0,255));
 			pen.SetWidth(3);
-			m_pGraphics->DrawRectangle(&pen,10,10,50,50);
+			m_pGraphics->DrawRectangle(&pen,0,0,GetWidth()-1,GetHeight()-1);
 
 
 			if (pRect!=NULL)

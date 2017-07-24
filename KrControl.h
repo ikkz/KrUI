@@ -5,16 +5,18 @@
 #include "KrUIManager.h"
 #include "KrWindow.h"
 #include<windowsx.h>
+#include <gdiplus.h>
 #include <map>
 using namespace std;
+using namespace Gdiplus;
 
 namespace KrUI{
 
 
 	class KrWindow;
 	typedef LRESULT(*MSGFUNC)(void* pObject, WPARAM wParam, LPARAM lParam);
-
-	//ä¸å¯ç›´æ¥ä½¿ç”¨æ­¤ç±»ï¼ï¼ï¼è¯·ä½¿ç”¨å…¶æ´¾ç”Ÿç±»ï¼ï¼ï¼
+	enum KrCtrlType;
+	//²»¿ÉÖ±½ÓÊ¹ÓÃ´ËÀà£¡£¡£¡ÇëÊ¹ÓÃÆäÅÉÉúÀà£¡£¡£¡
 	class KrControl
 	{
 	protected:
@@ -27,7 +29,7 @@ namespace KrUI{
 		map<UINT, MSGFUNC> m_MsgFuncMap;
 	public:
 		KrControl();
-		void    SetCtrlType(UINT type);
+		void SetCtrlType(KrCtrlType type);
 		UINT    GetCtrlType();
 		void    SetWindow(KrWindow* pKrWindow);//
 		KrWindow* GetWindow();
@@ -50,6 +52,7 @@ namespace KrUI{
 		virtual void  HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		void  CallMsgFunc(UINT Message, WPARAM wParam, LPARAM lParam);
 		virtual void  UpdateRect();
+		virtual void Draw(Graphics* pGraphics);
 	};
 
 

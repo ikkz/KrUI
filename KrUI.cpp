@@ -36,7 +36,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	KrWindow* pWnd = pUI->AddWindow(L"caption", 400, 300, 500, 400);
 	pWnd->Show();
 
-    pCtrl=pWnd->AddControl(KR_CTRL, L"ctrl", 50, 50, 50, 50);
+    pCtrl=pWnd->AddControl(KrCtrlType::Control, L"ctrl", 50, 50, 50, 50);
 	pCtrl->RegMsg(WM_LBUTTONDOWN, func2);
 
 	//pCtrl->RegMsg(KM_MOUSELEAVE, func2);

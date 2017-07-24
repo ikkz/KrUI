@@ -58,7 +58,7 @@ namespace KrUI{
 		bool	IsCreated();//
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		void    RegMsg(UINT msg, MSGFUNC func);
-		KrControl* AddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height);
+		KrControl* AddControl(KrCtrlType CtrlType, LPCWSTR lpName, int x, int y, int width, int height);
 
 		void    ReDraw(RECT* pRect);
 

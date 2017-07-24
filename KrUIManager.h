@@ -56,7 +56,12 @@ using namespace Gdiplus;
 
 namespace KrUI{
 
-
+	enum KrCtrlType
+	{
+		Control,
+		Label,
+		Button
+	};
 
 	class KrWindow;
 	typedef LRESULT(*MSGFUNC)(void* pObject, WPARAM wParam, LPARAM lParam);

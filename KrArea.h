@@ -13,12 +13,13 @@ namespace KrUI
 		HDC    m_TempDC;
 		HBITMAP m_hbmp;
 	public:
-		KrControl* AddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height);
+		KrControl* AddControl(KrCtrlType CtrlType, LPCWSTR lpName, int x, int y, int width, int height);
 		KrArea();
 		void UpdateRect();
 		void Show();
 		void  HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		~KrArea();
+		void Draw(Graphics* pGraphics);
 	};
 
 

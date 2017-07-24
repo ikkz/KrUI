@@ -10,8 +10,8 @@ namespace KrUI{
 	}
 
 
-	void    KrControl::SetCtrlType(UINT type)
-	{
+	void KrControl::SetCtrlType(KrCtrlType type)
+{
 		m_type = type;
 	}
 	UINT    KrControl::GetCtrlType()
@@ -221,5 +221,8 @@ namespace KrUI{
 
 	}
 
+	void KrControl::Draw(Graphics* pGraphics)
+{
 
-}
+	}
+}//namespace KrUI

@@ -2,7 +2,7 @@
 
 namespace KrUI
 {
-	KrControl* KrArea::AddControl(UINT iCtrlType, LPCWSTR lpName, int x, int y, int width, int height)
+	KrControl* KrArea::AddControl(KrCtrlType CtrlType, LPCWSTR lpName, int x, int y, int width, int height)
 	{
 		RECT rect;
 		rect.left = x;
@@ -10,12 +10,12 @@ namespace KrUI
 		rect.right = x + width;
 		rect.bottom = y + height;
 		KrControl* pKrCtrl = NULL;
-		switch (iCtrlType)
+		switch (CtrlType)
 		{
-		case KR_CTRL:
+		case KrCtrlType::Control:
 			pKrCtrl = new KrControl;
 			break;
-		case KR_BUTTON:
+		case KrCtrlType::Button:
 
 			break;
 		default:
@@ -23,7 +23,7 @@ namespace KrUI
 			break;
 		}
 		if (!pKrCtrl)return NULL;
-		pKrCtrl->SetCtrlType(iCtrlType);
+		pKrCtrl->SetCtrlType(CtrlType);
 		pKrCtrl->SetWindow(NULL);
 		pKrCtrl->SetName(lpName);
 		pKrCtrl->SetRect(&rect);
@@ -41,17 +41,20 @@ namespace KrUI
 
 	void KrArea::UpdateRect()
 	{
-
+		DeleteObject(m_hbmp);
+		m_hbmp = CreateCompatibleBitmap(m_TempDC,  GetWidth(), GetHeight());
+		SelectObject(m_TempDC, m_hbmp);
 	}
 
 	void KrArea::Show()
 	{
-		KrControl::Show();
+		m_bVisible = true;
 		if (m_TempDC==NULL)
 		{
 			 		m_TempDC = CreateCompatibleDC(GetWindow()->GetTempDC());
 			 		m_pGraphics = new Graphics(m_TempDC);
 			 		m_hbmp = CreateCompatibleBitmap(m_TempDC,GetWidth(),GetHeight());
+					SelectObject(m_TempDC, m_hbmp);
 		}
 	}
 	//
@@ -75,4 +78,8 @@ namespace KrUI
 		}
 	}
 
+	void KrArea::Draw(Graphics* pGraphics)
+	{
+
+	}
 }//namespace KrUI
