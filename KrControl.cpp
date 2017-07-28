@@ -154,52 +154,52 @@ namespace KrUI{
 		{
 		case WM_MOUSEMOVE:
 		{
-							 POINT ptMouse;
-							 ptMouse.x = GET_X_LPARAM(lParam);
-							 ptMouse.y = GET_Y_LPARAM(lParam);
-							 BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
-							 if (m_bMouseIn == false && bMouseIn == TRUE)
-							 {
-								 //SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
-								 CallMsgFunc(KM_BEFORE_MOUSEENTER, wParam, lParam);
-								 CallMsgFunc(KM_MOUSEENTER, wParam, lParam);
-								 CallMsgFunc(KM_AFTER_MOUSEENTER, wParam, lParam);
-							 }
-							 else if (m_bMouseIn == true && bMouseIn == false)
-							 {
-								 //SendMessage(m_pKrWindow->GetHWND(), KM_MOUSELEAVE, NULL, NULL);
-								 CallMsgFunc(KM_BEFORE_MOUSELEAVE, wParam, lParam);
-								 CallMsgFunc(KM_MOUSELEAVE, wParam, lParam);
-								 CallMsgFunc(KM_AFTER_MOUSELEAVE, wParam, lParam);
-							 }
-							 m_bMouseIn = bMouseIn;
-							 break;
+			POINT ptMouse;
+			ptMouse.x = GET_X_LPARAM(lParam);
+			ptMouse.y = GET_Y_LPARAM(lParam);
+			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
+			if (m_bMouseIn == false && bMouseIn == TRUE)
+			{
+				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
+				CallMsgFunc(KM_BEFORE_MOUSEENTER, wParam, lParam);
+				CallMsgFunc(KM_MOUSEENTER, wParam, lParam);
+				CallMsgFunc(KM_AFTER_MOUSEENTER, wParam, lParam);
+			}
+			else if (m_bMouseIn == true && bMouseIn == false)
+			{
+				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUSELEAVE, NULL, NULL);
+				CallMsgFunc(KM_BEFORE_MOUSELEAVE, wParam, lParam);
+				CallMsgFunc(KM_MOUSELEAVE, wParam, lParam);
+				CallMsgFunc(KM_AFTER_MOUSELEAVE, wParam, lParam);
+			}
+			m_bMouseIn = bMouseIn;
+			break;
 		}
 		case WM_LBUTTONDOWN:
-		{					POINT ptMouse;
-		ptMouse.x = GET_X_LPARAM(lParam);
-		ptMouse.y = GET_Y_LPARAM(lParam);
-		BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
-		if (bMouseIn)
-		{
-			CallMsgFunc(KM_BEFORE_LBTNDOWN, wParam, lParam);
-			CallMsgFunc(KM_LBTNDOWN, wParam, lParam);
-			CallMsgFunc(KM_AFTER_LBTNDOWN, wParam, lParam);
-		}
-		break;
+		{	POINT ptMouse;
+			ptMouse.x = GET_X_LPARAM(lParam);
+			ptMouse.y = GET_Y_LPARAM(lParam);
+			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
+			if (bMouseIn)
+			{
+				CallMsgFunc(KM_BEFORE_LBTNDOWN, wParam, lParam);
+				CallMsgFunc(KM_LBTNDOWN, wParam, lParam);
+				CallMsgFunc(KM_AFTER_LBTNDOWN, wParam, lParam);
+			}
+			break;
 		}
 		case WM_LBUTTONUP:
-		{					POINT ptMouse;
-		ptMouse.x = GET_X_LPARAM(lParam);
-		ptMouse.y = GET_Y_LPARAM(lParam);
-		BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
-		if (bMouseIn)
-		{
-			CallMsgFunc(KM_BEFORE_LBTNUP, wParam, lParam);
-			CallMsgFunc(KM_LBTNUP, wParam, lParam);
-			CallMsgFunc(KM_AFTER_LBTNUP, wParam, lParam);
-		}
-		break;
+		{	POINT ptMouse;
+			ptMouse.x = GET_X_LPARAM(lParam);
+			ptMouse.y = GET_Y_LPARAM(lParam);
+			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
+			if (bMouseIn)
+			{
+				CallMsgFunc(KM_BEFORE_LBTNUP, wParam, lParam);
+				CallMsgFunc(KM_LBTNUP, wParam, lParam);
+				CallMsgFunc(KM_AFTER_LBTNUP, wParam, lParam);
+			}
+			break;
 		}
 		default:
 			CallMsgFunc(Message, wParam, lParam);
@@ -222,7 +222,7 @@ namespace KrUI{
 	}
 
 	void KrControl::Draw(Graphics* pGraphics)
-{
+	{
 
 	}
 }//namespace KrUI

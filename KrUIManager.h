@@ -70,29 +70,17 @@ namespace KrUI{
 	{
 	public:
 		static KrUIManager* GetpKrUIManager();
-			//获取唯一uimanager
 		bool      Initialize(HINSTANCE hInstance);
-			//初始化，hInstance:应用程序实例句柄
 		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle);
-			// 添加窗口，dwStyle:窗口风格
 		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height);
-			//添加窗口
 		LPCTSTR   GetWindowClassName();
-			//获取窗口类名
 		HINSTANCE GetHINSTANCE();
-			//获取应用程序实例句柄
 		int       MessageLoop();
-			//进入消息循环
 		LRESULT   HandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
-			//处理消息
 		int		  GetWindowNum();
-			//获取窗口个数
 		void	  DeleteWindow(KrWindow* pKrWindow);
-			//删除窗口
 		void	  ReDraw();
-			//重绘
 		~KrUIManager();
-			//析构
 	private:
 		KrUIManager(){ m_lpWindowClassName = L"KrUI"; }
 		static KrUIManager* m_pKrUIManager;

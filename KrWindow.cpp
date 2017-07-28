@@ -128,7 +128,7 @@ namespace KrUI{
 	}
 
 
-	void KrWindow::SetX(int x)
+	void KrWindow::SetX(UINT x)
 	{
 		int width = GetWidth();
 		m_rect.left = x;
@@ -138,7 +138,7 @@ namespace KrUI{
 	}
 
 
-	void KrWindow::SetY(int y)
+	void KrWindow::SetY(UINT y)
 	{
 		int height = GetHeight();
 		m_rect.top = y;
@@ -147,8 +147,18 @@ namespace KrUI{
 
 	}
 
+	void KrWindow::SetXY(UINT x, UINT y)
+	{
+		int width = GetWidth();
+		m_rect.left = x;
+		m_rect.right = x + width;
+		int height = GetHeight();
+		m_rect.top = y;
+		m_rect.bottom = y + height;
+		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
+	}
 
-	void KrWindow::SetWidth(int width)
+	void KrWindow::SetWidth(UINT width)
 	{
 		m_rect.right = m_rect.left + width;
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
@@ -157,7 +167,7 @@ namespace KrUI{
 
 
 
-	void KrWindow::SetHeight(int height)
+	void KrWindow::SetHeight(UINT height)
 	{
 		m_rect.bottom = m_rect.top + height;
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
@@ -240,29 +250,25 @@ namespace KrUI{
 
 	LRESULT  KrWindow::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-		
-		for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end();it++)
-		{
-			 (*it)->HandleMessage(Message, wParam, lParam);
-		}
 
-		map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.find(Message);
-		if (it!=m_MsgFuncMap.end())
-		{
-			(*it->second)(this, wParam, lParam);
-		}
+
+
 		switch (Message)
 		{
-		case WM_LBUTTONDOWN:
-			ReleaseCapture();
-			SendMessage(m_hwnd, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
-			break;
-		case WM_MOUSEMOVE:
-			if (m_bMouseDown)
-			{
-				GetWindowRect(m_hwnd, &m_rect);
-			}
-			break;
+// 		case WM_LBUTTONDOWN:
+// 			SendMessage(m_hwnd, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
+// 			//SetCapture(m_hwnd);
+// 
+// 			break;
+// 		case WM_LBUTTONUP:
+// 			ReleaseCapture();
+// 			break;
+// 		case WM_MOUSEMOVE:
+// 			if (m_bMouseDown)
+// 			{
+// 				GetWindowRect(m_hwnd, &m_rect);
+// 			}
+// 			break;
 		case WM_SIZE:
 			//改变窗口的大小
 			GetWindowRect(m_hwnd, &m_rect);
@@ -273,23 +279,26 @@ namespace KrUI{
 			SelectObject(m_TempDC, m_hbmp);
 
 			break;
-// 		case WM_LBUTTONDOWN:
-// 			m_bMouseDown = true;
-// 			m_ptMouseDown.x = GET_X_LPARAM(lParam);
-// 			m_ptMouseDown.y = GET_Y_LPARAM(lParam);
-// 			break;
-// 		case WM_LBUTTONUP:
-// 			m_bMouseDown = false;
-// 			break;
-// 		case WM_MOUSEMOVE:
-// 			if (m_bMouseDown)
-// 			{
-// 				m_ptMouse.x = GET_X_LPARAM(lParam);
-// 				m_ptMouse.y = GET_Y_LPARAM(lParam);
-// 				KrSetX(m_ptMouse.x - (m_ptMouseDown.x - m_rect.left));
-// 				KrSetY(m_ptMouse.y - (m_ptMouseDown.y - m_rect.top));
-// 			}
-// 			break;
+
+
+		case WM_LBUTTONDOWN:
+			m_bMouseDown = true;
+			m_ptMouseDown.x = GET_X_LPARAM(lParam);
+			m_ptMouseDown.y = GET_Y_LPARAM(lParam);
+			SetCapture(m_hwnd);
+			break;
+		case WM_LBUTTONUP:
+			m_bMouseDown = false;
+			ReleaseCapture();
+			break;
+		case WM_MOUSEMOVE:
+			if (m_bMouseDown)
+			{
+				m_ptMouse.x = GET_X_LPARAM(lParam);
+				m_ptMouse.y = GET_Y_LPARAM(lParam);
+				SetXY(m_ptMouse.x - (m_ptMouseDown.x - m_rect.left), m_ptMouse.y - (m_ptMouseDown.y - m_rect.top));
+			}
+			break;
 // 		case WM_MOUSELEAVE:
 // 
 // 			if (m_bMouseDown)
@@ -312,11 +321,20 @@ namespace KrUI{
 		case WM_DESTROY: 
 			Destroy();
 			break;
-		default:
-			return DefWindowProc(m_hwnd, Message, wParam, lParam);
 		}
 
-		return 0;
+		for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end(); it++)
+		{
+			(*it)->HandleMessage(Message, wParam, lParam);
+		}
+
+		map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.find(Message);
+		if (it != m_MsgFuncMap.end())
+		{
+			(*it->second)(this, wParam, lParam);
+		}
+
+		return DefWindowProc(m_hwnd, Message, wParam, lParam);
 	}
 
 
@@ -362,8 +380,8 @@ namespace KrUI{
 			
 			SolidBrush sb(Color(255,255,255, 255));
 			m_pGraphics->FillRectangle(&sb, 0, 0, GetWidth(), GetHeight());
-			Pen pen(Color(0,0,255));
-			pen.SetWidth(3);
+			Pen pen(Color(0,0,0));
+			pen.SetWidth(1);
 			m_pGraphics->DrawRectangle(&pen,0,0,GetWidth()-1,GetHeight()-1);
 
 

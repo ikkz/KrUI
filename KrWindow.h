@@ -48,10 +48,11 @@ namespace KrUI{
 		int     GetY();//
 		int     GetWidth();//
 		int     GetHeight();//
-		void    SetX(int x);//
-		void    SetY(int y);//
-		void    SetWidth(int width);//
-		void    SetHeight(int height);//
+		void    SetX(UINT x);//
+		void    SetY(UINT y);//
+		void	SetXY(UINT x, UINT y);//
+		void    SetWidth(UINT width);//
+		void    SetHeight(UINT height);//
 		void    Show();//
 		void    Hide();//
 		bool    IsVisible();//
