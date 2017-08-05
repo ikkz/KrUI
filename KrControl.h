@@ -1,9 +1,8 @@
 #ifndef KRCONTROL_H
 #define KRCONTROL_H
-
-#include"KrWindow.h"
-#include "KrUIManager.h"
+#pragma once
 #include "KrWindow.h"
+#include "KrUIManager.h"
 #include<windowsx.h>
 #include <gdiplus.h>
 #include <map>

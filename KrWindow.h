@@ -1,15 +1,18 @@
 #ifndef KRWINDOW_H
 #define KRWINDOW_H
+#pragma once
 
 #include <list>
 #include <map>
 #include<windows.h>
 #include "KrControl.h"
 #include "KrUIManager.h"
+#include "KrArea.h"
 #include <gdiplus.h>
+
 using namespace std;
 using namespace Gdiplus;
-
+using namespace KrUI;
 namespace KrUI{
 
 	class KrControl;

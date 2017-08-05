@@ -1,6 +1,5 @@
 
 #include"KrWindow.h"
-#include <windows.h>
 namespace KrUI{
 // 
 // 
@@ -87,7 +86,6 @@ namespace KrUI{
 		if (!hwnd) return false;
 		m_hwnd = hwnd;
 		GetWindowRect(hwnd, &m_rect);
-
 		m_DC = GetDC(m_hwnd);
 		m_TempDC = CreateCompatibleDC(m_DC);
 		m_hbmp = CreateCompatibleBitmap(m_TempDC,GetWidth(),GetHeight());
@@ -214,7 +212,7 @@ namespace KrUI{
 
 
 	void KrWindow::Destroy()
-{
+	{
 
 		m_hwnd = NULL;
 		DeleteObject(m_DC);
@@ -226,10 +224,11 @@ namespace KrUI{
 		if (m_pGraphics != NULL)delete m_pGraphics;
 		m_pGraphics = NULL;
 		KrUIManager::GetpKrUIManager()->DeleteWindow(this);
-		for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end(); it++)
+		for (auto it= m_CtrlList.begin(); it != m_CtrlList.end(); ++it)
 		{
 			delete (*it);
 		}
+
 		SendMessage(m_hwnd, WM_CLOSE, 0, 0);
 		if (KrUIManager::GetpKrUIManager()->GetWindowNum() == 0)PostQuitMessage(0);
 		delete this;
@@ -348,6 +347,9 @@ namespace KrUI{
 		KrControl* pKrCtrl = NULL;
 		switch (CtrlType)
 		{
+		case Area:
+			pKrCtrl = new KrArea;
+			break;
 		case KrCtrlType::Control:
 			pKrCtrl = new KrControl;
 			break;

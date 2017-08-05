@@ -8,7 +8,7 @@
 
 #ifndef KRUIMANAGER_H
 #define KRUIMANAGER_H
-
+#pragma once
 
 
 #define KM_BEFORE_MOUSEENTER WM_APP+1
@@ -46,8 +46,9 @@
 
 #include<list>
 #include<windows.h>
-#include"KrWindow.h"
 #include <gdiplus.h>
+#include"KrWindow.h"
+
 
 using namespace std;
 using namespace Gdiplus;
@@ -57,13 +58,14 @@ using namespace Gdiplus;
 namespace KrUI{
 
 	enum KrCtrlType
-	{
+	{	Area,
 		Control,
 		Label,
 		Button
 	};
 
 	class KrWindow;
+
 	typedef LRESULT(*MSGFUNC)(void* pObject, WPARAM wParam, LPARAM lParam);
 
 	class KrUIManager

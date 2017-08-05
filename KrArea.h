@@ -1,10 +1,14 @@
 #ifndef KRAREA_H
 #define KRAREA_H
+#pragma once
+#include "KrUIManager.h"
 #include "KrControl.h"
+#include "KrWindow.h"
 using namespace Gdiplus;
-
+using namespace KrUI;
 namespace KrUI
 {
+	class KrControl;
 	class KrArea:public KrControl
 	{
 	private:

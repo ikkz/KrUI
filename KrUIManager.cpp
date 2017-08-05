@@ -122,11 +122,11 @@ namespace KrUI{
 
 	KrUIManager::~KrUIManager()
 	{
-		for (list<KrWindow*>::iterator it = m_WndList.begin(); it != m_WndList.end(); it++)
-		{
-			(*it)->Destroy();
-			delete (*it);
-		}
+// 		for (list<KrWindow*>::iterator it = m_WndList.begin(); it != m_WndList.end(); it++)
+// 		{
+// 			(*it)->Destroy();
+// 			delete (*it);
+// 		}
 	}
 
 
