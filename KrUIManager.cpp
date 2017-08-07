@@ -1,4 +1,4 @@
-#include"KrUIManager.h"
+#include "KrCore.h"
 
 namespace KrUI{
 	

@@ -1,5 +1,4 @@
-
-#include"KrWindow.h"
+#include "KrCore.h"
 namespace KrUI{
 // 
 // 
@@ -92,7 +91,7 @@ namespace KrUI{
 		SelectObject(m_TempDC, m_hbmp);
 		
 
-		m_pGraphics = new Graphics(m_TempDC);;
+		m_pGraphics = new Graphics(m_TempDC);
 		
 		return true;
 	}
@@ -215,21 +214,26 @@ namespace KrUI{
 	{
 
 		m_hwnd = NULL;
+		if (m_pGraphics != NULL) delete m_pGraphics;
+		m_pGraphics = NULL;
 		DeleteObject(m_DC);
 		DeleteObject(m_TempDC);
 		DeleteObject(m_hbmp);
 		m_DC = NULL;
 		m_TempDC = NULL;
 		m_hbmp = NULL;
-		if (m_pGraphics != NULL)delete m_pGraphics;
-		m_pGraphics = NULL;
-		KrUIManager::GetpKrUIManager()->DeleteWindow(this);
-		for (auto it= m_CtrlList.begin(); it != m_CtrlList.end(); ++it)
-		{
-			delete (*it);
-		}
-
 		SendMessage(m_hwnd, WM_CLOSE, 0, 0);
+// 		for (auto it=m_CtrlList.begin();it!=m_CtrlList.end();it++)
+// 		{
+// 			(*it)->Destroy();
+// 			delete (*it);
+// 		}
+
+		KrUIManager::GetpKrUIManager()->DeleteWindow(this);
+// 		for (auto it = m_CtrlList.begin(); it != m_CtrlList.end(); it++)
+// 		{
+// 			delete (*it);
+// 		}
 		if (KrUIManager::GetpKrUIManager()->GetWindowNum() == 0)PostQuitMessage(0);
 		delete this;
 	}
@@ -317,11 +321,12 @@ namespace KrUI{
 			EndPaint(m_hwnd, &ps);
 			break;
 		}
-		case WM_DESTROY: 
-			Destroy();
-			break;
-		}
 
+		}
+		if (Message == WM_CLOSE)
+		{
+			OutputDebugString(m_lpWindowName);
+		}
 		for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end(); it++)
 		{
 			(*it)->HandleMessage(Message, wParam, lParam);
@@ -347,7 +352,7 @@ namespace KrUI{
 		KrControl* pKrCtrl = NULL;
 		switch (CtrlType)
 		{
-		case Area:
+		case KrCtrlType::Area:
 			pKrCtrl = new KrArea;
 			break;
 		case KrCtrlType::Control:

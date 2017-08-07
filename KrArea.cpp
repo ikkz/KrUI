@@ -1,7 +1,7 @@
-#include "KrArea.h"
-
+#include "KrCore.h"
 namespace KrUI
 {
+
 	KrControl* KrArea::AddControl(KrCtrlType CtrlType, LPCWSTR lpName, int x, int y, int width, int height)
 	{
 		RECT rect;
@@ -81,5 +81,12 @@ namespace KrUI
 	void KrArea::Draw(Graphics* pGraphics)
 	{
 
+	}
+	void KrArea::Destroy()
+	{
+		for (auto it=m_CtrlList.begin();it!=m_CtrlList.end();it++)
+		{
+			delete (*it);
+		}
 	}
 }//namespace KrUI

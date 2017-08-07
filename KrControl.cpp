@@ -1,10 +1,9 @@
-#include"KrControl.h"
-
+#include "KrCore.h"
 namespace KrUI{
 
 	KrControl::KrControl()
 	{
-		m_type = KR_CTRL;
+		m_type = KrUI::KrCtrlType::Control;
 		m_bVisible = false;
 		m_bMouseIn = false;
 	}
@@ -222,6 +221,10 @@ namespace KrUI{
 	}
 
 	void KrControl::Draw(Graphics* pGraphics)
+	{
+
+	}
+	void KrControl::Destroy()
 	{
 
 	}
