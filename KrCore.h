@@ -70,6 +70,7 @@ namespace KrUI {
 		LRESULT   HandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
 		int		  GetWindowNum();
 		void	  DeleteWindow(KrWindow* pKrWindow);
+		KrWindow* GetpKrWindow(HWND hwnd);
 		void	  ReDraw();
 		~KrUIManager();
 	private:

@@ -17,6 +17,7 @@ namespace KrUI{
 
 	 KrUIManager* KrUIManager::GetpKrUIManager()
 	{
+
 		if (m_pKrUIManager == NULL)
 			m_pKrUIManager = new KrUIManager();
 		return m_pKrUIManager;
@@ -52,7 +53,7 @@ namespace KrUI{
 	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height)
 	{
 		KrWindow* pKrWindow = new KrWindow;
-		if (!pKrWindow) return false;
+		if (!pKrWindow) return NULL;
 		pKrWindow->SetWindowName(lpWindowName);
 		RECT rect;
 		rect.left = x;
@@ -72,7 +73,7 @@ namespace KrUI{
 
 	LPCTSTR   KrUIManager::GetWindowClassName()
 	{
-		return m_lpWindowClassName;
+		return (LPCTSTR)m_lpWindowClassName;
 	}
 
 
@@ -105,6 +106,17 @@ namespace KrUI{
 			}
 		}
 		return TRUE;
+	}
+
+	KrWindow* KrUIManager::GetpKrWindow(HWND hwnd)
+	{
+		for (list<KrWindow*>::iterator it=m_WndList.begin();it!=m_WndList.end();it++)
+		{
+			if ((*it)->GetHWND()==hwnd)
+			{
+				return (*it);
+			}
+		}
 	}
 
 

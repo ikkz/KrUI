@@ -1,7 +1,7 @@
 #include "KrCore.h"
 namespace KrUI
 {
-
+	enum KrCtrlType; 
 	KrControl* KrArea::AddControl(KrCtrlType CtrlType, LPCWSTR lpName, int x, int y, int width, int height)
 	{
 		RECT rect;
@@ -12,10 +12,10 @@ namespace KrUI
 		KrControl* pKrCtrl = NULL;
 		switch (CtrlType)
 		{
-		case KrCtrlType::Control:
+		case Control:
 			pKrCtrl = new KrControl;
 			break;
-		case KrCtrlType::Button:
+		case Button:
 
 			break;
 		default:
@@ -24,7 +24,7 @@ namespace KrUI
 		}
 		if (!pKrCtrl)return NULL;
 		pKrCtrl->SetCtrlType(CtrlType);
-		pKrCtrl->SetWindow(NULL);
+		pKrCtrl->SetWindow(GetWindow());
 		pKrCtrl->SetName(lpName);
 		pKrCtrl->SetRect(&rect);
 		m_CtrlList.push_back(pKrCtrl);
@@ -84,7 +84,7 @@ namespace KrUI
 	}
 	void KrArea::Destroy()
 	{
-		for (auto it=m_CtrlList.begin();it!=m_CtrlList.end();it++)
+		for (list<KrControl*>::iterator it=m_CtrlList.begin();it!=m_CtrlList.end();it++)
 		{
 			delete (*it);
 		}

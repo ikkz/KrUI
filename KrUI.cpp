@@ -5,7 +5,7 @@ KrUIManager* pUI = KrUIManager::GetpKrUIManager();
 
 LRESULT OnBtnDown(void* pObject, WPARAM wParam, LPARAM lParam)
 {
-	((KrWindow*)pObject)->Destroy();
+	((KrArea*)pObject)->GetWindow()->Destroy();
 	return 0;
 }
 
@@ -15,7 +15,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	pUI->Initialize(hInstance);//初始化
 	KrWindow* pWnd = pUI->AddWindow(L"caption", 400, 300, 500, 400);//添加窗口
 	pWnd->Show();//显示窗口
-	KrControl* pA=pWnd->AddControl(Area, L"body", 0, 0, pWnd->GetWidth(), pWnd->GetHeight());
+	KrControl* pA=pWnd->AddControl(Area, L"body", 0, 0, pWnd->GetWidth(), 100);
+
 	pA->RegMsg(WM_LBUTTONDOWN, OnBtnDown);
 	return pUI->MessageLoop();//进入消息循环
 }

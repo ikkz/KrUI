@@ -3,7 +3,7 @@ namespace KrUI{
 
 	KrControl::KrControl()
 	{
-		m_type = KrUI::KrCtrlType::Control;
+		m_type = Control;
 		m_bVisible = false;
 		m_bMouseIn = false;
 	}

@@ -34,7 +34,7 @@ namespace KrUI{
 
 	void KrWindow::SetWindowName(LPCWSTR lpWindowName)
 	{
-		if (IsCreated())SetWindowText(m_hwnd, lpWindowName);
+		if (IsCreated())SetWindowTextW(m_hwnd, lpWindowName);
 		m_lpWindowName = lpWindowName;
 	}
 
@@ -79,7 +79,7 @@ namespace KrUI{
 
 	bool KrWindow::Create()
 	{
-		HWND hwnd = CreateWindow(KrUIManager::GetpKrUIManager()->GetWindowClassName(), m_lpWindowName, m_dwStyle,
+		HWND hwnd = CreateWindowW(KrUIManager::GetpKrUIManager()->GetWindowClassName(), m_lpWindowName, m_dwStyle,
 			m_rect.left, m_rect.top,m_rect.right - m_rect.left, m_rect.bottom - m_rect.top,
 			NULL, NULL, KrUIManager::GetpKrUIManager()->GetHINSTANCE(), NULL);
 		if (!hwnd) return false;
@@ -212,8 +212,7 @@ namespace KrUI{
 
 	void KrWindow::Destroy()
 	{
-
-		m_hwnd = NULL;
+		// 			m_hwnd = NULL;
 		if (m_pGraphics != NULL) delete m_pGraphics;
 		m_pGraphics = NULL;
 		DeleteObject(m_DC);
@@ -223,18 +222,16 @@ namespace KrUI{
 		m_TempDC = NULL;
 		m_hbmp = NULL;
 		SendMessage(m_hwnd, WM_CLOSE, 0, 0);
-// 		for (auto it=m_CtrlList.begin();it!=m_CtrlList.end();it++)
-// 		{
-// 			(*it)->Destroy();
-// 			delete (*it);
-// 		}
+		for (auto it = m_CtrlList.begin(); it != m_CtrlList.end(); it++)
+		{
+			(*it)->Destroy();
+			delete (*it);
+		}
+
 
 		KrUIManager::GetpKrUIManager()->DeleteWindow(this);
-// 		for (auto it = m_CtrlList.begin(); it != m_CtrlList.end(); it++)
-// 		{
-// 			delete (*it);
-// 		}
 		if (KrUIManager::GetpKrUIManager()->GetWindowNum() == 0)PostQuitMessage(0);
+		SendMessage(m_hwnd, WM_CLOSE, NULL, NULL);
 		delete this;
 	}
 
@@ -302,6 +299,9 @@ namespace KrUI{
 				SetXY(m_ptMouse.x - (m_ptMouseDown.x - m_rect.left), m_ptMouse.y - (m_ptMouseDown.y - m_rect.top));
 			}
 			break;
+		case WM_KILLFOCUS:
+			m_bMouseDown = false;
+			break;
 // 		case WM_MOUSELEAVE:
 // 
 // 			if (m_bMouseDown)
@@ -323,10 +323,7 @@ namespace KrUI{
 		}
 
 		}
-		if (Message == WM_CLOSE)
-		{
-			OutputDebugString(m_lpWindowName);
-		}
+
 		for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end(); it++)
 		{
 			(*it)->HandleMessage(Message, wParam, lParam);
