@@ -117,6 +117,7 @@ namespace KrUI{
 				return (*it);
 			}
 		}
+		return NULL;
 	}
 
 

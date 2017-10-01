@@ -15,7 +15,7 @@ namespace KrUI{
 	//	KrRegMsg(WM_MOUSEMOVE, redraw);
 		m_bMouseDown = false;
 
-		m_DC = NULL;
+		m_hDC = NULL;
 		m_TempDC = NULL;
 		m_hbmp = NULL;
 
@@ -85,14 +85,20 @@ namespace KrUI{
 		if (!hwnd) return false;
 		m_hwnd = hwnd;
 		GetWindowRect(hwnd, &m_rect);
-		m_DC = GetDC(m_hwnd);
-		m_TempDC = CreateCompatibleDC(m_DC);
+		m_hDC = GetDC(m_hwnd);
+		while (!m_TempDC)
+		{
+			m_TempDC = CreateCompatibleDC(m_hDC);
+
+		}
 		m_hbmp = CreateCompatibleBitmap(m_TempDC,GetWidth(),GetHeight());
 		SelectObject(m_TempDC, m_hbmp);
-		
-
+		SelectObject(m_hDC, m_hbmp);
 		m_pGraphics = new Graphics(m_TempDC);
-		
+		SolidBrush sb(Color(255, 255, 255, 255));
+		m_pGraphics->FillRectangle(&sb, 0, 0, GetWidth(), GetHeight());
+		//m_pGraphics = new Graphics(m_DC);
+
 		return true;
 	}
 
@@ -215,10 +221,10 @@ namespace KrUI{
 		// 			m_hwnd = NULL;
 		if (m_pGraphics != NULL) delete m_pGraphics;
 		m_pGraphics = NULL;
-		DeleteObject(m_DC);
+		DeleteObject(m_hDC);
 		DeleteObject(m_TempDC);
 		DeleteObject(m_hbmp);
-		m_DC = NULL;
+		m_hDC = NULL;
 		m_TempDC = NULL;
 		m_hbmp = NULL;
 		SendMessage(m_hwnd, WM_CLOSE, 0, 0);
@@ -246,7 +252,6 @@ namespace KrUI{
 		}
 		m_MsgFuncMap.insert(map<UINT, MSGFUNC>::value_type(msg, func));
 	}
-
 
 	LRESULT  KrWindow::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
@@ -281,37 +286,31 @@ namespace KrUI{
 			break;
 
 
-		case WM_LBUTTONDOWN:
-			m_bMouseDown = true;
-			m_ptMouseDown.x = GET_X_LPARAM(lParam);
-			m_ptMouseDown.y = GET_Y_LPARAM(lParam);
-			SetCapture(m_hwnd);
-			break;
-		case WM_LBUTTONUP:
-			m_bMouseDown = false;
-			ReleaseCapture();
-			break;
-		case WM_MOUSEMOVE:
-			if (m_bMouseDown)
-			{
-				m_ptMouse.x = GET_X_LPARAM(lParam);
-				m_ptMouse.y = GET_Y_LPARAM(lParam);
-				SetXY(m_ptMouse.x - (m_ptMouseDown.x - m_rect.left), m_ptMouse.y - (m_ptMouseDown.y - m_rect.top));
-			}
-			break;
-		case WM_KILLFOCUS:
-			m_bMouseDown = false;
-			break;
-// 		case WM_MOUSELEAVE:
-// 
+// 		case WM_LBUTTONDOWN:
+// 			m_bMouseDown = true;
+// 			m_ptMouseDown.x = GET_X_LPARAM(lParam);
+// 			m_ptMouseDown.y = GET_Y_LPARAM(lParam);
+// 			SetCapture(m_hwnd);
+// 			break;
+// 		case WM_LBUTTONUP:
+// 			m_bMouseDown = false;
+// 			ReleaseCapture();
+// 			break;
+// 		case WM_MOUSEMOVE:
 // 			if (m_bMouseDown)
 // 			{
-// 				GetCursorPos(&m_ptMouse);
-// 				m_ptMouse.x = m_ptMouse.x - m_rect.left;
-// 				m_ptMouse.y = m_ptMouse.y - m_rect.top;
-// 				KrSetX(m_ptMouse.x - (m_ptMouseDown.x - m_rect.left));
-// 				KrSetY(m_ptMouse.y - (m_ptMouseDown.y - m_rect.top));
+// 				m_ptMouse.x = GET_X_LPARAM(lParam);
+// 				m_ptMouse.y = GET_Y_LPARAM(lParam);
+// 				SetXY(m_ptMouse.x - (m_ptMouseDown.x - m_rect.left), m_ptMouse.y - (m_ptMouseDown.y - m_rect.top));
 // 			}
+// 			break;
+// 		case WM_KILLFOCUS:
+// 			m_bMouseDown = false;
+// 			break;
+
+
+
+
 
 		case WM_PAINT:
 		{
@@ -377,26 +376,26 @@ namespace KrUI{
 	{
 		if (m_bVisible)
 		{
+
 			for (list<KrControl*>::iterator it = m_CtrlList.begin(); it != m_CtrlList.end(); it++)
 			{
 				(*it)->Draw(m_pGraphics);
 			}
 			
-			SolidBrush sb(Color(255,255,255, 255));
-			m_pGraphics->FillRectangle(&sb, 0, 0, GetWidth(), GetHeight());
-			Pen pen(Color(0,0,0));
-			pen.SetWidth(1);
-			m_pGraphics->DrawRectangle(&pen,0,0,GetWidth()-1,GetHeight()-1);
+// 			SolidBrush sb(Color(255,255,255, 255));
+// 			m_pGraphics->FillRectangle(&sb, 0, 0, GetWidth(), GetHeight());
+// 			Image im(L"C:\\Users\\Miles\\Desktop\\vs.JPG", 0);
+// 
+// 			
+// 
+// 			m_pGraphics->DrawImage(&im,0,0,GetWidth(),25);
+// 
+			m_pGraphics->DrawRectangle(&Pen(Color(255, 0, 0), 4), 0, 0, GetWidth(), GetHeight());
+			// 
+// 
+			BitBlt(m_hDC, 0, 0, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, m_TempDC,0,0, SRCCOPY);
 
 
-			if (pRect!=NULL)
-			{
-				BitBlt(m_DC, pRect->left, pRect->top, pRect->right - pRect->left, pRect->bottom - pRect->top, m_TempDC, pRect->left, pRect->top, SRCCOPY);
-			}
-			else
-			{
-				BitBlt(m_DC, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, m_TempDC, m_rect.left, m_rect.top, SRCCOPY);
-			}
 		}
 	}
 

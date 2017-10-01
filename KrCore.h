@@ -2,6 +2,9 @@
 #define KRCORE_H
 #pragma once
 
+#define _CRT_SECURE_NO_WARNINGS
+
+
 #define KM_BEFORE_MOUSEENTER WM_APP+1
 #define KM_MOUSEENTER WM_APP+2
 #define KM_AFTER_MOUSEENTER WM_APP+3
@@ -36,12 +39,15 @@
 #include<windows.h>
 #include<windowsx.h>
 #include <gdiplus.h>
+#include<assert.h>
 using namespace std;
 using namespace Gdiplus;
 #pragma comment(lib,"Gdiplus.lib")
 
 
 namespace KrUI {
+
+
 
 	enum KrCtrlType
 	{
@@ -89,9 +95,10 @@ namespace KrUI {
 	/* KrWindow                                                             */
 	/************************************************************************/
 	class KrControl;
-
+	class KrArea;
 	class KrWindow
 	{
+		friend class KrArea;
 	private:
 		LPCWSTR  m_lpWindowName;//
 		HWND    m_hwnd;//
@@ -104,7 +111,7 @@ namespace KrUI {
 		map<UINT, MSGFUNC> m_MsgFuncMap;//
 		list<KrControl*> m_CtrlList;
 
-		HDC    m_DC;
+		HDC    m_hDC;
 		HDC    m_TempDC;
 		HBITMAP m_hbmp;
 		Graphics* m_pGraphics;
@@ -186,7 +193,50 @@ namespace KrUI {
 		virtual void Destroy();
 	};
 
-
+	/************************************************************************/
+	/* KrImageInfo                                                          */
+	/************************************************************************/
+	class  KrImageInfo
+	{
+	private:
+		Image* pNormal = NULL;
+		Image* pMouseHover = NULL;
+		Image* pMouseDown = NULL;
+	public:
+		void SetNormalImage(Image* pNormal)
+		{
+			this->pNormal = pNormal;
+		}
+		void SetMouseHoverImage(Image* pMouseHover)
+		{
+			this->pMouseHover = pMouseHover;
+		}
+		void SetMouseDownImage(Image* pMouseDown)
+		{
+			this->pMouseDown = pMouseDown;
+		}
+		Image* GetNormalImage()
+		{
+			assert(pNormal);
+			return pNormal;
+		}
+		Image* GetMouseHoverImage()
+		{
+			assert(pMouseHover);
+			return pMouseHover;
+		}
+		Image* GetMouseDownImage()
+		{
+			assert(pMouseDown);
+			return pMouseDown;
+		}
+		~KrImageInfo()
+		{
+			delete pNormal;
+			delete pMouseHover;
+			delete pMouseDown;
+		}
+	};
 
 	/************************************************************************/
 	/* KrArea                                                               */
@@ -198,6 +248,7 @@ namespace KrUI {
 		Graphics* m_pGraphics;
 		HDC    m_TempDC;
 		HBITMAP m_hbmp;
+		KrUI::KrImageInfo m_ImageInfo;
 	public:
 		KrControl* AddControl(KrCtrlType CtrlType, LPCWSTR lpName, int x, int y, int width, int height);
 		KrArea();
