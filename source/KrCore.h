@@ -20,7 +20,12 @@ namespace KrUI
 	class KrMessageHandler
 	{
 	protected:
-		virtual	LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam) = 0;
+		multimap<UINT, MSGPROC> m_MsgProcMap;
+		vector<MSGPROC> m_MsgProcDeleteMap;
+	public:
+		virtual void RegMsg(UINT msg, MSGPROC proc);
+		virtual void RemoveMsgProc(MSGPROC proc);
+		virtual	LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 	};
 
 	/************************************************************************/
@@ -45,11 +50,11 @@ namespace KrUI
 	private:
 		KrUIManager() { m_lpWindowClassName = L"KrUI"; }
 		static KrUIManager* m_pKrUIManager;
-		WNDCLASSEX      m_wc; //
-		LPCWSTR         m_lpWindowClassName;//
-		HINSTANCE       m_hInstance;//
-		MSG				m_msg;
-		vector<KrWindow*>  m_WndVec;//
+		WNDCLASSEX m_wc; //
+		LPCWSTR m_lpWindowClassName;//
+		HINSTANCE m_hInstance;//
+		MSG m_msg;
+		vector<KrWindow*> m_WndVec;//
 	};
 
 
@@ -58,44 +63,44 @@ namespace KrUI
 	/************************************************************************/
 	/* KrWindow                                                             */
 	/************************************************************************/
-	class KrWindow : protected KrMessageHandler
+	class KrWindow : public KrMessageHandler
 	{
 	private:
-		LPCWSTR  m_lpWindowName;
-		HWND    m_hwnd;
-		RECT    m_rect;
-		DWORD   m_dwStyle;
-		bool    m_bVisible;
-		POINT  m_ptMouse;
-		POINT  m_ptMouseDown;
-		bool   m_bMouseDown;
-		multimap<UINT, MSGPROC> m_MsgFuncMap;
+		LPCWSTR m_lpWindowName;
+		HWND m_hwnd;
+		RECT m_rect;
+		DWORD m_dwStyle;
+		bool m_bVisible;
+		POINT m_ptMouse;
+		POINT m_ptMouseDown;
+		bool m_bMouseDown;
+		//multimap<UINT, MSGPROC> m_MsgFuncMap;
 
 	public:
 		KrWindow();
-		LPCWSTR  GetWindowName();
-		void    SetWindowName(LPCWSTR lpWindowName);
-		void	SetHWND(HWND hwnd);
-		HWND    GetHWND();
-		RECT*   GetRect();
-		void    SetRect(RECT* pRect); 
-		void    SetStyle(DWORD dwStyle);
-		DWORD	GetStyle();
-		int     GetX();
-		int     GetY();
-		int     GetWidth();
-		int     GetHeight();
-		void    SetX(UINT x);
-		void    SetY(UINT y);
-		void	SetXY(UINT x, UINT y);
-		void    SetWidth(UINT width);
-		void    SetHeight(UINT height);
-		void    Show();
-		void    Hide();
-		bool    IsVisible();
-		bool	IsCreated();
+		LPCWSTR GetWindowName();
+		void SetWindowName(LPCWSTR lpWindowName);
+		void SetHWND(HWND hwnd);
+		HWND GetHWND();
+		RECT* GetRect();
+		void SetRect(RECT* pRect); 
+		void SetStyle(DWORD dwStyle);
+		DWORD GetStyle();
+		int GetX();
+		int GetY();
+		int GetWidth();
+		int GetHeight();
+		void SetX(UINT x);
+		void SetY(UINT y);
+		void SetXY(UINT x, UINT y);
+		void SetWidth(UINT width);
+		void SetHeight(UINT height);
+		void Show();
+		void Hide();
+		bool IsVisible();
+		bool IsCreated();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
-		void    RegMsg(UINT msg, MSGPROC func);
+		//void RegMsg(UINT msg, MSGPROC proc);
 	};
 }//namespace KrUI
 

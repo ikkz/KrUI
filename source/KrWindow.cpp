@@ -177,15 +177,24 @@ namespace KrUI
 
 
 
-	void    KrWindow::RegMsg(UINT msg, MSGPROC func)
-	{
-		map<UINT, MSGPROC>::iterator it = m_MsgFuncMap.find(msg);
-		if (it != m_MsgFuncMap.end())
-		{
-			it->second = func;
-		}
-		m_MsgFuncMap.insert(multimap<UINT, MSGPROC>::value_type(msg, func));
-	}
+// 	void KrWindow::RegMsg(UINT msg, MSGPROC proc)
+// 	{
+// 		m_MsgProcMap.insert(multimap<UINT, MSGPROC>::value_type(msg, proc));
+// 	}
+
+// 	void KrWindow::RemoveMsgProc(MSGPROC proc)
+// 	{
+// 		auto ret = m_MsgProcMap.end();
+// 		//不安全，上层存在m_MsgFuncMap的遍历
+// 		for (auto it = m_MsgProcMap.begin(); it != m_MsgProcMap.end(); it++)
+// 		{
+// 			if (*it->second==proc)
+// 			{
+// 				ret = it;
+// 			}
+// 		}
+// 		m_MsgProcMap.erase(ret);
+// 	}
 
 	LRESULT  KrWindow::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
@@ -206,11 +215,11 @@ namespace KrUI
 // 			(*it)->HandleMessage(Message, wParam, lParam);
 // 		}
 // 
-// 		map<UINT, MSGFUNC>::iterator it = m_MsgFuncMap.find(Message);
-// 		if (it != m_MsgFuncMap.end())
-// 		{
-// 			(*it->second)(this, wParam, lParam);
-// 		}
+
+		for (auto p :m_MsgProcMap)
+		{
+			if (p.first==Message) (p.second)(this, wParam, lParam);
+		}
 
 		return DefWindowProc(m_hwnd, Message, wParam, lParam);
 	}
