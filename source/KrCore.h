@@ -1,3 +1,5 @@
+#ifndef KRCORE_H
+#define KRCORE_H
 #pragma once
 
 #include <windows.h>
@@ -95,4 +97,6 @@ namespace KrUI
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		void    RegMsg(UINT msg, MSGPROC func);
 	};
-}// !KrUI
+}//namespace KrUI
+
+#endif // !KRCORE_H
