@@ -16,6 +16,7 @@ namespace KrUI
 
 	/************************************************************************/
 	/* KrMessageHandler                                                     */
+	/*需要进行消息处理的类必须public方式继承此类								*/
 	/************************************************************************/
 	class KrMessageHandler
 	{
@@ -24,8 +25,32 @@ namespace KrUI
 	public:
 		virtual void RegMsg(UINT msg, MSGPROC proc);
 		virtual void RemoveMsgProc(MSGPROC proc);
+		//在这里将置为NULL的proc删除，必须在子类实现的HandleMessage的结束时调用KrMessageHandler::HandleMessage
 		virtual	LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 	};
+
+	class KrUIBase
+	{
+	protected:
+		RECT m_rect;
+		bool m_bVisible;
+	public:
+		virtual RECT* GetRect();
+		virtual void SetRect(RECT* pRect);
+		virtual int GetX();
+		virtual int GetY();
+		virtual int GetWidth();
+		virtual int GetHeight();
+		virtual void SetX(UINT x);
+		virtual void SetY(UINT y);
+		virtual void SetXY(UINT x, UINT y);
+		virtual void SetWidth(UINT width);
+		virtual void SetHeight(UINT height);
+		virtual void Show();
+		virtual void Hide();
+		virtual bool IsVisible();
+	};
+
 
 	/************************************************************************/
 	/* KrUIManager                                                          */
@@ -62,41 +87,40 @@ namespace KrUI
 	/************************************************************************/
 	/* KrWindow                                                             */
 	/************************************************************************/
-	class KrWindow : public KrMessageHandler
+	class KrWindow : public KrMessageHandler ,public KrUIBase
 	{
 	private:
 		LPCWSTR m_lpWindowName;
 		HWND m_hwnd;
 		RECT m_rect;
 		DWORD m_dwStyle;
-		bool m_bVisible;
 		POINT m_ptMouse;
 		POINT m_ptMouseDown;
 		bool m_bMouseDown;
-		//multimap<UINT, MSGPROC> m_MsgFuncMap;
-
 	public:
 		KrWindow();
 		LPCWSTR GetWindowName();
 		void SetWindowName(LPCWSTR lpWindowName);
 		void SetHWND(HWND hwnd);
 		HWND GetHWND();
-		RECT* GetRect();
-		void SetRect(RECT* pRect);
 		void SetStyle(DWORD dwStyle);
 		DWORD GetStyle();
-		int GetX();
-		int GetY();
-		int GetWidth();
-		int GetHeight();
-		void SetX(UINT x);
-		void SetY(UINT y);
-		void SetXY(UINT x, UINT y);
-		void SetWidth(UINT width);
-		void SetHeight(UINT height);
-		void Show();
-		void Hide();
-		bool IsVisible();
+
+		virtual RECT* GetRect();
+		virtual void SetRect(RECT* pRect);
+		virtual int GetX();
+		virtual int GetY();
+		virtual int GetWidth();
+		virtual int GetHeight();
+		virtual void SetX(UINT x);
+		virtual void SetY(UINT y);
+		virtual void SetXY(UINT x, UINT y);
+		virtual void SetWidth(UINT width);
+		virtual void SetHeight(UINT height);
+		virtual void Show();
+		virtual void Hide();
+		virtual bool IsVisible();
+
 		bool IsCreated();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		//void RegMsg(UINT msg, MSGPROC proc);

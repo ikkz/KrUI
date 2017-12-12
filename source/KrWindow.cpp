@@ -31,10 +31,7 @@ namespace KrUI
 	}
 
 
-	RECT* KrWindow::GetRect()
-	{
-		return &m_rect;
-	}
+
 
 
 	void KrWindow::SetRect(RECT* pRect)
@@ -62,31 +59,7 @@ namespace KrUI
 
 
 
-	int KrWindow::GetX()
-	{
-		return m_rect.left;
-	}
 
-
-
-	int KrWindow::GetY()
-	{
-		return m_rect.top;
-	}
-
-
-
-	int KrWindow::GetWidth()
-	{
-		return m_rect.right - m_rect.left;
-	}
-
-
-
-	int KrWindow::GetHeight()
-	{
-		return m_rect.bottom - m_rect.top;
-	}
 
 
 	void KrWindow::SetX(UINT x)
@@ -119,13 +92,14 @@ namespace KrUI
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 	}
 
+
+
 	void KrWindow::SetWidth(UINT width)
 	{
 		m_rect.right = m_rect.left + width;
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
-
 
 
 	void KrWindow::SetHeight(UINT height)

@@ -9,7 +9,7 @@ namespace KrUI
 
 	LRESULT KrMessageHandler::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-		//在这里将置为NULL的proc删除，必须在子类实现的HandleMessage的结束时调用KrMessageHandler::HandleMessage
+
 		auto it = m_MsgProcMap.begin();
 		while (it!=m_MsgProcMap.end())
 		{
