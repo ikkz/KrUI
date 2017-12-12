@@ -177,24 +177,24 @@ namespace KrUI
 
 
 
-// 	void KrWindow::RegMsg(UINT msg, MSGPROC proc)
-// 	{
-// 		m_MsgProcMap.insert(multimap<UINT, MSGPROC>::value_type(msg, proc));
-// 	}
+	// 	void KrWindow::RegMsg(UINT msg, MSGPROC proc)
+	// 	{
+	// 		m_MsgProcMap.insert(multimap<UINT, MSGPROC>::value_type(msg, proc));
+	// 	}
 
-// 	void KrWindow::RemoveMsgProc(MSGPROC proc)
-// 	{
-// 		auto ret = m_MsgProcMap.end();
-// 		//不安全，上层存在m_MsgFuncMap的遍历
-// 		for (auto it = m_MsgProcMap.begin(); it != m_MsgProcMap.end(); it++)
-// 		{
-// 			if (*it->second==proc)
-// 			{
-// 				ret = it;
-// 			}
-// 		}
-// 		m_MsgProcMap.erase(ret);
-// 	}
+	// 	void KrWindow::RemoveMsgProc(MSGPROC proc)
+	// 	{
+	// 		auto ret = m_MsgProcMap.end();
+	// 		//不安全，上层存在m_MsgFuncMap的遍历
+	// 		for (auto it = m_MsgProcMap.begin(); it != m_MsgProcMap.end(); it++)
+	// 		{
+	// 			if (*it->second==proc)
+	// 			{
+	// 				ret = it;
+	// 			}
+	// 		}
+	// 		m_MsgProcMap.erase(ret);
+	// 	}
 
 	LRESULT  KrWindow::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
@@ -210,17 +210,17 @@ namespace KrUI
 			break;
 		}
 
-// 		for (list<KrControl*>::iterator it = m_CtrlVec.begin(); it != m_CtrlVec.end(); it++)
-// 		{
-// 			(*it)->HandleMessage(Message, wParam, lParam);
-// 		}
-// 
+		// 		for (list<KrControl*>::iterator it = m_CtrlVec.begin(); it != m_CtrlVec.end(); it++)
+		// 		{
+		// 			(*it)->HandleMessage(Message, wParam, lParam);
+		// 		}
+		// 
 
-		for (auto p :m_MsgProcMap)
+		for (auto p : m_MsgProcMap)
 		{
-			if (p.first==Message) (p.second)(this, wParam, lParam);
+			if (p.first == Message) (p.second)(this, wParam, lParam);
 		}
-
+		KrMessageHandler::HandleMessage(Message, wParam, lParam);
 		return DefWindowProc(m_hwnd, Message, wParam, lParam);
 	}
 

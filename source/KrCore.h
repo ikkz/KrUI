@@ -21,7 +21,6 @@ namespace KrUI
 	{
 	protected:
 		multimap<UINT, MSGPROC> m_MsgProcMap;
-		vector<MSGPROC> m_MsgProcDeleteMap;
 	public:
 		virtual void RegMsg(UINT msg, MSGPROC proc);
 		virtual void RemoveMsgProc(MSGPROC proc);
@@ -83,7 +82,7 @@ namespace KrUI
 		void SetHWND(HWND hwnd);
 		HWND GetHWND();
 		RECT* GetRect();
-		void SetRect(RECT* pRect); 
+		void SetRect(RECT* pRect);
 		void SetStyle(DWORD dwStyle);
 		DWORD GetStyle();
 		int GetX();
