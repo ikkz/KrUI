@@ -1,5 +1,4 @@
 #include "KrCore.h"
-
 namespace KrUI
 {
 	void KrMessageHandler::RegMsg(UINT msg, MSGPROC proc)

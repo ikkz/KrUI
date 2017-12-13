@@ -6,12 +6,13 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include "KrDedug.h"
 using namespace std;
 
 namespace KrUI
 {
-
-	typedef LRESULT(*MSGPROC)(void* pObject, WPARAM wParam, LPARAM lParam);
+	class KrMessageHandler;
+	typedef LRESULT(*MSGPROC) (KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 	class KrWindow;
 
 	/************************************************************************/
@@ -92,7 +93,6 @@ namespace KrUI
 	private:
 		LPCWSTR m_lpWindowName;
 		HWND m_hwnd;
-		RECT m_rect;
 		DWORD m_dwStyle;
 		POINT m_ptMouse;
 		POINT m_ptMouseDown;
@@ -106,12 +106,7 @@ namespace KrUI
 		void SetStyle(DWORD dwStyle);
 		DWORD GetStyle();
 
-		virtual RECT* GetRect();
 		virtual void SetRect(RECT* pRect);
-		virtual int GetX();
-		virtual int GetY();
-		virtual int GetWidth();
-		virtual int GetHeight();
 		virtual void SetX(UINT x);
 		virtual void SetY(UINT y);
 		virtual void SetXY(UINT x, UINT y);
@@ -119,7 +114,6 @@ namespace KrUI
 		virtual void SetHeight(UINT height);
 		virtual void Show();
 		virtual void Hide();
-		virtual bool IsVisible();
 
 		bool IsCreated();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);

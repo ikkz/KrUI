@@ -1,5 +1,4 @@
 #include "KrCore.h"
-
 namespace KrUI
 {
 
@@ -50,20 +49,25 @@ namespace KrUI
 	{
 		KrWindow* pKrWindow = new KrWindow;
 		if (!pKrWindow) return NULL;
-		pKrWindow->SetWindowName(lpWindowName);
+	
 		RECT rect;
 		rect.left = x;
 		rect.top = y;
 		rect.right = x + width;
 		rect.bottom = y + height;
 		pKrWindow->SetRect(&rect);
-		pKrWindow->SetStyle(NULL);
-		HWND hwnd = CreateWindow(KrUIManager::GetpKrUIManager()->GetWindowClassName(), lpWindowName, WS_VISIBLE | WS_OVERLAPPED, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, KrUIManager::GetpKrUIManager()->GetHINSTANCE(), NULL);
+
+		HWND hwnd = CreateWindow(KrUIManager::GetpKrUIManager()->GetWindowClassName(), lpWindowName, WS_CAPTION|WS_VISIBLE|WS_CLIPSIBLINGS|WS_THICKFRAME|WS_OVERLAPPED, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, KrUIManager::GetpKrUIManager()->GetHINSTANCE(), NULL);
+
 		pKrWindow->SetHWND(hwnd);
-		// 		LONG_PTR style = GetWindowLongPtr(pKrWindow->GetHWND(), GWL_STYLE);
-		// 		style = style&~WS_CAPTION&~WS_SYSMENU&~WS_SIZEBOX&~WS_BORDER;
-		// 		SetWindowLongPtr(pKrWindow->GetHWND(), GWL_STYLE, style);
-		// 		pKrWindow->SetStyle(style);
+		pKrWindow->SetStyle(WS_OVERLAPPEDWINDOW);
+		pKrWindow->SetWindowName(lpWindowName);
+// 
+// 		LONG_PTR style = GetWindowLongPtr(pKrWindow->GetHWND(), GWL_STYLE);
+// 		style = style&~WS_CAPTION&~WS_SYSMENU&~WS_SIZEBOX&~WS_BORDER;
+// 		SetWindowLongPtr(pKrWindow->GetHWND(), GWL_STYLE, style);
+// 		pKrWindow->SetStyle(style);
+
 		m_WndVec.push_back(pKrWindow);
 		return pKrWindow;
 	}

@@ -15,7 +15,7 @@ namespace KrUI
 
 	void KrWindow::SetWindowName(LPCWSTR lpWindowName)
 	{
-		if (IsCreated())SetWindowTextW(m_hwnd, lpWindowName);
+		if (IsCreated())SetWindowText(m_hwnd, lpWindowName);
 		m_lpWindowName = lpWindowName;
 	}
 
@@ -36,10 +36,7 @@ namespace KrUI
 
 	void KrWindow::SetRect(RECT* pRect)
 	{
-		m_rect.left = pRect->left;
-		m_rect.right = pRect->right;
-		m_rect.top = pRect->top;
-		m_rect.bottom = pRect->bottom;
+		KrUIBase::SetRect(pRect);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
@@ -64,9 +61,7 @@ namespace KrUI
 
 	void KrWindow::SetX(UINT x)
 	{
-		int width = GetWidth();
-		m_rect.left = x;
-		m_rect.right = x + width;
+		KrUIBase::SetX(x);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
@@ -74,21 +69,14 @@ namespace KrUI
 
 	void KrWindow::SetY(UINT y)
 	{
-		int height = GetHeight();
-		m_rect.top = y;
-		m_rect.bottom = y + height;
+		KrUIBase::SetY(y);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
 
 	void KrWindow::SetXY(UINT x, UINT y)
 	{
-		int width = GetWidth();
-		m_rect.left = x;
-		m_rect.right = x + width;
-		int height = GetHeight();
-		m_rect.top = y;
-		m_rect.bottom = y + height;
+		KrUIBase::SetXY(x, y);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 	}
 
@@ -96,7 +84,7 @@ namespace KrUI
 
 	void KrWindow::SetWidth(UINT width)
 	{
-		m_rect.right = m_rect.left + width;
+		KrUIBase::SetWidth(width);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
@@ -104,7 +92,7 @@ namespace KrUI
 
 	void KrWindow::SetHeight(UINT height)
 	{
-		m_rect.bottom = m_rect.top + height;
+		KrUIBase::SetHeight(height);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 
 	}
@@ -115,7 +103,8 @@ namespace KrUI
 		if (IsCreated())
 		{
 			ShowWindow(m_hwnd, SW_SHOW);
-			m_bVisible = true;
+			KrUIBase::Show();
+			UpdateWindow(m_hwnd);
 		}
 
 	}
@@ -126,16 +115,10 @@ namespace KrUI
 		if (IsCreated())
 		{
 			ShowWindow(m_hwnd, SW_HIDE);
-			m_bVisible = false;
+			KrUIBase::Hide();
 		}
-
 	}
 
-
-	bool KrWindow::IsVisible()
-	{
-		return m_bVisible;
-	}
 
 
 	bool KrWindow::IsCreated()
@@ -179,6 +162,10 @@ namespace KrUI
 			//本窗口被销毁时，检查程序是否存在窗口
 			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
 			KrUIManager::GetpKrUIManager()->CheckWindowNum();
+			break;
+		case WM_MOVE: 
+		case WM_SIZE:
+			GetWindowRect(m_hwnd, GetRect());
 			break;
 		default:
 			break;

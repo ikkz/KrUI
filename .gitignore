@@ -17,3 +17,7 @@ KrMessageHandler.cpp
 KrUI.cpp
 KrUI.h
 KrUIManager.cpp
+*.res
+KrUI.ico
+KrUI.rc
+small.ico
