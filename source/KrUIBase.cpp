@@ -1,4 +1,5 @@
-#include "KrCore.h"
+#include "KrUIBase.h"
+
 namespace KrUI
 {
 	RECT* KrUIBase::GetRect()
