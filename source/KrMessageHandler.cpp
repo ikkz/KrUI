@@ -16,7 +16,7 @@ namespace KrUI
 			{
 				it = m_MsgProcMap.erase(it);
 			}else{
-				it++;
+				++it;
 			}
 		}
 		return 0;
@@ -25,7 +25,7 @@ namespace KrUI
 	void KrMessageHandler::RemoveMsgProc(MSGPROC proc)
 	{
 		//暂时将proc置为NULL，防止两层遍历导致的迭代器失效
-		for (auto it=m_MsgProcMap.begin();it!=m_MsgProcMap.end();it++)
+		for (auto it=m_MsgProcMap.begin();it!=m_MsgProcMap.end();++it)
 		{
 			if (it->second == proc) it->second = NULL;
 		}

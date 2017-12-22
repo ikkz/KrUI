@@ -2,10 +2,18 @@
 #define KRCORE_H
 #pragma once
 
+#define _CRT_SECURE_NO_WARNINGS
+
+
+#ifdef _DEBUG
+#include <iostream>
+#endif
+
 #include <windows.h>
 #include <vector>
 #include <map>
 #include <algorithm>
+#include "KrDedug.h"
 #include "KrDedug.h"
 using namespace std;
 

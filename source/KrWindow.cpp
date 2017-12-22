@@ -49,6 +49,7 @@ namespace KrUI
 		m_dwStyle = dwStyle;
 		if (IsCreated())SetWindowLong(m_hwnd, GWL_STYLE, dwStyle);
 	}
+
 	DWORD KrWindow::GetStyle()
 	{
 		return m_dwStyle;
@@ -143,7 +144,7 @@ namespace KrUI
 	// 	{
 	// 		auto ret = m_MsgProcMap.end();
 	// 		//不安全，上层存在m_MsgFuncMap的遍历
-	// 		for (auto it = m_MsgProcMap.begin(); it != m_MsgProcMap.end(); it++)
+	// 		for (auto it = m_MsgProcMap.begin(); it != m_MsgProcMap.end(); ++it)
 	// 		{
 	// 			if (*it->second==proc)
 	// 			{
@@ -155,7 +156,18 @@ namespace KrUI
 
 	LRESULT  KrWindow::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-
+		//
+		for (auto p : m_MsgProcMap)
+		{
+			if (p.first == Message)
+			{
+				p.second(this, wParam, lParam);
+			}
+		}
+		KrMessageHandler::HandleMessage(Message, wParam, lParam);
+#ifdef _DEBUG
+		//cout << "message:" << Message << ",wParam:" << wParam << ",lParam:" << lParam << endl;
+#endif
 		switch (Message)
 		{
 		case WM_DESTROY:
@@ -163,27 +175,34 @@ namespace KrUI
 			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
 			KrUIManager::GetpKrUIManager()->CheckWindowNum();
 			break;
-		case WM_MOVE: 
+// 		case WM_PAINT:
+// 		{
+// 			PAINTSTRUCT ps;
+// 			HDC hdc = nullptr;
+// 			hdc = BeginPaint(m_hwnd, &ps);
+// 			EndPaint(m_hwnd, &ps);
+// 		}
+			break;
+		case WM_MOVE:
 		case WM_SIZE:
 			GetWindowRect(m_hwnd, GetRect());
 			break;
 		default:
-			break;
+			return DefWindowProc(m_hwnd, Message, wParam, lParam);
 		}
-
-		// 		for (list<KrControl*>::iterator it = m_CtrlVec.begin(); it != m_CtrlVec.end(); it++)
-		// 		{
-		// 			(*it)->HandleMessage(Message, wParam, lParam);
-		// 		}
-		// 
-
-		for (auto p : m_MsgProcMap)
-		{
-			if (p.first == Message) (p.second)(this, wParam, lParam);
-		}
-		KrMessageHandler::HandleMessage(Message, wParam, lParam);
-		return DefWindowProc(m_hwnd, Message, wParam, lParam);
+		return 0;
 	}
 
+
+	// 			case WM_DESTROY:
+	// 				//本窗口被销毁时，检查程序是否存在窗口
+	// 				KrUIManager::GetpKrUIManager()->DeleteWindow(this);
+	// 				KrUIManager::GetpKrUIManager()->CheckWindowNum();
+	// 				break;
+
+		// 		case WM_MOVE: 
+		// 		case WM_SIZE:
+		// 			GetWindowRect(m_hwnd, GetRect());
+		// 			break;
 
 } //!KrUI
