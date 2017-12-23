@@ -92,4 +92,14 @@ namespace KrUI
 	{
 		m_bVisible = false;
 	}
+
+	void KrUIBase::SetDc(HDC hdc)
+	{
+		m_hDc = hdc;
+	}
+
+	HDC KrUIBase::GetDc()
+	{
+		return m_hDc;
+	}
 }// namespace KrUI

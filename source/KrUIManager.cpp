@@ -34,13 +34,14 @@ namespace KrUI
 
 	bool      KrUIManager::Initialize(HINSTANCE hInstance)
 	{
-		//打开控制台
 #ifdef _DEBUG
+		//打开控制台
 		AllocConsole();
 		freopen("conin$", "r+t", stdin);
 		freopen("conout$", "w+t", stdout);
 
 #endif
+		m_lpWindowClassName = L"KrUI";
 		m_hInstance = hInstance;
 		WNDCLASSEX wcex;
 		memset(&wcex, 0, sizeof(wcex));
@@ -52,12 +53,9 @@ namespace KrUI
 		wcex.hInstance = m_hInstance;
 		wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 		wcex.hbrBackground = CreateSolidBrush(RGB(255, 255, 255));
-		wcex.lpszClassName = L"KrUI";
+		wcex.lpszClassName = GetWindowClassName();
 		wcex.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
 		wcex.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
-#ifdef _DEBUG
-		cout << "Initialized" << endl;
-#endif
 		if (!RegisterClassEx(&wcex))
 		{
 			return false;
@@ -69,7 +67,8 @@ namespace KrUI
 
 	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height)
 	{
-		return AddWindow(lpWindowName, x, y, width, height, WS_VISIBLE | WS_OVERLAPPEDWINDOW);
+
+		return AddWindow(lpWindowName, x, y, width, height, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER/*WS_CAPTION | WS_VISIBLE | WS_CLIPSIBLINGS | WS_THICKFRAME | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX*/);
 	}
 
 
@@ -84,20 +83,14 @@ namespace KrUI
 		rect.bottom = y + height;
 		pKrWindow->SetRect(&rect);
 		pKrWindow->SetWindowName(lpWindowName);
-
-
-
-		cout << GetLastError() << endl;
-		HWND hwnd = CreateWindow(L"KrUI", lpWindowName, dwStyle, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
-		cout << GetLastError();
-
+		HWND hwnd = CreateWindow(KrUIManager::GetpKrUIManager()->GetWindowClassName(), lpWindowName, dwStyle, rect.left, rect.top,
+			rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
+		SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER);
 		pKrWindow->SetHWND(hwnd);
 		pKrWindow->SetWindowName(lpWindowName);
+		pKrWindow->SetDc(GetDC(hwnd));
 		m_WndVec.push_back(pKrWindow);
 		return pKrWindow;
-		// 		// WS_CAPTION | WS_VISIBLE | WS_CLIPSIBLINGS | WS_THICKFRAME | WS_OVERLAPPED
-		// 		return AddWindow(lpWindowName, x, y, width, height, WS_CAPTION | WS_VISIBLE | WS_CLIPSIBLINGS | WS_THICKFRAME | WS_OVERLAPPED);
-
 	}
 
 	LPCWSTR KrUIManager::GetWindowClassName()

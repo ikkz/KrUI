@@ -15,6 +15,7 @@
 #include <algorithm>
 #include "KrMessageHandler.h"
 #include "KrUIBase.h"
+#include "KrDedug.h"
 using namespace std;
 
 namespace KrUI
@@ -60,7 +61,7 @@ namespace KrUI
 	class KrWindow : public KrMessageHandler ,public KrUIBase
 	{
 	private:
-		LPCWSTR m_lpWindowName;
+		LPCWSTR m_lpName;
 		HWND m_hwnd;
 		DWORD m_dwStyle;
 		POINT m_ptMouse;

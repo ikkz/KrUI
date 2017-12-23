@@ -10,13 +10,13 @@ namespace KrUI
 
 	LPCWSTR KrWindow::GetWindowName()
 	{
-		return m_lpWindowName;
+		return m_lpName;
 	}
 
 	void KrWindow::SetWindowName(LPCWSTR lpWindowName)
 	{
 		if (IsCreated())SetWindowText(m_hwnd, lpWindowName);
-		m_lpWindowName = lpWindowName;
+		m_lpName = lpWindowName;
 	}
 
 	void KrWindow::SetHWND(HWND hwnd)

@@ -11,6 +11,7 @@ namespace KrUI
 	protected:
 		RECT m_rect;
 		bool m_bVisible;
+		HDC m_hDc;
 	public:
 		virtual RECT* GetRect();
 		virtual void SetRect(RECT* pRect);
@@ -26,6 +27,8 @@ namespace KrUI
 		virtual void Show();
 		virtual void Hide();
 		virtual bool IsVisible();
+		virtual void SetDc(HDC hdc);
+		virtual HDC GetDc();
 	};
 
 }//!KrUI
