@@ -9,6 +9,14 @@ namespace KrUI
 	LRESULT KrMessageHandler::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 
+		for (auto p : m_MsgProcMap)
+		{
+			if (p.first == Message)
+			{
+				p.second(this, wParam, lParam);
+			}
+		}
+
 		auto it = m_MsgProcMap.begin();
 		while (it!=m_MsgProcMap.end())
 		{

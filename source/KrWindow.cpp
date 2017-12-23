@@ -1,9 +1,11 @@
 #include "KrCore.h"
-
+#include "KrButton.h"
 namespace KrUI
 {
 	KrWindow::KrWindow()
 	{
+		m_pKrWindow = nullptr;
+		m_UIType = KrUIType::KrWindow_t;
 		m_bMouseDown = false;
 	}
 
@@ -31,7 +33,20 @@ namespace KrUI
 	}
 
 
-
+	KrUIBase* KrWindow::AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height)
+	{
+		KrUIBase* pui = nullptr;
+		switch (t)
+		{
+		case KrUI::KrButton_t:
+			pui = new KrButton(this);
+			pui->SetSize(x, y, width, height);
+			pui->SetName(lpName);
+			m_UIVec.push_back(pui);
+			break;
+		}
+		return pui;
+	}
 
 
 	void KrWindow::SetRect(RECT* pRect)
@@ -157,40 +172,37 @@ namespace KrUI
 	LRESULT  KrWindow::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		//
-		for (auto p : m_MsgProcMap)
-		{
-			if (p.first == Message)
-			{
-				p.second(this, wParam, lParam);
-			}
-		}
-		KrMessageHandler::HandleMessage(Message, wParam, lParam);
+
 #ifdef _DEBUG
 		//cout << "message:" << Message << ",wParam:" << wParam << ",lParam:" << lParam << endl;
 #endif
 		switch (Message)
 		{
+
 		case WM_DESTROY:
 			//本窗口被销毁时，检查程序是否存在窗口
 			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
 			KrUIManager::GetpKrUIManager()->CheckWindowNum();
 			break;
-// 		case WM_PAINT:
-// 		{
-// 			PAINTSTRUCT ps;
-// 			HDC hdc = nullptr;
-// 			hdc = BeginPaint(m_hwnd, &ps);
-// 			EndPaint(m_hwnd, &ps);
-// 		}
+			// 		case WM_PAINT:
+			// 		{
+			// 			PAINTSTRUCT ps;
+			// 			HDC hdc = nullptr;
+			// 			hdc = BeginPaint(m_hwnd, &ps);
+			// 			EndPaint(m_hwnd, &ps);
+			// 		}
 			break;
 		case WM_MOVE:
 		case WM_SIZE:
 			GetWindowRect(m_hwnd, GetRect());
 			break;
-		default:
-			return DefWindowProc(m_hwnd, Message, wParam, lParam);
 		}
-		return 0;
+		for (auto p :m_UIVec)
+		{
+			dynamic_cast<KrMessageHandler*>(p)->HandleMessage(Message, wParam, lParam);
+		}
+		KrMessageHandler::HandleMessage(Message, wParam, lParam);
+		return DefWindowProc(m_hwnd, Message, wParam, lParam);
 	}
 
 
@@ -204,5 +216,9 @@ namespace KrUI
 		// 		case WM_SIZE:
 		// 			GetWindowRect(m_hwnd, GetRect());
 		// 			break;
+	void KrWindow::UpdateDc()
+	{
+
+	}
 
 } //!KrUI

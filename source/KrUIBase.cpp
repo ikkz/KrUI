@@ -69,6 +69,15 @@ namespace KrUI
 		m_rect.bottom = m_rect.top + height;
 	}
 
+	void KrUIBase::SetSize(UINT x, UINT y, UINT width, UINT height)
+	{
+		m_rect.left = x;
+		m_rect.right = x + width;
+		m_rect.top = y;
+		m_rect.bottom = y + height;
+	}
+
+
 	bool KrUIBase::IsVisible()
 	{
 		return m_bVisible;
@@ -101,5 +110,14 @@ namespace KrUI
 	HDC KrUIBase::GetDc()
 	{
 		return m_hDc;
+	}
+
+	void KrUIBase::SetName(LPCWSTR name)
+	{
+		m_Name = name;
+	}
+	LPCWSTR KrUIBase::GetName()
+	{
+		return m_Name;
 	}
 }// namespace KrUI

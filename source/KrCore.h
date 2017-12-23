@@ -16,13 +16,17 @@
 #include "KrMessageHandler.h"
 #include "KrUIBase.h"
 #include "KrDedug.h"
+#include "KrButton.h"
 using namespace std;
 
 namespace KrUI
 {
 	class KrMessageHandler;
+	class KrUIBase;
 	typedef LRESULT(*MSGPROC) (KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 	class KrWindow;
+	//enum KrUIType;
+
 
 	/************************************************************************/
 	/* KrUIManager                                                          */
@@ -58,7 +62,7 @@ namespace KrUI
 	/************************************************************************/
 	/* KrWindow                                                             */
 	/************************************************************************/
-	class KrWindow : public KrMessageHandler ,public KrUIBase
+	class KrWindow : public KrMessageHandler ,public KrUI::KrUIBase
 	{
 	private:
 		LPCWSTR m_lpName;
@@ -67,7 +71,8 @@ namespace KrUI
 		POINT m_ptMouse;
 		POINT m_ptMouseDown;
 		bool m_bMouseDown;
-	public:
+		vector<KrUIBase*> m_UIVec;
+ 	public:
 		KrWindow();
 		LPCWSTR GetWindowName();
 		void SetWindowName(LPCWSTR lpWindowName);
@@ -84,9 +89,10 @@ namespace KrUI
 		virtual void SetHeight(UINT height);
 		virtual void Show();
 		virtual void Hide();
-
+		virtual void UpdateDc();
 		bool IsCreated();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+		KrUIBase* AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height);
 		//void RegMsg(UINT msg, MSGPROC proc);
 	};
 }//namespace KrUI
