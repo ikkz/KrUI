@@ -8,15 +8,6 @@ namespace KrUI
 
 	LRESULT KrMessageHandler::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-
-		for (auto p : m_MsgProcMap)
-		{
-			if (p.first == Message)
-			{
-				p.second(this, wParam, lParam);
-			}
-		}
-
 		auto it = m_MsgProcMap.begin();
 		while (it!=m_MsgProcMap.end())
 		{
@@ -36,6 +27,16 @@ namespace KrUI
 		for (auto it=m_MsgProcMap.begin();it!=m_MsgProcMap.end();++it)
 		{
 			if (it->second == proc) it->second = NULL;
+		}
+	}
+	void KrMessageHandler::CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam)
+	{
+		for (auto p : m_MsgProcMap)
+		{
+			if (p.first == Message)
+			{
+				p.second(this, wParam, lParam);
+			}
 		}
 	}
 } // namespace KrUI

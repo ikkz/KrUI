@@ -22,6 +22,7 @@ namespace KrUI
 		virtual void RemoveMsgProc(MSGPROC proc);
 		//在这里将置为NULL的proc删除，必须在子类实现的HandleMessage的结束时调用KrMessageHandler::HandleMessage
 		virtual	LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 	};
 }//!KrUI
 #endif

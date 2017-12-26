@@ -120,4 +120,60 @@ namespace KrUI
 	{
 		return m_Name;
 	}
+	LRESULT KrUIBase::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
+	{
+		switch (Message)
+		{
+		case WM_MOUSEMOVE:
+		{
+			POINT ptMouse;
+			ptMouse.x = GET_X_LPARAM(lParam);
+			ptMouse.y = GET_Y_LPARAM(lParam);
+			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
+			if (m_bMouseIn == false && bMouseIn == TRUE)
+			{
+				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
+				CallMsgProc(KM_MOUSEENTER, wParam, lParam);
+			}
+			else if (m_bMouseIn == true && bMouseIn == false)
+			{
+				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUSELEAVE, NULL, NULL);
+				CallMsgProc(KM_MOUSELEAVE, wParam, lParam);
+			}
+			m_bMouseIn = bMouseIn;
+			break;
+		}
+		case WM_LBUTTONDOWN:
+		{
+			POINT ptMouse;
+			ptMouse.x = GET_X_LPARAM(lParam);
+			ptMouse.y = GET_Y_LPARAM(lParam);
+			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
+			if (bMouseIn)
+			{
+				CallMsgProc(KM_LBTNDOWN, wParam, lParam);
+			}
+			break;
+		}
+		case WM_LBUTTONUP:
+		{
+			POINT ptMouse;
+			ptMouse.x = GET_X_LPARAM(lParam);
+			ptMouse.y = GET_Y_LPARAM(lParam);
+			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
+			if (bMouseIn)
+			{
+				CallMsgProc(KM_LBTNUP, wParam, lParam);
+			}
+			break;
+		}
+		default:
+			break;
+		}
+		return KrMessageHandler::HandleMessage(Message, wParam, lParam);
+	}
+	KrUIBase::KrUIBase()
+	{
+		m_bMouseIn = false;
+	}
 }// namespace KrUI

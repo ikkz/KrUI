@@ -6,10 +6,11 @@
 namespace KrUI
 {
 	class KrWindow;
-	class KrButton :public KrUIBase,public KrMessageHandler
+	class KrButton :public KrUIBase
 	{
 	public:
 		KrButton(KrWindow* pKrWindow);
+		~KrButton();
 		void SetMouseHoverColor(COLORREF color);
 		void SetMouseDownColor(COLORREF color);
 		void SetMouseLeaveColor(COLORREF color);
@@ -19,6 +20,7 @@ namespace KrUI
 		COLORREF GetMouseLeaveColor();
 		COLORREF GetBorderColor();
 		void UpdateDc();
+		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 	protected:
 		COLORREF m_MouseHoverColor;
 		COLORREF m_MouseDownColor;

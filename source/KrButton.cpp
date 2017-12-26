@@ -47,5 +47,14 @@ namespace KrUI
 	{
 
 	}
+	KrButton::~KrButton()
+	{
+		DeleteObject(m_hDc);
+	}
+
+	LRESULT KrButton::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
+	{
+		return KrUIBase::HandleMessage(Message, wParam, lParam);
+	}
 
 }//!KrUI

@@ -150,11 +150,14 @@ namespace KrUI
 			GetWindowRect(m_hwnd, GetRect());
 			break;
 		}
+
+		CallMsgProc(Message, wParam, lParam);
+
 		for (auto p :m_UIVec)
 		{
 			dynamic_cast<KrMessageHandler*>(p)->HandleMessage(Message, wParam, lParam);
 		}
-		KrMessageHandler::HandleMessage(Message, wParam, lParam);
+		KrUIBase::HandleMessage(Message, wParam, lParam);
 		return DefWindowProc(m_hwnd, Message, wParam, lParam);
 	}
 	// 			case WM_DESTROY:

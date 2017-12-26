@@ -2,13 +2,14 @@
 #define KRUIBASE_H
 
 #pragma once
-
+#include "KrMessageHandler.h"
+#include "KrDefine.h"
 #include <windows.h>
 namespace KrUI
 {
 	class KrWindow;
 	enum KrUIType{KrWindow_t,KrButton_t};
-	class KrUIBase
+	class KrUIBase :public KrMessageHandler
 	{
 	protected:
 		LPCWSTR m_Name;
@@ -17,7 +18,9 @@ namespace KrUI
 		HDC m_hDc;
 		KrUIType m_UIType;
 		KrWindow* m_pKrWindow;
+		bool m_bMouseIn;
 	public:
+		KrUIBase();
 		virtual RECT* GetRect();
 		virtual void SetRect(RECT* pRect);
 		virtual int GetX();
@@ -38,6 +41,7 @@ namespace KrUI
 		virtual void UpdateDc()=0;
 		void SetName(LPCWSTR name);
 		LPCWSTR GetName();
+		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 	};
 
 }//!KrUI
