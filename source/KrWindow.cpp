@@ -125,51 +125,29 @@ namespace KrUI
 
 	LRESULT  KrWindow::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-
-#ifdef _DEBUG
-		//cout << "message:" << Message << ",wParam:" << wParam << ",lParam:" << lParam << endl;
-#endif
 		switch (Message)
 		{
-
 		case WM_DESTROY:
 			//本窗口被销毁时，检查程序是否存在窗口
 			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
-			KrUIManager::GetpKrUIManager()->CheckWindowNum();
-			break;
-			// 		case WM_PAINT:
-			// 		{
-			// 			PAINTSTRUCT ps;
-			// 			HDC hdc = nullptr;
-			// 			hdc = BeginPaint(m_hwnd, &ps);
-			// 			EndPaint(m_hwnd, &ps);
-			// 		}
 			break;
 		case WM_MOVE:
 		case WM_SIZE:
 			GetWindowRect(m_hwnd, GetRect());
 			break;
 		}
-
+		//调用窗口消息处理函数
 		CallMsgProc(Message, wParam, lParam);
-
+		//传递消息给控件
 		for (auto p :m_UIVec)
 		{
 			dynamic_cast<KrMessageHandler*>(p)->HandleMessage(Message, wParam, lParam);
 		}
+		//
 		KrUIBase::HandleMessage(Message, wParam, lParam);
 		return DefWindowProc(m_hwnd, Message, wParam, lParam);
 	}
-	// 			case WM_DESTROY:
-	// 				//本窗口被销毁时，检查程序是否存在窗口
-	// 				KrUIManager::GetpKrUIManager()->DeleteWindow(this);
-	// 				KrUIManager::GetpKrUIManager()->CheckWindowNum();
-	// 				break;
 
-		// 		case WM_MOVE: 
-		// 		case WM_SIZE:
-		// 			GetWindowRect(m_hwnd, GetRect());
-		// 			break;
 	void KrWindow::UpdateDc()
 	{
 

@@ -122,6 +122,7 @@ namespace KrUI
 	}
 	LRESULT KrUIBase::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
+		//对原来的消息进行一些转换成为KM
 		switch (Message)
 		{
 		case WM_MOUSEMOVE:
@@ -133,11 +134,12 @@ namespace KrUI
 			if (m_bMouseIn == false && bMouseIn == TRUE)
 			{
 				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
+				//使用这种方法还需要在后两个参数之一中标识消息属于哪个UIBase并在处理时dynamic_cast
+				//最后消息还是回到这里，所以直接在这调用MsgProc算了，下面也一样
 				CallMsgProc(KM_MOUSEENTER, wParam, lParam);
 			}
 			else if (m_bMouseIn == true && bMouseIn == false)
 			{
-				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUSELEAVE, NULL, NULL);
 				CallMsgProc(KM_MOUSELEAVE, wParam, lParam);
 			}
 			m_bMouseIn = bMouseIn;

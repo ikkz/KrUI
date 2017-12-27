@@ -25,12 +25,8 @@ namespace KrUI
 	class KrUIBase;
 	typedef LRESULT(*MSGPROC) (KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 	class KrWindow;
-	//enum KrUIType;
 
 
-	/************************************************************************/
-	/* KrUIManager                                                          */
-	/************************************************************************/
 	class KrUIManager
 	{
 	public:
@@ -45,7 +41,6 @@ namespace KrUI
 		int GetWindowNum();
 		void DeleteWindow(KrWindow* pKrWindow);
 		KrWindow* GetpKrWindow(HWND hwnd);
-		void CheckWindowNum();
 		~KrUIManager();
 	private:
 		KrUIManager() { m_lpWindowClassName = L"KrUI"; }
@@ -59,9 +54,7 @@ namespace KrUI
 
 
 
-	/************************************************************************/
-	/* KrWindow                                                             */
-	/************************************************************************/
+
 	class KrWindow :public KrUI::KrUIBase
 	{
 	private:
@@ -93,7 +86,6 @@ namespace KrUI
 		bool IsCreated();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		KrUIBase* AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height);
-		//void RegMsg(UINT msg, MSGPROC proc);
 	};
 }//namespace KrUI
 

@@ -5,11 +5,11 @@ namespace KrUI
 
 	KrUIManager* KrUIManager::m_pKrUIManager = NULL;
 
+	//把消息传递给UIManager统一处理分发
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		return  KrUIManager::GetpKrUIManager()->HandleMessage(hwnd, Message, wParam, lParam);
 	}
-
 	KrUIManager* KrUIManager::GetpKrUIManager()
 	{
 
@@ -18,18 +18,7 @@ namespace KrUI
 		return m_pKrUIManager;
 	}
 
-	void KrUIManager::CheckWindowNum()
-	{
-		if (GetWindowNum() == 0)
-		{
-			//关闭控制台
-#ifdef _DEBUG
-			fclose(stdin);
-			fclose(stdout);
-#endif
-			PostQuitMessage(0);
-		}
-	}
+
 
 
 	bool      KrUIManager::Initialize(HINSTANCE hInstance)
@@ -154,6 +143,15 @@ namespace KrUI
 		if (result != m_WndVec.end())
 		{
 			m_WndVec.erase(result);
+		}
+		if (GetWindowNum() == 0)
+		{
+			//关闭控制台
+#ifdef _DEBUG
+			fclose(stdin);
+			fclose(stdout);
+#endif
+			PostQuitMessage(0);
 		}
 		//todo
 	}
