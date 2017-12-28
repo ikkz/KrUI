@@ -150,7 +150,7 @@ namespace KrUI
 
 	void KrWindow::UpdateDc()
 	{
-
+		cout << "timer" << endl;
 	}
 
 } //!KrUI

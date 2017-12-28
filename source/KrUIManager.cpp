@@ -6,7 +6,7 @@ namespace KrUI
 	KrUIManager* KrUIManager::m_pKrUIManager = NULL;
 
 	//把消息传递给UIManager统一处理分发
-	LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+	LRESULT CALLBACK KrUIManager::WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		return  KrUIManager::GetpKrUIManager()->HandleMessage(hwnd, Message, wParam, lParam);
 	}
@@ -45,6 +45,9 @@ namespace KrUI
 		wcex.lpszClassName = GetWindowClassName();
 		wcex.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
 		wcex.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
+
+		SetTimer(NULL, TIMER_ID, TIMER_INTERVAL, TimerProc);
+
 		if (!RegisterClassEx(&wcex))
 		{
 			return false;
@@ -57,7 +60,7 @@ namespace KrUI
 	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height)
 	{
 
-		return AddWindow(lpWindowName, x, y, width, height, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER/*WS_CAPTION | WS_VISIBLE | WS_CLIPSIBLINGS | WS_THICKFRAME | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX*/);
+		return AddWindow(lpWindowName, x, y, width, height, WS_OVERLAPPEDWINDOW|WS_VISIBLE);
 	}
 
 
@@ -159,9 +162,16 @@ namespace KrUI
 
 	KrUIManager::~KrUIManager()
 	{
+		KillTimer(NULL, TIMER_ID);
 		//todo
 	}
 
-
+	void KrUIManager::TimerProc(HWND hWnd, UINT nMsg, UINT nTimerid, DWORD dwTime)
+	{
+		for (auto p:GetpKrUIManager()->m_WndVec)
+		{
+			p->UpdateDc();
+		}
+	}
 
 }// !KrUI
