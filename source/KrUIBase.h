@@ -5,6 +5,8 @@
 #include "KrMessageHandler.h"
 #include "KrDefine.h"
 #include <windows.h>
+#include <gdiplus.h>
+using namespace Gdiplus;
 namespace KrUI
 {
 	class KrWindow;
@@ -16,11 +18,13 @@ namespace KrUI
 		RECT m_rect;
 		bool m_bVisible;
 		HDC m_hDc;
+		Graphics* m_pGraphics;
 		KrUIType m_UIType;
 		KrWindow* m_pKrWindow;
 		bool m_bMouseIn;
 	public:
 		KrUIBase();
+		~KrUIBase();
 		virtual RECT* GetRect();
 		virtual void SetRect(RECT* pRect);
 		virtual int GetX();
@@ -38,6 +42,7 @@ namespace KrUI
 		virtual bool IsVisible();
 		virtual void SetDc(HDC hdc);
 		virtual HDC GetDc();
+		virtual void SetParantWindow(KrWindow* pKrWindow);
 		virtual void UpdateDc()=0;
 		void SetName(LPCWSTR name);
 		LPCWSTR GetName();

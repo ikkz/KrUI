@@ -21,3 +21,4 @@ KrUIManager.cpp
 KrUI.ico
 KrUI.rc
 small.ico
+source/KrBitmapInfo.h

@@ -1,5 +1,5 @@
 #include "KrUIBase.h"
-
+#include "KrCore.h"
 namespace KrUI
 {
 	RECT* KrUIBase::GetRect()
@@ -104,7 +104,7 @@ namespace KrUI
 
 	void KrUIBase::SetDc(HDC hdc)
 	{
-		m_hDc = hdc;
+
 	}
 
 	HDC KrUIBase::GetDc()
@@ -177,5 +177,22 @@ namespace KrUI
 	KrUIBase::KrUIBase()
 	{
 		m_bMouseIn = false;
+		m_hDc = NULL;
+		m_pGraphics = nullptr;
+		m_pKrWindow = nullptr;
+	}
+	KrUIBase::~KrUIBase()
+	{
+		delete m_pGraphics;
+		DeleteObject(m_hDc);
+	}
+	void KrUIBase::SetParantWindow(KrWindow* pKrWindow)
+	{
+		if ((!m_pKrWindow) && (pKrWindow))
+		{
+			m_pKrWindow = pKrWindow;
+			m_hDc = CreateCompatibleDC(m_pKrWindow->GetDc());
+			m_pGraphics = new Graphics(m_hDc);
+		}
 	}
 }// namespace KrUI

@@ -5,7 +5,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define TIMER_ID 1
 #define TIMER_INTERVAL 50
-
 #ifdef _DEBUG
 #include <iostream>
 #endif
@@ -14,11 +13,16 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <gdiplus.h>
+
+#pragma comment(lib,"gdiplus.lib")
 #include "KrMessageHandler.h"
 #include "KrUIBase.h"
 #include "KrDefine.h"
 #include "KrButton.h"
 using namespace std;
+using namespace Gdiplus;
+
 
 namespace KrUI
 {
@@ -27,6 +31,8 @@ namespace KrUI
 	typedef LRESULT(*MSGPROC) (KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 	class KrWindow;
 
+	static GdiplusStartupInput m_gdiplusStartupInput;
+	static ULONG_PTR m_pGdiToken;
 
 	class KrUIManager
 	{
@@ -67,6 +73,7 @@ namespace KrUI
 		POINT m_ptMouse;
 		POINT m_ptMouseDown;
 		bool m_bMouseDown;
+		HDC m_TempDC;
 		vector<KrUIBase*> m_UIVec;
 	public:
 		KrWindow();

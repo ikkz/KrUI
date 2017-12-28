@@ -23,6 +23,9 @@ namespace KrUI
 	void KrWindow::SetHWND(HWND hwnd)
 	{
 		m_hwnd = hwnd;
+		m_hDc = ::GetDC(hwnd);
+		m_TempDC = ::CreateCompatibleDC(m_hDc);
+		m_pGraphics = new Graphics(m_TempDC);
 	}
 
 	HWND KrWindow::GetHWND()
@@ -36,9 +39,10 @@ namespace KrUI
 		switch (t)
 		{
 		case KrUI::KrButton_t:
-			pui = new KrButton(this);
+			pui = new KrButton;
 			pui->SetSize(x, y, width, height);
 			pui->SetName(lpName);
+			pui->SetParantWindow(this);
 			m_UIVec.push_back(pui);
 			break;
 		}

@@ -2,13 +2,11 @@
 #include "KrCore.h"
 namespace KrUI
 {
-	KrButton::KrButton(KrWindow* pKrWindow)
+	KrButton::KrButton()
 	{
-		m_pKrWindow = pKrWindow;
 		m_MouseDownColor = RGB(9, 140, 188);
 		m_MouseHoverColor = RGB(60, 195, 245);
 		m_MouseLeaveColor = RGB(9, 163, 220);
-		m_hDc = CreateCompatibleDC(pKrWindow->GetDc());
 	}
 
 	void KrButton::SetMouseHoverColor(COLORREF color)

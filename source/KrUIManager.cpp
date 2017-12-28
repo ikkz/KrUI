@@ -47,6 +47,7 @@ namespace KrUI
 		wcex.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
 
 		SetTimer(NULL, TIMER_ID, TIMER_INTERVAL, TimerProc);
+		Gdiplus::GdiplusStartup(&m_pGdiToken, &m_gdiplusStartupInput, NULL);
 
 		if (!RegisterClassEx(&wcex))
 		{
@@ -80,7 +81,6 @@ namespace KrUI
 		SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER);
 		pKrWindow->SetHWND(hwnd);
 		pKrWindow->SetWindowName(lpWindowName);
-		pKrWindow->SetDc(GetDC(hwnd));
 		m_WndVec.push_back(pKrWindow);
 		return pKrWindow;
 	}
@@ -163,6 +163,7 @@ namespace KrUI
 	KrUIManager::~KrUIManager()
 	{
 		KillTimer(NULL, TIMER_ID);
+		Gdiplus::GdiplusShutdown(m_pGdiToken);
 		//todo
 	}
 

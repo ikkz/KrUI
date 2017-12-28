@@ -9,7 +9,7 @@ namespace KrUI
 	class KrButton :public KrUIBase
 	{
 	public:
-		KrButton(KrWindow* pKrWindow);
+		KrButton();
 		~KrButton();
 		void SetMouseHoverColor(COLORREF color);
 		void SetMouseDownColor(COLORREF color);
