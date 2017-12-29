@@ -25,7 +25,8 @@ namespace KrUI
 		m_hwnd = hwnd;
 		m_hDc = ::GetDC(hwnd);
 		m_TempDC = ::CreateCompatibleDC(m_hDc);
-		m_pGraphics = new Graphics(m_TempDC);
+		ChangeBmpSize();
+		m_pGraphics = new Gdiplus::Graphics(m_TempDC);
 	}
 
 	HWND KrWindow::GetHWND()
@@ -143,18 +144,50 @@ namespace KrUI
 		//调用窗口消息处理函数
 		CallMsgProc(Message, wParam, lParam);
 		//传递消息给控件
-		for (auto p :m_UIVec)
+		for (auto p : m_UIVec)
 		{
-			dynamic_cast<KrMessageHandler*>(p)->HandleMessage(Message, wParam, lParam);
+			if (p->IsVisible())
+			{
+				dynamic_cast<KrMessageHandler*>(p)->HandleMessage(Message, wParam, lParam);
+			}
 		}
 		//
 		KrUIBase::HandleMessage(Message, wParam, lParam);
 		return DefWindowProc(m_hwnd, Message, wParam, lParam);
 	}
 
-	void KrWindow::UpdateDc()
+
+
+	HDC KrWindow::GetTempDc()
 	{
-		cout << "timer" << endl;
+		return m_TempDC;
 	}
 
+	void KrWindow::ChangeBmpSize()
+	{
+		if (m_bBmp != NULL)
+		{
+			DeleteObject(m_bBmp);
+		}
+		m_bBmp = CreateCompatibleBitmap(m_hDc, GetWidth(), GetHeight());
+		SelectObject(m_TempDC, m_bBmp);
+	}
+
+	void KrWindow::UpdateDc()
+	{
+		if (m_bVisible && (m_TempDC != NULL))
+		{
+			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Color(255, 255, 255)), 0, 0, GetWidth(), GetHeight());
+			for (auto p : m_UIVec)
+			{
+				if (p->IsVisible())
+				{
+					p->UpdateDc();
+				}
+
+			}
+			m_pGraphics->DrawImage(&Gdiplus::Image(L"C:\\Users\\Miles\\Pictures\\捕获.JPG"),0,0,50,50);
+			BitBlt(m_hDc, 0, 0, GetWidth(), GetHeight(), m_TempDC, 0, 0, SRCCOPY);
+		}
+	}
 } //!KrUI

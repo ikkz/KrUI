@@ -40,6 +40,7 @@ namespace KrUI
 		m_rect.left = x;
 		m_rect.right = x + width;
 
+		ChangeBmpSize();
 	}
 	void KrUIBase::SetY(UINT y)
 	{
@@ -47,6 +48,7 @@ namespace KrUI
 		m_rect.top = y;
 		m_rect.bottom = y + height;
 
+		ChangeBmpSize();
 	}
 
 	void KrUIBase::SetXY(UINT x, UINT y)
@@ -57,16 +59,19 @@ namespace KrUI
 		m_rect.right = x + width;
 		m_rect.top = y;
 		m_rect.bottom = y + height;
+		ChangeBmpSize();
 	}
 
 	void KrUIBase::SetWidth(UINT width)
 	{
 		m_rect.right = m_rect.left + width;
+		ChangeBmpSize();
 	}
 
 	void KrUIBase::SetHeight(UINT height)
 	{
 		m_rect.bottom = m_rect.top + height;
+		ChangeBmpSize();
 	}
 
 	void KrUIBase::SetSize(UINT x, UINT y, UINT width, UINT height)
@@ -75,6 +80,7 @@ namespace KrUI
 		m_rect.right = x + width;
 		m_rect.top = y;
 		m_rect.bottom = y + height;
+		ChangeBmpSize();
 	}
 
 
@@ -89,8 +95,19 @@ namespace KrUI
 		m_rect.right = pRect->right;
 		m_rect.top = pRect->top;
 		m_rect.bottom = pRect->bottom;
+		ChangeBmpSize();
 	}
 
+	void KrUIBase::ChangeBmpSize()
+	{
+		if (m_pKrWindow == nullptr)return;
+		if (m_bBmp != NULL)
+		{
+			DeleteObject(m_bBmp);
+		}
+		m_bBmp = CreateCompatibleBitmap(m_pKrWindow->GetDc(), GetWidth(), GetHeight());
+		SelectObject(m_hDc, m_bBmp);
+	}
 
 	void KrUIBase::Show()
 	{
@@ -154,6 +171,7 @@ namespace KrUI
 			if (bMouseIn)
 			{
 				CallMsgProc(KM_LBTNDOWN, wParam, lParam);
+				m_bMouseDown = true;
 			}
 			break;
 		}
@@ -166,6 +184,7 @@ namespace KrUI
 			if (bMouseIn)
 			{
 				CallMsgProc(KM_LBTNUP, wParam, lParam);
+				m_bMouseDown = false;
 			}
 			break;
 		}
@@ -180,11 +199,13 @@ namespace KrUI
 		m_hDc = NULL;
 		m_pGraphics = nullptr;
 		m_pKrWindow = nullptr;
+		m_bBmp = NULL;
 	}
 	KrUIBase::~KrUIBase()
 	{
 		delete m_pGraphics;
 		DeleteObject(m_hDc);
+		DeleteObject(m_bBmp);
 	}
 	void KrUIBase::SetParantWindow(KrWindow* pKrWindow)
 	{
@@ -192,7 +213,22 @@ namespace KrUI
 		{
 			m_pKrWindow = pKrWindow;
 			m_hDc = CreateCompatibleDC(m_pKrWindow->GetDc());
+			m_bBmp = CreateCompatibleBitmap(m_pKrWindow->GetDc(), GetWidth(), GetHeight());
 			m_pGraphics = new Graphics(m_hDc);
+		}
+	}
+
+	void KrUIBase::CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam)
+	{
+		if (m_bVisible)
+		{
+			for (auto p : m_MsgProcMap)
+			{
+				if (p.first == Message)
+				{
+					p.second(this, wParam, lParam);
+				}
+			}
 		}
 	}
 }// namespace KrUI

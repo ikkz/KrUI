@@ -6,26 +6,28 @@
 namespace KrUI
 {
 	class KrWindow;
+	enum Button_Status{mouse_down,mouse_leave,mouse_hover};
 	class KrButton :public KrUIBase
 	{
 	public:
 		KrButton();
 		~KrButton();
-		void SetMouseHoverColor(COLORREF color);
-		void SetMouseDownColor(COLORREF color);
-		void SetMouseLeaveColor(COLORREF color);
-		void SetBorderColor(COLORREF color);
-		COLORREF GetMouseHoverColor();
-		COLORREF GetMouseDownColor();
-		COLORREF GetMouseLeaveColor();
-		COLORREF GetBorderColor();
+		void SetMouseHoverColor(Color color);
+		void SetMouseDownColor(Color color);
+		void SetMouseLeaveColor(Color color);
+		void SetBorderColor(Color color);
+		Color GetMouseHoverColor();
+		Color GetMouseDownColor();
+		Color GetMouseLeaveColor();
+		Color GetBorderColor();
 		void UpdateDc();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 	protected:
-		COLORREF m_MouseHoverColor;
-		COLORREF m_MouseDownColor;
-		COLORREF m_MouseLeaveColor;
-		COLORREF m_BorderColor;
+		Color m_MouseHoverColor;
+		Color m_MouseDownColor;
+		Color m_MouseLeaveColor;
+		Color m_BorderColor;
+		Button_Status m_ButtonStatus;
 	};
 
 

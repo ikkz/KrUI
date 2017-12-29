@@ -21,7 +21,9 @@ namespace KrUI
 		Graphics* m_pGraphics;
 		KrUIType m_UIType;
 		KrWindow* m_pKrWindow;
+		HBITMAP m_bBmp;
 		bool m_bMouseIn;
+		bool m_bMouseDown;
 	public:
 		KrUIBase();
 		~KrUIBase();
@@ -44,6 +46,8 @@ namespace KrUI
 		virtual HDC GetDc();
 		virtual void SetParantWindow(KrWindow* pKrWindow);
 		virtual void UpdateDc()=0;
+		virtual void ChangeBmpSize();
+		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 		void SetName(LPCWSTR name);
 		LPCWSTR GetName();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);

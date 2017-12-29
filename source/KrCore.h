@@ -93,6 +93,8 @@ namespace KrUI
 		virtual void Show();
 		virtual void Hide();
 		virtual void UpdateDc();
+		virtual HDC GetTempDc();
+		virtual void ChangeBmpSize();
 		bool IsCreated();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		KrUIBase* AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height);
