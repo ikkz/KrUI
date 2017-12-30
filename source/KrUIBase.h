@@ -17,11 +17,11 @@ namespace KrUI
 		LPCWSTR m_Name;
 		RECT m_rect;
 		bool m_bVisible;
-		HDC m_hDc;
+		Gdiplus::Bitmap* m_pBmp;
 		Graphics* m_pGraphics;
 		KrUIType m_UIType;
 		KrWindow* m_pKrWindow;
-		HBITMAP m_bBmp;
+		HBITMAP m_hBmp;
 		bool m_bMouseIn;
 		bool m_bMouseDown;
 	public:
@@ -43,10 +43,10 @@ namespace KrUI
 		virtual void Hide();
 		virtual bool IsVisible();
 		virtual void SetDc(HDC hdc);
-		virtual HDC GetDc();
 		virtual void SetParantWindow(KrWindow* pKrWindow);
 		virtual void UpdateDc()=0;
 		virtual void ChangeBmpSize();
+		Graphics* GetBmpGraphics();
 		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 		void SetName(LPCWSTR name);
 		LPCWSTR GetName();

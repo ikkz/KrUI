@@ -101,12 +101,15 @@ namespace KrUI
 	void KrUIBase::ChangeBmpSize()
 	{
 		if (m_pKrWindow == nullptr)return;
-		if (m_bBmp != NULL)
+		if (m_hBmp != NULL)
 		{
-			DeleteObject(m_bBmp);
+			DeleteObject(m_hBmp);
 		}
-		m_bBmp = CreateCompatibleBitmap(m_pKrWindow->GetDc(), GetWidth(), GetHeight());
-		SelectObject(m_hDc, m_bBmp);
+		m_hBmp = CreateCompatibleBitmap(m_pKrWindow->GetDc(), GetWidth(), GetHeight());
+		delete m_pGraphics;
+		delete m_pBmp;
+		m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
+		m_pGraphics = new Graphics(m_pBmp);
 	}
 
 	void KrUIBase::Show()
@@ -124,9 +127,9 @@ namespace KrUI
 
 	}
 
-	HDC KrUIBase::GetDc()
+	Graphics* KrUIBase::GetBmpGraphics()
 	{
-		return m_hDc;
+		return m_pGraphics;
 	}
 
 	void KrUIBase::SetName(LPCWSTR name)
@@ -184,8 +187,8 @@ namespace KrUI
 			if (bMouseIn)
 			{
 				CallMsgProc(KM_LBTNUP, wParam, lParam);
-				m_bMouseDown = false;
 			}
+			m_bMouseDown = false;
 			break;
 		}
 		default:
@@ -196,25 +199,25 @@ namespace KrUI
 	KrUIBase::KrUIBase()
 	{
 		m_bMouseIn = false;
-		m_hDc = NULL;
+		m_pBmp = nullptr;
 		m_pGraphics = nullptr;
 		m_pKrWindow = nullptr;
-		m_bBmp = NULL;
+		m_hBmp = NULL;
 	}
 	KrUIBase::~KrUIBase()
 	{
 		delete m_pGraphics;
-		DeleteObject(m_hDc);
-		DeleteObject(m_bBmp);
+		delete m_pBmp;
+		DeleteObject(m_hBmp);
 	}
 	void KrUIBase::SetParantWindow(KrWindow* pKrWindow)
 	{
 		if ((!m_pKrWindow) && (pKrWindow))
 		{
 			m_pKrWindow = pKrWindow;
-			m_hDc = CreateCompatibleDC(m_pKrWindow->GetDc());
-			m_bBmp = CreateCompatibleBitmap(m_pKrWindow->GetDc(), GetWidth(), GetHeight());
-			m_pGraphics = new Graphics(m_hDc);
+			m_hBmp = CreateCompatibleBitmap(m_pKrWindow->GetDc(), GetWidth(), GetHeight());
+			m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
+			m_pGraphics = new Graphics(m_pBmp);
 		}
 	}
 
@@ -222,6 +225,14 @@ namespace KrUI
 	{
 		if (m_bVisible)
 		{
+			switch (Message)
+			{
+			case KM_LBTNDOWN:
+				m_bMouseDown = true;
+				break;
+			case KM_LBTNUP:
+				m_bMouseDown = false;
+			}
 			for (auto p : m_MsgProcMap)
 			{
 				if (p.first == Message)

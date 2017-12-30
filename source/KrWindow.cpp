@@ -7,6 +7,7 @@ namespace KrUI
 		m_pKrWindow = nullptr;
 		m_UIType = KrUIType::KrWindow_t;
 		m_bMouseDown = false;
+		m_pGraphicsDC = nullptr;
 	}
 
 	LPCWSTR KrWindow::GetWindowName()
@@ -23,10 +24,9 @@ namespace KrUI
 	void KrWindow::SetHWND(HWND hwnd)
 	{
 		m_hwnd = hwnd;
-		m_hDc = ::GetDC(hwnd);
-		m_TempDC = ::CreateCompatibleDC(m_hDc);
+		m_hDC = ::GetDC(hwnd);
+		m_pGraphicsDC = new Graphics(m_hDC);
 		ChangeBmpSize();
-		m_pGraphics = new Gdiplus::Graphics(m_TempDC);
 	}
 
 	HWND KrWindow::GetHWND()
@@ -156,26 +156,28 @@ namespace KrUI
 		return DefWindowProc(m_hwnd, Message, wParam, lParam);
 	}
 
-
-
-	HDC KrWindow::GetTempDc()
+	HDC KrWindow::GetDc()
 	{
-		return m_TempDC;
+		return m_hDC;
 	}
 
 	void KrWindow::ChangeBmpSize()
 	{
-		if (m_bBmp != NULL)
+		if (m_hBmp != NULL)
 		{
-			DeleteObject(m_bBmp);
+			DeleteObject(m_hBmp);
 		}
-		m_bBmp = CreateCompatibleBitmap(m_hDc, GetWidth(), GetHeight());
-		SelectObject(m_TempDC, m_bBmp);
+		m_hBmp = CreateCompatibleBitmap(m_hDC, GetWidth(), GetHeight());
+		delete m_pGraphics;
+		delete m_pBmp;
+		m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
+		m_pGraphics = new Graphics(m_pBmp);
 	}
+
 
 	void KrWindow::UpdateDc()
 	{
-		if (m_bVisible && (m_TempDC != NULL))
+		if (m_bVisible && (m_pBmp != NULL))
 		{
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Color(255, 255, 255)), 0, 0, GetWidth(), GetHeight());
 			for (auto p : m_UIVec)
@@ -186,8 +188,7 @@ namespace KrUI
 				}
 
 			}
-			m_pGraphics->DrawImage(&Gdiplus::Image(L"C:\\Users\\Miles\\Pictures\\²¶»ñ.JPG"),0,0,50,50);
-			BitBlt(m_hDc, 0, 0, GetWidth(), GetHeight(), m_TempDC, 0, 0, SRCCOPY);
+			m_pGraphicsDC->DrawImage(m_pBmp,0,0);
 		}
 	}
 } //!KrUI

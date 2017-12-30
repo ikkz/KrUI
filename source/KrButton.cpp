@@ -58,7 +58,7 @@ namespace KrUI
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_MouseLeaveColor), 0, 0, GetWidth(), GetHeight());
 			m_ButtonStatus = mouse_leave;
 		}
-		BitBlt(m_pKrWindow->GetTempDc(), GetX(), GetY(), GetWidth(), GetHeight(), m_hDc, 0, 0, SRCCOPY);
+		m_pKrWindow->GetBmpGraphics()->DrawImage(m_pBmp, GetX(), GetY(), GetWidth(), GetHeight());
 	}
 	KrButton::~KrButton()
 	{

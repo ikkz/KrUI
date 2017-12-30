@@ -73,7 +73,8 @@ namespace KrUI
 		POINT m_ptMouse;
 		POINT m_ptMouseDown;
 		bool m_bMouseDown;
-		HDC m_TempDC;
+		HDC m_hDC;
+		Graphics* m_pGraphicsDC;
 		vector<KrUIBase*> m_UIVec;
 	public:
 		KrWindow();
@@ -93,8 +94,8 @@ namespace KrUI
 		virtual void Show();
 		virtual void Hide();
 		virtual void UpdateDc();
-		virtual HDC GetTempDc();
 		virtual void ChangeBmpSize();
+		HDC GetDc();
 		bool IsCreated();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		KrUIBase* AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height);
