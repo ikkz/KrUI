@@ -10,7 +10,7 @@ using namespace Gdiplus;
 namespace KrUI
 {
 	class KrWindow;
-	enum KrUIType{KrWindow_t,KrButton_t};
+	enum KrUIType{KrWindow_t,KrButton_t,KrCloseButton_t};
 	class KrUIBase :public KrMessageHandler
 	{
 	protected:
@@ -28,6 +28,8 @@ namespace KrUI
 	public:
 		KrUIBase();
 		~KrUIBase();
+		void SetType(KrUIType ut);
+		KrUIType GetType();
 		virtual RECT* GetRect();
 		virtual void SetRect(RECT* pRect);
 		virtual int GetX();

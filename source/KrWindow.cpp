@@ -8,6 +8,8 @@ namespace KrUI
 		m_UIType = KrUIType::KrWindow_t;
 		m_bMouseDown = false;
 		m_pGraphicsDC = nullptr;
+		m_CaptionColor = Color(9, 163, 220);
+		m_CaptionHeight = 30;
 	}
 
 	LPCWSTR KrWindow::GetWindowName()
@@ -27,6 +29,7 @@ namespace KrUI
 		m_hDC = ::GetDC(hwnd);
 		m_pGraphicsDC = new Graphics(m_hDC);
 		ChangeBmpSize();
+		AddControl(KrCloseButton_t, L"Close", 0, 0, 0, 0);
 	}
 
 	HWND KrWindow::GetHWND()
@@ -42,11 +45,17 @@ namespace KrUI
 		case KrUI::KrButton_t:
 			pui = new KrButton;
 			pui->SetSize(x, y, width, height);
-			pui->SetName(lpName);
-			pui->SetParantWindow(this);
-			m_UIVec.push_back(pui);
+			break;
+		case KrUI::KrCloseButton_t:
+			pui = new KrCloseButton;
+ 			pui->Show();
 			break;
 		}
+		if (pui == nullptr)return nullptr;
+		pui->SetType(t);
+		pui->SetName(lpName);
+		pui->SetParantWindow(this);
+		m_UIVec.push_back(pui);
 		return pui;
 	}
 
@@ -132,6 +141,26 @@ namespace KrUI
 	{
 		switch (Message)
 		{
+
+
+		case WM_LBUTTONDOWN:
+			if (GET_Y_LPARAM(lParam)<m_CaptionHeight)
+			{
+				SendMessage(m_hwnd, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
+				//SetCapture(m_hwnd);
+			}
+			break;
+		case WM_LBUTTONUP:
+			if (GET_Y_LPARAM(lParam) < m_CaptionHeight)
+			{
+				ReleaseCapture();
+			}
+
+			break;
+
+		case WM_PAINT:
+			UpdateDc();
+			break;
 		case WM_DESTROY:
 			//本窗口被销毁时，检查程序是否存在窗口
 			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
@@ -180,6 +209,7 @@ namespace KrUI
 		if (m_bVisible && (m_pBmp != NULL))
 		{
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Color(255, 255, 255)), 0, 0, GetWidth(), GetHeight());
+			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_CaptionColor), 0, 0, GetWidth(), m_CaptionHeight);
 			for (auto p : m_UIVec)
 			{
 				//m_pGraphicsDC->Clear(Color::White);

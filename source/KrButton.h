@@ -35,6 +35,20 @@ namespace KrUI
 	};
 
 
+
+	//以下是特殊按钮：
+	class KrCloseButton :public KrButton
+	{
+	public:
+		friend KrWindow;
+		virtual void DrawContent();
+		virtual void UpdateDc();
+		KrCloseButton();
+	protected:
+		UINT m_Margin;
+	};
+
+
 }//!KrUI
 
 #endif

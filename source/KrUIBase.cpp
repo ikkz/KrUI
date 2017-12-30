@@ -245,4 +245,14 @@ namespace KrUI
 			}
 		}
 	}
+
+
+	void KrUIBase::SetType(KrUIType ut)
+	{
+		m_UIType = ut;
+	}
+	KrUIType KrUIBase::GetType()
+	{
+		return m_UIType;
+	}
 }// namespace KrUI
