@@ -4,7 +4,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 #define TIMER_ID 1
-#define TIMER_INTERVAL 50
+#define TIMER_INTERVAL 60
 #ifdef _DEBUG
 #include <iostream>
 #endif
@@ -84,7 +84,7 @@ namespace KrUI
 		HWND GetHWND();
 		void SetStyle(DWORD dwStyle);
 		DWORD GetStyle();
-
+		friend class KrButton;
 		virtual void SetRect(RECT* pRect);
 		virtual void SetX(UINT x);
 		virtual void SetY(UINT y);

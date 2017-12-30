@@ -22,6 +22,7 @@ namespace KrUI
 		KrUIType m_UIType;
 		KrWindow* m_pKrWindow;
 		HBITMAP m_hBmp;
+		StringFormat m_StringFormat;
 		bool m_bMouseIn;
 		bool m_bMouseDown;
 	public:

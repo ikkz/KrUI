@@ -20,6 +20,10 @@ namespace KrUI
 		Color GetMouseDownColor();
 		Color GetMouseLeaveColor();
 		Color GetBorderColor();
+		virtual void DrawMouseDownBmp();
+		virtual void DrawMouseHoverBmp();
+		virtual void DrawMouseLeaveBmp();
+		virtual void DrawContent();
 		void UpdateDc();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 	protected:

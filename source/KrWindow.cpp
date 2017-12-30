@@ -182,6 +182,7 @@ namespace KrUI
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Color(255, 255, 255)), 0, 0, GetWidth(), GetHeight());
 			for (auto p : m_UIVec)
 			{
+				//m_pGraphicsDC->Clear(Color::White);
 				if (p->IsVisible())
 				{
 					p->UpdateDc();

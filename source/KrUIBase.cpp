@@ -110,6 +110,7 @@ namespace KrUI
 		delete m_pBmp;
 		m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
 		m_pGraphics = new Graphics(m_pBmp);
+		UpdateDc();
 	}
 
 	void KrUIBase::Show()
@@ -150,7 +151,7 @@ namespace KrUI
 			POINT ptMouse;
 			ptMouse.x = GET_X_LPARAM(lParam);
 			ptMouse.y = GET_Y_LPARAM(lParam);
-			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
+			bool bMouseIn = PtInRect(&m_rect, ptMouse) ? true : false;
 			if (m_bMouseIn == false && bMouseIn == TRUE)
 			{
 				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
@@ -203,6 +204,8 @@ namespace KrUI
 		m_pGraphics = nullptr;
 		m_pKrWindow = nullptr;
 		m_hBmp = NULL;
+		m_StringFormat.SetAlignment(StringAlignmentCenter);
+		m_StringFormat.SetLineAlignment(StringAlignmentCenter);
 	}
 	KrUIBase::~KrUIBase()
 	{
