@@ -15,7 +15,7 @@ using namespace KrUI;
 LRESULT wnd_click1(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam)
 {
 #ifdef _DEBUG
-	cout << "enter" << endl;
+	cout << "button enter" << endl;
 #endif // _DEBUG
 
 	return 0;
@@ -23,11 +23,30 @@ LRESULT wnd_click1(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lP
 LRESULT wnd_click2(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam)
 {
 #ifdef _DEBUG
-	cout << "leave" << endl;
+	cout << "button down" << endl;
 #endif // _DEBUG
+	MessageBox(NULL, L"button click", L"tip", MB_OK);
 	return 0;
 }
 
+LRESULT wnd_click4(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam)
+{
+#ifdef _DEBUG
+	cout << "button leave" << endl;
+#endif // _DEBUG
+
+	return 0;
+}
+LRESULT wnd_click3(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam)
+{
+	KrButton* pb = dynamic_cast<KrButton*>(pKrMessageHandler);
+	pb->SetX(pb->GetX() + 20);
+
+#ifdef _DEBUG
+	cout << "button up" << endl;
+#endif // _DEBUG
+	return 0;
+}
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	KrUIManager* p = KrUI::KrUIManager::GetpKrUIManager();
@@ -36,11 +55,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 0;
 	}
 
-	KrWindow* pw = p->AddWindow(L"hhh", 300,300, 500, 300, WS_CAPTION | WS_BORDER | WS_VISIBLE | WS_OVERLAPPED);
+	KrWindow* pw = p->AddWindow(L"hhh",50, 300, 500, 300);
 	pw->Show();
-	KrButton* pb = dynamic_cast<KrButton*>(pw->AddControl(KrButton_t, L"hhh", 0, 0, 250, 300));
-	pb->RegMsg(KM_MOUSELEAVE, wnd_click2);
+
+	KrButton* pb = dynamic_cast<KrButton*>(pw->AddControl(KrButton_t, L"°´Å¥", 60, 60, 100, 25));
+	pb->RegMsg(KM_LBTNUP, wnd_click2);
 	pb->RegMsg(KM_MOUSEENTER, wnd_click1);
+	pb->RegMsg(KM_MOUSELEAVE, wnd_click4);
+	pb->RegMsg(KM_LBTNUP, wnd_click3);
+	pb->Show();
+	KrButton* pb1 = dynamic_cast<KrButton*>(pw->AddControl(KrButton_t, L"°´Å¥2", 200, 60, 100, 25));
+	pb1->RegMsg(KM_LBTNUP, wnd_click2);
+	pb1->RegMsg(KM_MOUSEENTER, wnd_click1);
+	pb1->RegMsg(KM_MOUSELEAVE, wnd_click4);
+	pb1->RegMsg(KM_LBTNUP, wnd_click3);
+	pb1->Show();
 	//pw->RemoveMsgProc(wnd_click1);
 	return p->MessageLoop();
 }
