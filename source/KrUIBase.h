@@ -23,6 +23,7 @@ namespace KrUI
 		KrWindow* m_pKrWindow;
 		HBITMAP m_hBmp;
 		StringFormat m_StringFormat;
+		Font* m_pFont;
 		bool m_bMouseIn;
 		bool m_bMouseDown;
 	public:
@@ -47,6 +48,7 @@ namespace KrUI
 		virtual bool IsVisible();
 		virtual void SetDc(HDC hdc);
 		virtual void SetParantWindow(KrWindow* pKrWindow);
+		KrWindow* GetParantWindow();
 		virtual void UpdateDc()=0;
 		virtual void ChangeBmpSize();
 		Graphics* GetBmpGraphics();

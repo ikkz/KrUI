@@ -206,6 +206,7 @@ namespace KrUI
 		m_hBmp = NULL;
 		m_StringFormat.SetAlignment(StringAlignmentCenter);
 		m_StringFormat.SetLineAlignment(StringAlignmentCenter);
+		m_pFont = new Font(L"ËÎÌו", 10);
 	}
 	KrUIBase::~KrUIBase()
 	{
@@ -254,5 +255,10 @@ namespace KrUI
 	KrUIType KrUIBase::GetType()
 	{
 		return m_UIType;
+	}
+
+	KrWindow* KrUIBase::GetParantWindow()
+	{
+		return m_pKrWindow;
 	}
 }// namespace KrUI

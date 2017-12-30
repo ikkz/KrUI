@@ -24,8 +24,8 @@ namespace KrUI
 		virtual void DrawMouseHoverBmp();
 		virtual void DrawMouseLeaveBmp();
 		virtual void DrawContent();
-		void UpdateDc();
-		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+		virtual void UpdateDc();
+		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 	protected:
 		Color m_MouseHoverColor;
 		Color m_MouseDownColor;
@@ -41,9 +41,9 @@ namespace KrUI
 	{
 	public:
 		friend KrWindow;
-		virtual void DrawContent();
-		virtual void UpdateDc();
+ 		virtual void DrawContent();
 		KrCloseButton();
+		static LRESULT DestroyKrWindow(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 	protected:
 		UINT m_Margin;
 	};

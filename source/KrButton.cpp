@@ -1,5 +1,6 @@
 #include "KrButton.h"
 #include "KrCore.h"
+#include "KrDefine.h"
 namespace KrUI
 {
 
@@ -48,18 +49,18 @@ namespace KrUI
 		//m_pGraphics->DrawImage(m_pKrWindow->m_pBmp, 0, 0, GetX(), GetY(), GetWidth(), GetHeight(), Gdiplus::Unit::UnitPixel);
 		if (m_bMouseDown && (m_ButtonStatus != mouse_down))
 		{
-			DrawMouseDownBmp();
-			DrawContent();
+			this->DrawMouseDownBmp();
+			this->DrawContent();
 		}
 		else if ((m_bMouseIn && !m_bMouseDown) && m_ButtonStatus != mouse_hover)
 		{
-			DrawMouseHoverBmp();
-			DrawContent();
+			this->DrawMouseHoverBmp();
+			this->DrawContent();
 		}
 		else if (((!m_bMouseDown) && (!m_bMouseIn)) && m_ButtonStatus != mouse_leave)
 		{
-			DrawMouseLeaveBmp();
-			DrawContent();
+			this->DrawMouseLeaveBmp();
+			this->DrawContent();
 		}
 		m_pKrWindow->GetBmpGraphics()->DrawImage(m_pBmp, GetX(), GetY(), GetWidth(), GetHeight());
 	}
@@ -81,7 +82,7 @@ namespace KrUI
 	}
 	void KrButton::DrawContent()
 	{
-		m_pGraphics->DrawString((WCHAR*)m_Name, -1, &Font(L"ËÎÌו", 10), RectF(0, 0, GetWidth(), GetHeight()), &m_StringFormat, &SolidBrush(Color(255, 255, 255)));
+		this->m_pGraphics->DrawString((WCHAR*)m_Name, -1,m_pFont, RectF(0, 0, GetWidth(), GetHeight()), &m_StringFormat, &SolidBrush(Color(255, 255, 255)));
 	}
 	KrButton::~KrButton()
 	{
@@ -99,50 +100,24 @@ namespace KrUI
 		m_MouseDownColor = Color(203, 51, 39);
 		m_MouseHoverColor = Color(250, 99, 87);
 		m_Margin = 5;
+		RegMsg(KM_LBTNDOWN, KrCloseButton::DestroyKrWindow);
 	}
-
+	
 	void KrCloseButton::DrawContent()
 	{
-		SetSize(m_pKrWindow->GetWidth() - m_pKrWindow->m_CaptionHeight + m_Margin, m_Margin, m_pKrWindow->m_CaptionHeight - m_Margin * 2, m_pKrWindow->m_CaptionHeight - m_Margin * 2);
-		// 		switch (m_ButtonStatus)
-		// 		{
-		// 		case KrUI::mouse_leave:
-		// 
-		// 			break;
-		// 		case KrUI::mouse_down:
-		// 		case KrUI::mouse_hover:
-		// 
-		// 			break;
-		// 		default:
-		// 			break;
-		//m_pGraphics->DrawLine(&Pen(Color::White), 3, 3, GetX() - 3, GetY() - 3);
-		//m_pGraphics->DrawLine(&Pen(Color::White), 3, GetY() - 3, GetX() - 3, 3);
+		m_rect.left = m_pKrWindow->GetWidth() - m_pKrWindow->m_CaptionHeight + m_Margin;
+		m_rect.top = m_Margin;
+		m_rect.right = m_pKrWindow->GetWidth() - m_Margin;
+		m_rect.bottom = m_pKrWindow->m_CaptionHeight - m_Margin;
+		Font* pfont = m_pFont;
+		m_pFont = new Font(L"ËÎÌו",14,FontStyleBold);
+		KrButton::DrawContent();
+		delete m_pFont;
+		m_pFont = pfont;
 	}
 
-	void KrCloseButton::UpdateDc()
+	LRESULT KrCloseButton::DestroyKrWindow(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam)
 	{
-// 		//m_pGraphics->DrawImage(m_pKrWindow->m_pBmp, 0, 0, GetX(), GetY(), GetWidth(), GetHeight(), Gdiplus::Unit::UnitPixel);
-// 		if (m_bMouseDown && (m_ButtonStatus != mouse_down))
-// 		{
-// 			cout << "down" << endl;
-// 
-// 			DrawMouseDownBmp();
-// 			DrawContent();
-// 
-// 		}
-// 		else if ((m_bMouseIn && !m_bMouseDown) && m_ButtonStatus != mouse_hover)
-// 		{
-// 			cout << "hover" << endl;
-// 			DrawMouseHoverBmp();
-// 			DrawContent();
-// 		}
-// 		else if (((!m_bMouseDown) && (!m_bMouseIn)) && m_ButtonStatus != mouse_leave)
-// 		{
-// 			cout << "leave" << endl;
-// 			DrawMouseLeaveBmp();
-// 			DrawContent();
-// 		}
-// 		m_pKrWindow->GetBmpGraphics()->DrawImage(m_pBmp, GetX(), GetY(), GetWidth(), GetHeight());
-		KrButton::UpdateDc();
+		return SendMessage(dynamic_cast<KrCloseButton*>(pKrMessageHandler)->GetParantWindow()->GetHWND(), WM_DESTROY, wParam, lParam);
 	}
 }//!KrUI

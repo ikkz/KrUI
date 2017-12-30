@@ -10,6 +10,7 @@ namespace KrUI
 		m_pGraphicsDC = nullptr;
 		m_CaptionColor = Color(9, 163, 220);
 		m_CaptionHeight = 30;
+		m_StringFormat.SetAlignment(StringAlignmentNear);
 	}
 
 	LPCWSTR KrWindow::GetWindowName()
@@ -28,8 +29,9 @@ namespace KrUI
 		m_hwnd = hwnd;
 		m_hDC = ::GetDC(hwnd);
 		m_pGraphicsDC = new Graphics(m_hDC);
+		SetWindowText(m_hwnd, m_lpName);
 		ChangeBmpSize();
-		AddControl(KrCloseButton_t, L"Close", 0, 0, 0, 0);
+		AddControl(KrCloseButton_t, L"×", 0, 0, 0, 0);
 	}
 
 	HWND KrWindow::GetHWND()
@@ -48,8 +50,15 @@ namespace KrUI
 			break;
 		case KrUI::KrCloseButton_t:
 			pui = new KrCloseButton;
+			int m_Margin = 5;
+			pui->SetSize(GetWidth() - m_CaptionHeight + m_Margin, m_Margin, m_CaptionHeight - m_Margin * 2,m_CaptionHeight - m_Margin * 2);
+// 			pui = new KrButton;
+// 			int m_Margin = 5;
+// 			pui->SetSize(GetWidth() - m_CaptionHeight + m_Margin, m_Margin, m_CaptionHeight - m_Margin * 2,m_CaptionHeight - m_Margin * 2);
  			pui->Show();
-			break;
+// 			pui = new KrCloseButton;
+//  			pui->Show();
+ 			break;
 		}
 		if (pui == nullptr)return nullptr;
 		pui->SetType(t);
@@ -168,6 +177,7 @@ namespace KrUI
 		case WM_MOVE:
 		case WM_SIZE:
 			GetWindowRect(m_hwnd, GetRect());
+			UpdateDc();
 			break;
 		}
 		//调用窗口消息处理函数
@@ -210,9 +220,9 @@ namespace KrUI
 		{
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Color(255, 255, 255)), 0, 0, GetWidth(), GetHeight());
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_CaptionColor), 0, 0, GetWidth(), m_CaptionHeight);
+			m_pGraphics->DrawString((WCHAR*)m_lpName, -1, m_pFont, RectF(10, 0, GetWidth() - 10, m_CaptionHeight), &m_StringFormat, &SolidBrush(Color(255, 255, 255)));
 			for (auto p : m_UIVec)
 			{
-				//m_pGraphicsDC->Clear(Color::White);
 				if (p->IsVisible())
 				{
 					p->UpdateDc();
