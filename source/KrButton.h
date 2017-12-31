@@ -25,6 +25,7 @@ namespace KrUI
 		virtual void DrawMouseLeaveBmp();
 		virtual void DrawContent();
 		virtual void UpdateDc();
+		void SetButtonStatus(Button_Status bs);
 		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 	protected:
 		Color m_MouseHoverColor;
@@ -42,6 +43,7 @@ namespace KrUI
 	public:
 		friend KrWindow;
  		virtual void DrawContent();
+		UINT GetMargin();
 		KrCloseButton();
 		static LRESULT DestroyKrWindow(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 	protected:

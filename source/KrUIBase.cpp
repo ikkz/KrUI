@@ -40,7 +40,7 @@ namespace KrUI
 		m_rect.left = x;
 		m_rect.right = x + width;
 
-		ChangeBmpSize();
+		this->ChangeBmpSize();
 	}
 	void KrUIBase::SetY(UINT y)
 	{
@@ -48,7 +48,7 @@ namespace KrUI
 		m_rect.top = y;
 		m_rect.bottom = y + height;
 
-		ChangeBmpSize();
+		this->ChangeBmpSize();
 	}
 
 	void KrUIBase::SetXY(UINT x, UINT y)
@@ -59,19 +59,19 @@ namespace KrUI
 		m_rect.right = x + width;
 		m_rect.top = y;
 		m_rect.bottom = y + height;
-		ChangeBmpSize();
+		this->ChangeBmpSize();
 	}
 
 	void KrUIBase::SetWidth(UINT width)
 	{
 		m_rect.right = m_rect.left + width;
-		ChangeBmpSize();
+		this->ChangeBmpSize();
 	}
 
 	void KrUIBase::SetHeight(UINT height)
 	{
 		m_rect.bottom = m_rect.top + height;
-		ChangeBmpSize();
+		this->ChangeBmpSize();
 	}
 
 	void KrUIBase::SetSize(UINT x, UINT y, UINT width, UINT height)
@@ -80,7 +80,7 @@ namespace KrUI
 		m_rect.right = x + width;
 		m_rect.top = y;
 		m_rect.bottom = y + height;
-		ChangeBmpSize();
+		this->ChangeBmpSize();
 	}
 
 
@@ -95,7 +95,7 @@ namespace KrUI
 		m_rect.right = pRect->right;
 		m_rect.top = pRect->top;
 		m_rect.bottom = pRect->bottom;
-		ChangeBmpSize();
+		this->ChangeBmpSize();
 	}
 
 	void KrUIBase::ChangeBmpSize()
@@ -110,7 +110,7 @@ namespace KrUI
 		delete m_pBmp;
 		m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
 		m_pGraphics = new Graphics(m_pBmp);
-		UpdateDc();
+		this->UpdateDc();
 	}
 
 	void KrUIBase::Show()
@@ -157,11 +157,11 @@ namespace KrUI
 				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
 				//使用这种方法还需要在后两个参数之一中标识消息属于哪个UIBase并在处理时dynamic_cast
 				//最后消息还是回到这里，所以直接在这调用MsgProc算了，下面也一样
-				CallMsgProc(KM_MOUSEENTER, wParam, lParam);
+				this->CallMsgProc(KM_MOUSEENTER, wParam, lParam);
 			}
 			else if (m_bMouseIn == true && bMouseIn == false)
 			{
-				CallMsgProc(KM_MOUSELEAVE, wParam, lParam);
+				this->CallMsgProc(KM_MOUSELEAVE, wParam, lParam);
 			}
 			m_bMouseIn = bMouseIn;
 			break;
@@ -174,7 +174,7 @@ namespace KrUI
 			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
 			if (bMouseIn)
 			{
-				CallMsgProc(KM_LBTNDOWN, wParam, lParam);
+				this->CallMsgProc(KM_LBTNDOWN, wParam, lParam);
 				m_bMouseDown = true;
 			}
 			break;
@@ -187,7 +187,7 @@ namespace KrUI
 			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
 			if (bMouseIn)
 			{
-				CallMsgProc(KM_LBTNUP, wParam, lParam);
+				this->CallMsgProc(KM_LBTNUP, wParam, lParam);
 			}
 			m_bMouseDown = false;
 			break;

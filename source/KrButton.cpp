@@ -47,12 +47,7 @@ namespace KrUI
 	void KrButton::UpdateDc()
 	{
 		//m_pGraphics->DrawImage(m_pKrWindow->m_pBmp, 0, 0, GetX(), GetY(), GetWidth(), GetHeight(), Gdiplus::Unit::UnitPixel);
-		if (m_bMouseDown && (m_ButtonStatus != mouse_down))
-		{
-			this->DrawMouseDownBmp();
-			this->DrawContent();
-		}
-		else if ((m_bMouseIn && !m_bMouseDown) && m_ButtonStatus != mouse_hover)
+		if ((m_bMouseIn && !m_bMouseDown) && m_ButtonStatus != mouse_hover)
 		{
 			this->DrawMouseHoverBmp();
 			this->DrawContent();
@@ -60,6 +55,11 @@ namespace KrUI
 		else if (((!m_bMouseDown) && (!m_bMouseIn)) && m_ButtonStatus != mouse_leave)
 		{
 			this->DrawMouseLeaveBmp();
+			this->DrawContent();
+		}
+		else if (m_bMouseDown && (m_ButtonStatus != mouse_down))
+		{
+			this->DrawMouseDownBmp();
 			this->DrawContent();
 		}
 		m_pKrWindow->GetBmpGraphics()->DrawImage(m_pBmp, GetX(), GetY(), GetWidth(), GetHeight());
@@ -82,19 +82,23 @@ namespace KrUI
 	}
 	void KrButton::DrawContent()
 	{
-		this->m_pGraphics->DrawString((WCHAR*)m_Name, -1,m_pFont, RectF(0, 0, GetWidth(), GetHeight()), &m_StringFormat, &SolidBrush(Color(255, 255, 255)));
+		this->m_pGraphics->DrawString((WCHAR*)m_Name, -1, m_pFont, RectF(0, 0, GetWidth(), GetHeight()), &m_StringFormat, &SolidBrush(Color(255, 255, 255)));
 	}
 	KrButton::~KrButton()
 	{
 	}
 
+	void KrButton::SetButtonStatus(Button_Status bs)
+	{
+		m_ButtonStatus = bs;
+	}
 	LRESULT KrButton::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		return KrUIBase::HandleMessage(Message, wParam, lParam);
 	}
 
 
-//关闭按钮：
+	//关闭按钮：
 	KrCloseButton::KrCloseButton()
 	{
 		m_MouseDownColor = Color(203, 51, 39);
@@ -102,7 +106,12 @@ namespace KrUI
 		m_Margin = 5;
 		RegMsg(KM_LBTNDOWN, KrCloseButton::DestroyKrWindow);
 	}
-	
+
+
+	UINT KrCloseButton::GetMargin()
+	{
+		return m_Margin;
+	}
 	void KrCloseButton::DrawContent()
 	{
 		m_rect.left = m_pKrWindow->GetWidth() - m_pKrWindow->m_CaptionHeight + m_Margin;
@@ -110,7 +119,7 @@ namespace KrUI
 		m_rect.right = m_pKrWindow->GetWidth() - m_Margin;
 		m_rect.bottom = m_pKrWindow->m_CaptionHeight - m_Margin;
 		Font* pfont = m_pFont;
-		m_pFont = new Font(L"宋体",14,FontStyleBold);
+		m_pFont = new Font(L"宋体", 14, FontStyleBold);
 		KrButton::DrawContent();
 		delete m_pFont;
 		m_pFont = pfont;

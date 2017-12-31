@@ -35,7 +35,7 @@ namespace KrUI
 		WNDCLASSEX wcex;
 		memset(&wcex, 0, sizeof(wcex));
 		wcex.cbSize = sizeof(WNDCLASSEX);
-		wcex.style = CS_HREDRAW | CS_VREDRAW;
+		wcex.style = CS_HREDRAW | CS_VREDRAW ;
 		wcex.lpfnWndProc = WndProc;
 		wcex.cbClsExtra = 0;
 		wcex.cbWndExtra = 0;
@@ -61,7 +61,7 @@ namespace KrUI
 	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height)
 	{
 
-		return AddWindow(lpWindowName, x, y, width, height, WS_OVERLAPPEDWINDOW|WS_VISIBLE);
+		return AddWindow(lpWindowName, x, y, width, height, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
 	}
 
 
@@ -78,7 +78,7 @@ namespace KrUI
 		pKrWindow->SetWindowName(lpWindowName);
 		HWND hwnd = CreateWindow(KrUIManager::GetpKrUIManager()->GetWindowClassName(), lpWindowName, dwStyle, rect.left, rect.top,
 			rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
-		SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER);
+		SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER|WS_MINIMIZEBOX);
 		pKrWindow->SetHWND(hwnd);
 		pKrWindow->SetWindowName(lpWindowName);
 		m_WndVec.push_back(pKrWindow);
@@ -169,7 +169,7 @@ namespace KrUI
 
 	void KrUIManager::TimerProc(HWND hWnd, UINT nMsg, UINT nTimerid, DWORD dwTime)
 	{
-		for (auto p:GetpKrUIManager()->m_WndVec)
+		for (auto p : GetpKrUIManager()->m_WndVec)
 		{
 			p->UpdateDc();
 		}

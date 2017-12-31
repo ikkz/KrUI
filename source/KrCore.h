@@ -82,6 +82,7 @@ namespace KrUI
 		vector<KrUIBase*> m_UIVec;
 	public:
 		KrWindow();
+		static LRESULT SizeChange(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 		LPCWSTR GetWindowName();
 		void SetWindowName(LPCWSTR lpWindowName);
 		void SetHWND(HWND hwnd);
@@ -104,6 +105,7 @@ namespace KrUI
 		bool IsCreated();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		KrUIBase* AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height);
+		void RemoveControl(KrUIBase* pui);
 	};
 }//namespace KrUI
 
