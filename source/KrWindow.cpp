@@ -10,6 +10,7 @@ namespace KrUI
 		m_pGraphicsDC = nullptr;
 		m_hDC = NULL;
 		m_CaptionColor = Color(9, 163, 220);
+		m_BgColor = Color(255, 255, 255);
 		m_CaptionHeight = 30;
 		m_StringFormat.SetAlignment(StringAlignmentNear);
 	}
@@ -46,11 +47,16 @@ namespace KrUI
 		KrUIBase* pui = nullptr;
 		switch (t)
 		{
-		case KrUI::KrButton_t:
+		case KrLabel_t:
+			pui = new KrLabel(m_BgColor);
+			pui->SetSize(x, y, width, height);
+			break;
+		case KrButton_t:
 			pui = new KrButton;
 			pui->SetSize(x, y, width, height);
 			break;
-		case KrUI::KrCloseButton_t:
+		case KrCloseButton_t:
+		{
 			pui = new KrCloseButton;
 			int Margin = dynamic_cast<KrCloseButton*>(pui)->GetMargin();
 			pui->SetSize(GetWidth() - m_CaptionHeight + Margin, Margin, m_CaptionHeight - Margin * 2, m_CaptionHeight - Margin * 2);
@@ -60,7 +66,10 @@ namespace KrUI
 			pui->Show();
 			// 			pui = new KrCloseButton;
 			//  			pui->Show();
+			
+		}
 			break;
+
 		}
 		if (pui == nullptr)return nullptr;
 		pui->SetType(t);
@@ -259,9 +268,9 @@ namespace KrUI
 		if (m_bVisible && (m_pBmp != NULL))
 		{
 			m_pGraphics->Clear(Color(255, 255, 255));
-			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Color(255, 255, 255)), 0, 0, m_pBmp->GetWidth(), m_pBmp->GetHeight());
+			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_BgColor), 0, 0, m_pBmp->GetWidth(), m_pBmp->GetHeight());
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_CaptionColor), 0, 0, m_pBmp->GetWidth(), m_CaptionHeight);
-			m_pGraphics->DrawString((WCHAR*)m_lpName, -1, m_pFont, RectF(10, 0, m_pBmp->GetWidth() - 10, m_CaptionHeight), &m_StringFormat, &SolidBrush(Color(255, 255, 255)));
+			m_pGraphics->DrawString((WCHAR*)m_lpName, -1, m_pFont, RectF(10, 0, m_pBmp->GetWidth() - 10, m_CaptionHeight), &m_StringFormat, &SolidBrush(m_FontColor));
 			for (auto p : m_UIVec)
 			{
 				if (p != nullptr&&p->IsVisible())

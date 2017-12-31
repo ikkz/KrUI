@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="KrUI::KrMessageHandler" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAABAAAIAAAAACAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>source\KrMessageHandler.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KrUI::KrWindow" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AsQAYARChAAECgZAGIAAIAIgIAQEACAEAgAAEBAAAAU=</HashCode>
+      <FileName>source\KrUIBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KrUI::KrUIBase" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EgAAIghCICAEEQYAEAMIAABAABUkICGQYCYAREIABAQ=</HashCode>
+      <FileName>source\KrUIBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KrUI::KrButton" Collapsed="true">
+    <Position X="3.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgAKAABICAAAIAAgAAAAAADAAgAgCqgAAgAAAgACCAA=</HashCode>
+      <FileName>source\KrButton.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KrUI::KrCloseButton" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAgBAAAAEAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>source\KrButton.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KrUI::KrUIManager" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAKAABAAAAgARAAAAAAAAAAEDAEgARAAAAAUEQAAAY=</HashCode>
+      <FileName>source\KrCore.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KrUI::KrLabel" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>source\KrCore.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Typedef Name="KrUI::MSGPROC" Collapsed="true">
+    <Position X="7.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>source\KrMessageHandler.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="KrUI::MSGPROC" Collapsed="true">
+    <Position X="9.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>source\KrCore.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="KrUI::KrUIType" Collapsed="true">
+    <Position X="9.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACQAAAAAAAAAAAAAAAAABAAAAAAAAIA=</HashCode>
+      <FileName>source\KrUIBase.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="KrUI::Button_Status" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>source\KrButton.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

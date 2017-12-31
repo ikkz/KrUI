@@ -207,6 +207,7 @@ namespace KrUI
 		m_StringFormat.SetAlignment(StringAlignmentCenter);
 		m_StringFormat.SetLineAlignment(StringAlignmentCenter);
 		m_pFont = new Font(L"ËÎÌו", 10);
+		m_FontColor = Color(255, 255, 255);
 	}
 	KrUIBase::~KrUIBase()
 	{

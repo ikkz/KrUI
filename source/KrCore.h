@@ -20,6 +20,7 @@
 #include "KrUIBase.h"
 #include "KrDefine.h"
 #include "KrButton.h"
+#include "KrLabel.h"
 using namespace std;
 using namespace Gdiplus;
 
@@ -77,6 +78,7 @@ namespace KrUI
 		POINT m_ptMouseDown;
 		bool m_bMouseDown;
 		Color m_CaptionColor;
+		Color m_BgColor;
 		HDC m_hDC;
 		Graphics* m_pGraphicsDC;
 		vector<KrUIBase*> m_UIVec;
@@ -91,6 +93,7 @@ namespace KrUI
 		DWORD GetStyle();
 		friend class KrButton;
 		friend class KrCloseButton;
+		friend class KrLabel;
 		virtual void SetRect(RECT* pRect);
 		virtual void SetX(UINT x);
 		virtual void SetY(UINT y);

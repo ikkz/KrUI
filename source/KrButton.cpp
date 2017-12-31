@@ -82,7 +82,7 @@ namespace KrUI
 	}
 	void KrButton::DrawContent()
 	{
-		this->m_pGraphics->DrawString((WCHAR*)m_Name, -1, m_pFont, RectF(0, 0, GetWidth(), GetHeight()), &m_StringFormat, &SolidBrush(Color(255, 255, 255)));
+		this->m_pGraphics->DrawString((WCHAR*)m_Name, -1, m_pFont, RectF(0, 0, GetWidth(), GetHeight()), &m_StringFormat, &SolidBrush(m_FontColor));
 	}
 	KrButton::~KrButton()
 	{

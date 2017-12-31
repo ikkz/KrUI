@@ -10,7 +10,7 @@ using namespace Gdiplus;
 namespace KrUI
 {
 	class KrWindow;
-	enum KrUIType{KrWindow_t,KrButton_t,KrCloseButton_t};
+	enum KrUIType{KrWindow_t,KrButton_t,KrCloseButton_t,KrLabel_t};
 	class KrUIBase :public KrMessageHandler
 	{
 	protected:
@@ -24,6 +24,7 @@ namespace KrUI
 		HBITMAP m_hBmp;
 		StringFormat m_StringFormat;
 		Font* m_pFont;
+		Color m_FontColor;
 		bool m_bMouseIn;
 		bool m_bMouseDown;
 	public:
@@ -49,6 +50,8 @@ namespace KrUI
 		virtual void SetDc(HDC hdc);
 		virtual void SetParantWindow(KrWindow* pKrWindow);
 		KrWindow* GetParantWindow();
+		void SetFontColor(Color color);
+		Color GetFontColor();
 		virtual void UpdateDc()=0;
 		virtual void ChangeBmpSize();
 		Graphics* GetBmpGraphics();
