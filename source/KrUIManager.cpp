@@ -8,6 +8,21 @@ namespace KrUI
 	//把消息传递给UIManager统一处理分发
 	LRESULT CALLBACK KrUIManager::WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
+
+		/*
+		switch (Message) {
+
+
+		case WM_DESTROY: {
+			PostQuitMessage(0);
+			break;
+		}
+
+		default:
+			return DefWindowProc(hwnd, Message, wParam, lParam);
+		}
+		return 0;
+		*/
 		return  KrUIManager::GetpKrUIManager()->HandleMessage(hwnd, Message, wParam, lParam);
 	}
 	KrUIManager* KrUIManager::GetpKrUIManager()
@@ -35,7 +50,7 @@ namespace KrUI
 		WNDCLASSEX wcex;
 		memset(&wcex, 0, sizeof(wcex));
 		wcex.cbSize = sizeof(WNDCLASSEX);
-		wcex.style = CS_HREDRAW | CS_VREDRAW ;
+		wcex.style = CS_HREDRAW | CS_VREDRAW;
 		wcex.lpfnWndProc = WndProc;
 		wcex.cbClsExtra = 0;
 		wcex.cbWndExtra = 0;
@@ -60,8 +75,7 @@ namespace KrUI
 
 	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height)
 	{
-
-		return AddWindow(lpWindowName, x, y, width, height, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
+		return AddWindow(lpWindowName, x, y, width, height, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_MINIMIZEBOX /*WS_OVERLAPPEDWINDOW | WS_VISIBLE*/);
 	}
 
 
@@ -76,9 +90,9 @@ namespace KrUI
 		rect.bottom = y + height;
 		pKrWindow->SetRect(&rect);
 		pKrWindow->SetWindowName(lpWindowName);
-		HWND hwnd = CreateWindow(KrUIManager::GetpKrUIManager()->GetWindowClassName(), lpWindowName, dwStyle, rect.left, rect.top,
+		HWND hwnd = CreateWindow(KrUIManager::GetpKrUIManager()->GetWindowClassName(), lpWindowName, /*WS_POPUP | WS_VISIBLE *//* WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER | WS_MINIMIZEBOX*/dwStyle, rect.left, rect.top,
 			rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
-		SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER|WS_MINIMIZEBOX);
+		//SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER | WS_MINIMIZEBOX);
 		pKrWindow->SetHWND(hwnd);
 		pKrWindow->SetWindowName(lpWindowName);
 		m_WndVec.push_back(pKrWindow);
@@ -99,7 +113,7 @@ namespace KrUI
 
 	int  KrUIManager::MessageLoop()
 	{
-		while (GetMessage(&m_msg, NULL, 0, 0) != 0)
+		while (GetMessage(&m_msg, NULL, 0, 0) > 0)
 		{
 			TranslateMessage(&m_msg);
 			DispatchMessage(&m_msg);
@@ -110,7 +124,6 @@ namespace KrUI
 
 	LRESULT   KrUIManager::HandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-
 		for (vector<KrWindow*>::iterator it = m_WndVec.begin(); it != m_WndVec.end(); ++it)
 		{
 			if (hwnd == (*it)->GetHWND())
@@ -118,7 +131,7 @@ namespace KrUI
 				return (*it)->HandleMessage(Message, wParam, lParam);
 			}
 		}
-		return TRUE;
+		return DefWindowProc(hwnd, Message, wParam, lParam);
 	}
 
 	KrWindow* KrUIManager::GetpKrWindow(HWND hwnd)

@@ -165,8 +165,6 @@ namespace KrUI
 	{
 		switch (Message)
 		{
-
-
 		case WM_LBUTTONDOWN:
 			if (GET_Y_LPARAM(lParam) < m_CaptionHeight)
 			{
@@ -205,7 +203,6 @@ namespace KrUI
 				dynamic_cast<KrMessageHandler*>(p)->HandleMessage(Message, wParam, lParam);
 			}
 		}
-		//
 		KrUIBase::HandleMessage(Message, wParam, lParam);
 		return DefWindowProc(m_hwnd, Message, wParam, lParam);
 	}
@@ -292,12 +289,12 @@ namespace KrUI
 				bSaved = true;
 			}
 
-			//m_pGraphics->DrawRectangle(&Pen(m_BorderColor,5),0, 0, GetWidth(), GetHeight());
+			m_pGraphics->DrawRectangle(&Pen(m_BorderColor,1),0, 0, GetWidth()-1, GetHeight()-1);
 
 			//m_pGraphicsDC->Clear(Color::White);
 			//m_pGraphics->DrawLine(&Pen(m_CaptionColor), 50, 0, 50, 800);
 			//(new Graphics(m_hDC))->DrawImage(m_pBmp, 0, 0);
-			m_pGraphicsDC->DrawImage(m_pBmp, 0, 0);
+			m_pGraphicsDC->DrawImage(m_pBmp, 0, 0,GetWidth(),GetHeight());
 		}
 	}
 

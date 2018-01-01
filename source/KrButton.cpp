@@ -104,6 +104,8 @@ namespace KrUI
 		m_MouseDownColor = Color(203, 51, 39);
 		m_MouseHoverColor = Color(250, 99, 87);
 		m_Margin = 5;
+		m_StringFormat.SetAlignment(StringAlignmentCenter);
+		m_StringFormat.SetLineAlignment(StringAlignmentCenter);
 		RegMsg(KM_LBTNDOWN, KrCloseButton::DestroyKrWindow);
 	}
 
