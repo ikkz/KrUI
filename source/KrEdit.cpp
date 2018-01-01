@@ -8,16 +8,20 @@ namespace KrUI
 		m_pGraphics->FillRectangle(&SolidBrush(m_BgColor), 0, 0, GetWidth(), GetHeight());
 		//画文字内容:
 			//TODO。。。
-
 		//画边框:
-		if ((m_bMouseIn && !m_bMouseDown) && m_ButtonStatus != mouse_hover){
+		if ((m_bMouseIn && !m_bMouseDown) && m_ButtonStatus != mouse_hover)
+		{
 			m_ButtonStatus = mouse_hover;
-		}else if (((!m_bMouseDown) && (!m_bMouseIn)) && m_ButtonStatus != mouse_leave){
-			m_ButtonStatus = mouse_leave;
-		}else if (m_bMouseDown && (m_ButtonStatus != mouse_down)){
-			m_ButtonStatus = mouse_down;
 		}
-		m_pGraphics->DrawRectangle(&Pen((m_ButtonStatus==mouse_leave?m_BorderColor:Color(21,131,221)/*这是鼠标移动到文本框上时的颜色*/)), 0, 0, GetWidth() - 1, GetHeight() - 1);
+		else if (((!m_bMouseDown) && (!m_bMouseIn)) && m_ButtonStatus != mouse_leave)
+		{
+			m_ButtonStatus = mouse_leave;
+		}
+		else if (m_bMouseDown && (m_ButtonStatus != mouse_down))
+		{
+			m_ButtonStatus = mouse_down;
+		}																		// Color(21,131,221)是鼠标移动到文本框上时边框的颜色
+		m_pGraphics->DrawRectangle(&Pen((m_ButtonStatus==mouse_leave?m_BorderColor:Color(21,131,221))), 0, 0, GetWidth() - 1, GetHeight() - 1);
 		//画到窗口Bmp上
 		m_pKrWindow->GetBmpGraphics()->DrawImage(m_pBmp, GetX(), GetY(), GetWidth(), GetHeight());
 	}

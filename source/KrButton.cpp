@@ -129,6 +129,6 @@ namespace KrUI
 
 	LRESULT KrCloseButton::DestroyKrWindow(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam)
 	{
-		return SendMessage(dynamic_cast<KrCloseButton*>(pKrMessageHandler)->GetParantWindow()->GetHWND(), WM_DESTROY, wParam, lParam);
+		return SendMessage(dynamic_cast<KrCloseButton*>(pKrMessageHandler)->GetParantWindow()->GetHWND(), WM_CLOSE, wParam, lParam);
 	}
 }//!KrUI
