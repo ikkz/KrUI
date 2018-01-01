@@ -21,6 +21,8 @@
 #include "KrDefine.h"
 #include "KrButton.h"
 #include "KrLabel.h"
+#include "KrEdit.h"
+
 using namespace std;
 using namespace Gdiplus;
 
@@ -72,13 +74,10 @@ namespace KrUI
 		HWND m_hwnd;
 		DWORD m_dwStyle;
 		POINT m_ptMouse;
-
 		UINT m_CaptionHeight;
-
 		POINT m_ptMouseDown;
 		bool m_bMouseDown;
 		Color m_CaptionColor;
-		Color m_BgColor;
 		HDC m_hDC;
 		Graphics* m_pGraphicsDC;
 		vector<KrUIBase*> m_UIVec;

@@ -10,7 +10,7 @@ namespace KrUI
 		m_MouseLeaveColor = bgcolor;
 		m_FontColor = Color(0, 0, 0);
 		m_StringFormat.SetAlignment(StringAlignmentNear);
-		m_StringFormat.SetAlignment(StringAlignmentNear);
+		m_StringFormat.SetLineAlignment(StringAlignmentNear);
 	}
 
 

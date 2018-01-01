@@ -208,6 +208,7 @@ namespace KrUI
 		m_StringFormat.SetLineAlignment(StringAlignmentCenter);
 		m_pFont = new Font(L"ËÎÌו", 10);
 		m_FontColor = Color(255, 255, 255);
+		m_BorderColor = Color(24, 132, 218);
 	}
 	KrUIBase::~KrUIBase()
 	{
@@ -261,5 +262,30 @@ namespace KrUI
 	KrWindow* KrUIBase::GetParantWindow()
 	{
 		return m_pKrWindow;
+	}
+
+	void KrUIBase::SetFontColor(Color color)
+	{
+		m_FontColor = color;
+	}
+	Color KrUIBase::GetFontColor()
+	{
+		return m_FontColor;
+	}
+	void KrUIBase::SetFont(const WCHAR* fontfamily,Gdiplus::REAL emSize)
+	{
+		delete m_pFont;
+		m_pFont = new Font(fontfamily, emSize);
+	}
+
+
+	Color KrUIBase::GetBgColor()
+	{
+		return m_BgColor;
+	}
+
+	void KrUIBase::SetBgColor(Color c)
+	{
+		m_BgColor = c;
 	}
 }// namespace KrUI

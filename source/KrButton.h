@@ -6,7 +6,6 @@
 namespace KrUI
 {
 	class KrWindow;
-	enum Button_Status{mouse_down,mouse_leave,mouse_hover};
 	class KrButton :public KrUIBase
 	{
 	public:

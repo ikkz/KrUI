@@ -47,6 +47,10 @@ namespace KrUI
 		KrUIBase* pui = nullptr;
 		switch (t)
 		{
+		case KrEdit_t:
+			pui = new KrEdit;
+			pui->SetSize(x, y, width, height);
+			break;
 		case KrLabel_t:
 			pui = new KrLabel(m_BgColor);
 			pui->SetSize(x, y, width, height);
@@ -287,6 +291,9 @@ namespace KrUI
 				m_pBmp->Save(L"C:\\Users\\Miles\\Desktop\\tsetcode\\bmp.bmp", &clsid);
 				bSaved = true;
 			}
+
+			//m_pGraphics->DrawRectangle(&Pen(m_BorderColor,5),0, 0, GetWidth(), GetHeight());
+
 			//m_pGraphicsDC->Clear(Color::White);
 			//m_pGraphics->DrawLine(&Pen(m_CaptionColor), 50, 0, 50, 800);
 			//(new Graphics(m_hDC))->DrawImage(m_pBmp, 0, 0);
