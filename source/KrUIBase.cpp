@@ -109,7 +109,7 @@ namespace KrUI
 		delete m_pGraphics;
 		delete m_pBmp;
 		m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
-		m_pGraphics = new Graphics(m_pBmp);
+		m_pGraphics = new Gdiplus::Graphics(m_pBmp);
 		this->UpdateDc();
 	}
 
@@ -128,7 +128,7 @@ namespace KrUI
 
 	}
 
-	Graphics* KrUIBase::GetBmpGraphics()
+	Gdiplus::Graphics* KrUIBase::GetBmpGraphics()
 	{
 		return m_pGraphics;
 	}
@@ -204,11 +204,11 @@ namespace KrUI
 		m_pGraphics = nullptr;
 		m_pKrWindow = nullptr;
 		m_hBmp = NULL;
-		m_StringFormat.SetAlignment(StringAlignmentCenter);
-		m_StringFormat.SetLineAlignment(StringAlignmentCenter);
-		m_pFont = new Font(L"ËÎÌו", 10);
-		m_FontColor = Color(255, 255, 255);
-		m_BorderColor = Color(24, 132, 218);
+		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentCenter);
+		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentCenter);
+		m_pFont = new Gdiplus::Font(L"ËÎÌו", 10);
+		m_FontColor = Gdiplus::Color(255, 255, 255);
+		m_BorderColor = Gdiplus::Color(24, 132, 218);
 	}
 	KrUIBase::~KrUIBase()
 	{
@@ -223,7 +223,7 @@ namespace KrUI
 			m_pKrWindow = pKrWindow;
 			m_hBmp = CreateCompatibleBitmap(m_pKrWindow->GetDc(), GetWidth(), GetHeight());
 			m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
-			m_pGraphics = new Graphics(m_pBmp);
+			m_pGraphics = new Gdiplus::Graphics(m_pBmp);
 		}
 	}
 
@@ -264,27 +264,27 @@ namespace KrUI
 		return m_pKrWindow;
 	}
 
-	void KrUIBase::SetFontColor(Color color)
+	void KrUIBase::SetFontColor(Gdiplus::Color color)
 	{
 		m_FontColor = color;
 	}
-	Color KrUIBase::GetFontColor()
+	Gdiplus::Color KrUIBase::GetFontColor()
 	{
 		return m_FontColor;
 	}
 	void KrUIBase::SetFont(const WCHAR* fontfamily,Gdiplus::REAL emSize)
 	{
 		delete m_pFont;
-		m_pFont = new Font(fontfamily, emSize);
+		m_pFont = new Gdiplus::Font(fontfamily, emSize);
 	}
 
 
-	Color KrUIBase::GetBgColor()
+	Gdiplus::Color KrUIBase::GetBgColor()
 	{
 		return m_BgColor;
 	}
 
-	void KrUIBase::SetBgColor(Color c)
+	void KrUIBase::SetBgColor(Gdiplus::Color c)
 	{
 		m_BgColor = c;
 	}

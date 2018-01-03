@@ -124,7 +124,7 @@ namespace KrUI
 
 	LRESULT   KrUIManager::HandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-		for (vector<KrWindow*>::iterator it = m_WndVec.begin(); it != m_WndVec.end(); ++it)
+		for (std::vector<KrWindow*>::iterator it = m_WndVec.begin(); it != m_WndVec.end(); ++it)
 		{
 			if (hwnd == (*it)->GetHWND())
 			{
@@ -136,7 +136,7 @@ namespace KrUI
 
 	KrWindow* KrUIManager::GetpKrWindow(HWND hwnd)
 	{
-		for (vector<KrWindow*>::iterator it = m_WndVec.begin(); it != m_WndVec.end(); ++it)
+		for (std::vector<KrWindow*>::iterator it = m_WndVec.begin(); it != m_WndVec.end(); ++it)
 		{
 			if ((*it)->GetHWND() == hwnd)
 			{

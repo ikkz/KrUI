@@ -11,14 +11,14 @@ namespace KrUI
 	public:
 		KrButton();
 		~KrButton();
-		void SetMouseHoverColor(Color color);
-		void SetMouseDownColor(Color color);
-		void SetMouseLeaveColor(Color color);
-		void SetBorderColor(Color color);
-		Color GetMouseHoverColor();
-		Color GetMouseDownColor();
-		Color GetMouseLeaveColor();
-		Color GetBorderColor();
+		void SetMouseHoverColor(Gdiplus::Color color);
+		void SetMouseDownColor(Gdiplus::Color color);
+		void SetMouseLeaveColor(Gdiplus::Color color);
+		void SetBorderColor(Gdiplus::Color color);
+		Gdiplus::Color GetMouseHoverColor();
+		Gdiplus::Color GetMouseDownColor();
+		Gdiplus::Color GetMouseLeaveColor();
+		Gdiplus::Color GetBorderColor();
 		virtual void DrawMouseDownBmp();
 		virtual void DrawMouseHoverBmp();
 		virtual void DrawMouseLeaveBmp();
@@ -27,10 +27,10 @@ namespace KrUI
 		void SetButtonStatus(Button_Status bs);
 		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 	protected:
-		Color m_MouseHoverColor;
-		Color m_MouseDownColor;
-		Color m_MouseLeaveColor;
-		Color m_BorderColor;
+		Gdiplus::Color m_MouseHoverColor;
+		Gdiplus::Color m_MouseDownColor;
+		Gdiplus::Color m_MouseLeaveColor;
+		Gdiplus::Color m_BorderColor;
 		Button_Status m_ButtonStatus;
 	};
 

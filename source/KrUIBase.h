@@ -6,7 +6,7 @@
 #include "KrDefine.h"
 #include <windows.h>
 #include <gdiplus.h>
-using namespace Gdiplus;
+//using namespace Gdiplus;
 namespace KrUI
 {
 	class KrWindow;
@@ -19,15 +19,15 @@ namespace KrUI
 		RECT m_rect;
 		bool m_bVisible;
 		Gdiplus::Bitmap* m_pBmp;
-		Graphics* m_pGraphics;
+		Gdiplus::Graphics* m_pGraphics;
 		KrUIType m_UIType;
 		KrWindow* m_pKrWindow;
 		HBITMAP m_hBmp;
-		StringFormat m_StringFormat;
-		Font* m_pFont;
-		Color m_FontColor;
-		Color m_BorderColor;
-		Color m_BgColor;
+		Gdiplus::StringFormat m_StringFormat;
+		Gdiplus::Font* m_pFont;
+		Gdiplus::Color m_FontColor;
+		Gdiplus::Color m_BorderColor;
+		Gdiplus::Color m_BgColor;
 		bool m_bMouseIn;
 		bool m_bMouseDown;
 	public:
@@ -53,13 +53,13 @@ namespace KrUI
 		virtual void SetDc(HDC hdc);
 		virtual void SetParantWindow(KrWindow* pKrWindow);
 		KrWindow* GetParantWindow();
-		void SetFontColor(Color color);
-		Color GetFontColor();
-		Color GetBgColor();
-		void SetBgColor(Color c);
+		void SetFontColor(Gdiplus::Color color);
+		Gdiplus::Color GetFontColor();
+		Gdiplus::Color GetBgColor();
+		void SetBgColor(Gdiplus::Color c);
 		virtual void UpdateDc()=0;
 		virtual void ChangeBmpSize();
-		Graphics* GetBmpGraphics();
+		Gdiplus::Graphics* GetBmpGraphics();
 		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 		void SetName(LPCWSTR name);
 		LPCWSTR GetName();

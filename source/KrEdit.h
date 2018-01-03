@@ -5,7 +5,7 @@
 #include "KrCore.h"
 #include "KrUIBase.h"
 #include <string>
-using namespace std;
+//using namespace std;
 /*
 标准的Edit需要实现的一些特征
 	1.文本显示
@@ -30,7 +30,7 @@ namespace KrUI
 	public:
 		KrEdit();
 	protected:
-		string m_strText;
+		std::string m_strText;
 		virtual void UpdateDc();
 		Button_Status m_ButtonStatus;
 	};

@@ -10,7 +10,7 @@ namespace KrUI
 	class KrLabel :public KrButton
 	{
 	public:
-		KrLabel(Color bgcolor);
+		KrLabel(Gdiplus::Color bgcolor);
 	protected:
 		
 	};

@@ -7,40 +7,40 @@ namespace KrUI
 	//通用按钮：
 	KrButton::KrButton()
 	{
-		m_MouseDownColor = Color(9, 140, 188);
-		m_MouseHoverColor = Color(60, 195, 245);
-		m_MouseLeaveColor = Color(9, 163, 220);
+		m_MouseDownColor = Gdiplus::Color(9, 140, 188);
+		m_MouseHoverColor = Gdiplus::Color(60, 195, 245);
+		m_MouseLeaveColor = Gdiplus::Color(9, 163, 220);
 	}
 
-	void KrButton::SetMouseHoverColor(Color color)
+	void KrButton::SetMouseHoverColor(Gdiplus::Color color)
 	{
 		m_MouseHoverColor = color;
 	}
-	void KrButton::SetMouseDownColor(Color color)
+	void KrButton::SetMouseDownColor(Gdiplus::Color color)
 	{
 		m_MouseDownColor = color;
 	}
-	void KrButton::SetMouseLeaveColor(Color color)
+	void KrButton::SetMouseLeaveColor(Gdiplus::Color color)
 	{
 		m_MouseLeaveColor = color;
 	}
-	void KrButton::SetBorderColor(Color color)
+	void KrButton::SetBorderColor(Gdiplus::Color color)
 	{
 		m_BorderColor = color;
 	}
-	Color KrButton::GetMouseHoverColor()
+	Gdiplus::Color KrButton::GetMouseHoverColor()
 	{
 		return m_MouseHoverColor;
 	}
-	Color KrButton::GetMouseDownColor()
+	Gdiplus::Color KrButton::GetMouseDownColor()
 	{
 		return m_MouseDownColor;
 	}
-	Color KrButton::GetMouseLeaveColor()
+	Gdiplus::Color KrButton::GetMouseLeaveColor()
 	{
 		return m_MouseLeaveColor;
 	}
-	Color KrButton::GetBorderColor()
+	Gdiplus::Color KrButton::GetBorderColor()
 	{
 		return m_BorderColor;
 	}
@@ -82,7 +82,7 @@ namespace KrUI
 	}
 	void KrButton::DrawContent()
 	{
-		this->m_pGraphics->DrawString((WCHAR*)m_Name, -1, m_pFont, RectF(0, 0, GetWidth(), GetHeight()), &m_StringFormat, &SolidBrush(m_FontColor));
+		this->m_pGraphics->DrawString((WCHAR*)m_Name, -1, m_pFont, Gdiplus::RectF(0, 0, GetWidth(), GetHeight()), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
 	}
 	KrButton::~KrButton()
 	{
@@ -101,11 +101,11 @@ namespace KrUI
 	//关闭按钮：
 	KrCloseButton::KrCloseButton()
 	{
-		m_MouseDownColor = Color(203, 51, 39);
-		m_MouseHoverColor = Color(250, 99, 87);
+		m_MouseDownColor = Gdiplus::Color(203, 51, 39);
+		m_MouseHoverColor = Gdiplus::Color(250, 99, 87);
 		m_Margin = 5;
-		m_StringFormat.SetAlignment(StringAlignmentCenter);
-		m_StringFormat.SetLineAlignment(StringAlignmentCenter);
+		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentCenter);
+		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentCenter);
 		RegMsg(KM_LBTNDOWN, KrCloseButton::DestroyKrWindow);
 	}
 
@@ -120,8 +120,8 @@ namespace KrUI
 		m_rect.top = m_Margin;
 		m_rect.right = m_pKrWindow->GetWidth() - m_Margin;
 		m_rect.bottom = m_pKrWindow->m_CaptionHeight - m_Margin;
-		Font* pfont = m_pFont;
-		m_pFont = new Font(L"宋体", 14, FontStyleBold);
+		Gdiplus::Font* pfont = m_pFont;
+		m_pFont = new Gdiplus::Font(L"宋体", 14, Gdiplus::FontStyleBold);
 		KrButton::DrawContent();
 		delete m_pFont;
 		m_pFont = pfont;

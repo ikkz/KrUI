@@ -9,10 +9,10 @@ namespace KrUI
 		m_bMouseDown = false;
 		m_pGraphicsDC = nullptr;
 		m_hDC = NULL;
-		m_CaptionColor = Color(9, 163, 220);
-		m_BgColor = Color(255, 255, 255);
+		m_CaptionColor = Gdiplus::Color(9, 163, 220);
+		m_BgColor = Gdiplus::Color(255, 255, 255);
 		m_CaptionHeight = 30;
-		m_StringFormat.SetAlignment(StringAlignmentNear);
+		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentNear);
 	}
 
 	LPCWSTR KrWindow::GetWindowName()
@@ -30,7 +30,7 @@ namespace KrUI
 	{
 		m_hwnd = hwnd;
 		m_hDC = ::GetDC(hwnd);
-		m_pGraphicsDC = new Graphics(m_hDC);
+		m_pGraphicsDC = new Gdiplus::Graphics(m_hDC);
 		SetWindowText(m_hwnd, m_lpName);
 		ChangeBmpSize();
 		AddControl(KrCloseButton_t, L"×", 0, 0, 0, 0);
@@ -169,7 +169,6 @@ namespace KrUI
 			if (GET_Y_LPARAM(lParam) < m_CaptionHeight)
 			{
 				SendMessage(m_hwnd, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
-				//SetCapture(m_hwnd);
 			}
 			break;
 		case WM_LBUTTONUP:
@@ -177,12 +176,8 @@ namespace KrUI
 			{
 				ReleaseCapture();
 			}
-
 			break;
 
-		case WM_PAINT:
-			UpdateDc();
-			break;
 		case WM_DESTROY:
 			//本窗口被销毁时，检查程序是否存在窗口
 			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
@@ -190,6 +185,7 @@ namespace KrUI
 		case WM_MOVE:
 		case WM_SIZE:
 			GetWindowRect(m_hwnd, GetRect());
+		case WM_PAINT:
 			UpdateDc();
 			break;
 		}
@@ -230,7 +226,7 @@ namespace KrUI
 
 
 		delete m_pGraphicsDC;
-		m_pGraphicsDC = new Graphics(m_hDC);
+		m_pGraphicsDC = new Gdiplus::Graphics(m_hDC);
 
 
 		m_pGraphics = new Gdiplus::Graphics(m_pBmp);
@@ -238,62 +234,47 @@ namespace KrUI
 	}
 
 
-	int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
-	{
-		UINT num = 0; // number of image encoders
-		UINT size = 0; // size of the image encoder array in bytes
-		ImageCodecInfo* pImageCodecInfo = NULL;
-		GetImageEncodersSize(&num, &size);
-		if (size == 0)
-			return -1; // Failure
-		pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
-		if (pImageCodecInfo == NULL)
-			return -1; // Failure
-		GetImageEncoders(num, size, pImageCodecInfo);
-		for (UINT j = 0; j < num; ++j)
-		{
-			if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
-			{
-				*pClsid = pImageCodecInfo[j].Clsid;
-				free(pImageCodecInfo);
-				return j; // Success- 87 -
-			}
-		}
-		free(pImageCodecInfo);
-		return -1; // Failure
-	}
+// 	int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
+// 	{
+// 		UINT num = 0; // number of image encoders
+// 		UINT size = 0; // size of the image encoder array in bytes
+// 		Gdiplus::ImageCodecInfo* pImageCodecInfo = NULL;
+// 		Gdiplus::GetImageEncodersSize(&num, &size);
+// 		if (size == 0)
+// 			return -1; // Failure
+// 		pImageCodecInfo = (Gdiplus::ImageCodecInfo*)(malloc(size));
+// 		if (pImageCodecInfo == NULL)
+// 			return -1; // Failure
+// 		GetImageEncoders(num, size, pImageCodecInfo);
+// 		for (UINT j = 0; j < num; ++j)
+// 		{
+// 			if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
+// 			{
+// 				*pClsid = pImageCodecInfo[j].Clsid;
+// 				free(pImageCodecInfo);
+// 				return j; // Success- 87 -
+// 			}
+// 		}
+// 		free(pImageCodecInfo);
+// 		return -1; // Failure
+// 	}
 
-	bool bSaved = false;
 	void KrWindow::UpdateDc()
 	{
 		if (m_bVisible && (m_pBmp != NULL))
 		{
-			m_pGraphics->Clear(Color(255, 255, 255));
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_BgColor), 0, 0, m_pBmp->GetWidth(), m_pBmp->GetHeight());
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_CaptionColor), 0, 0, m_pBmp->GetWidth(), m_CaptionHeight);
-			m_pGraphics->DrawString((WCHAR*)m_lpName, -1, m_pFont, RectF(10, 0, m_pBmp->GetWidth() - 10, m_CaptionHeight), &m_StringFormat, &SolidBrush(m_FontColor));
+			m_pGraphics->DrawString((WCHAR*)m_lpName, -1, m_pFont, Gdiplus::RectF(10, 0, m_pBmp->GetWidth() - 10, m_CaptionHeight), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
+			this->Draw();
 			for (auto p : m_UIVec)
 			{
 				if (p != nullptr&&p->IsVisible())
 				{
 					p->UpdateDc();
 				}
-
 			}
-			//cout << m_pBmp->GetWidth() << "  " << m_pBmp->GetHeight();
-			if (m_pBmp->GetWidth() == 700 && bSaved == false)
-			{
-				CLSID clsid;
-				GetEncoderClsid(L"image/bmp", &clsid);
-				m_pBmp->Save(L"C:\\Users\\Miles\\Desktop\\tsetcode\\bmp.bmp", &clsid);
-				bSaved = true;
-			}
-
-			m_pGraphics->DrawRectangle(&Pen(m_BorderColor,1),0, 0, GetWidth()-1, GetHeight()-1);
-
-			//m_pGraphicsDC->Clear(Color::White);
-			//m_pGraphics->DrawLine(&Pen(m_CaptionColor), 50, 0, 50, 800);
-			//(new Graphics(m_hDC))->DrawImage(m_pBmp, 0, 0);
+			m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor,1),0, 0, GetWidth()-1, GetHeight()-1);
 			m_pGraphicsDC->DrawImage(m_pBmp, 0, 0,GetWidth(),GetHeight());
 		}
 	}
@@ -309,6 +290,12 @@ namespace KrUI
 			}
 		}
 	}
+
+	void KrWindow::Draw()
+	{
+
+	}
+
 
 	//定义默认消息处理函数，注册在SetHWND中
 	LRESULT KrWindow::SizeChange(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam)
