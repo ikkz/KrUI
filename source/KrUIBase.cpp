@@ -204,6 +204,7 @@ namespace KrUI
 		m_pGraphics = nullptr;
 		m_pKrWindow = nullptr;
 		m_hBmp = NULL;
+		m_bVisible = true;
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentCenter);
 		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentCenter);
 		m_pFont = new Gdiplus::Font(L"ËÎÌו", 10);

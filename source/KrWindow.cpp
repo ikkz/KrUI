@@ -59,6 +59,7 @@ namespace KrUI
 		case KrEdit_t:
 			pui = new KrEdit;
 			pui->SetSize(x, y, width, height);
+			dynamic_cast<KrEdit*>(pui)->SetText(lpName);
 			break;
 		case KrLabel_t:
 			pui = new KrLabel(m_BgColor);
@@ -304,7 +305,6 @@ namespace KrUI
 	{
 
 	}
-
 
 	//定义默认消息处理函数，注册在SetHWND中
 	LRESULT KrWindow::SizeChange(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam)
