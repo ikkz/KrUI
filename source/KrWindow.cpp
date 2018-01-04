@@ -13,8 +13,17 @@ namespace KrUI
 		m_BgColor = Gdiplus::Color(255, 255, 255);
 		m_CaptionHeight = 30;
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentNear);
+		m_pFocusedCtrl = nullptr;
+		m_pKrWindow = nullptr;
 	}
-
+	KrUIBase* KrWindow::GetFocusedCtrl()
+	{
+		return m_pFocusedCtrl;
+	}
+	void KrWindow::SetFocusedCtrl(KrUIBase* pui)
+	{
+		m_pFocusedCtrl = pui;
+	}
 	LPCWSTR KrWindow::GetWindowName()
 	{
 		return m_lpName;
@@ -187,6 +196,9 @@ namespace KrUI
 			GetWindowRect(m_hwnd, GetRect());
 		case WM_PAINT:
 			UpdateDc();
+			break;
+		case WM_KILLFOCUS:
+			m_pFocusedCtrl = nullptr;
 			break;
 		}
 		//调用窗口消息处理函数

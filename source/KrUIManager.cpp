@@ -8,23 +8,9 @@ namespace KrUI
 	//把消息传递给UIManager统一处理分发
 	LRESULT CALLBACK KrUIManager::WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-
-		/*
-		switch (Message) {
-
-
-		case WM_DESTROY: {
-			PostQuitMessage(0);
-			break;
-		}
-
-		default:
-			return DefWindowProc(hwnd, Message, wParam, lParam);
-		}
-		return 0;
-		*/
 		return  KrUIManager::GetpKrUIManager()->HandleMessage(hwnd, Message, wParam, lParam);
 	}
+
 	KrUIManager* KrUIManager::GetpKrUIManager()
 	{
 

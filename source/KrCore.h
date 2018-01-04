@@ -81,6 +81,7 @@ namespace KrUI
 		HDC m_hDC;
 		Gdiplus::Graphics* m_pGraphicsDC;
 		std::vector<KrUIBase*> m_UIVec;
+		KrUIBase* m_pFocusedCtrl;
 	public:
 		KrWindow();
 		static LRESULT SizeChange(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
@@ -104,6 +105,8 @@ namespace KrUI
 		virtual void UpdateDc();
 		virtual void ChangeBmpSize();
 		virtual void Draw();//自定义绘制的窗口重写此方法
+		KrUIBase* GetFocusedCtrl();
+		void SetFocusedCtrl(KrUIBase* pui);
 		HDC GetDc();
 		bool IsCreated();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);

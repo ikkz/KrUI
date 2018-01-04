@@ -27,14 +27,19 @@
 */
 namespace KrUI
 {
-	class KrEdit:public KrUIBase
+	class KrEdit :public KrUIBase
 	{
 	public:
 		KrEdit();
+		void SetText(std::wstring str);
+		std::wstring GetText();
+		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 	protected:
-		std::string m_strText;
+		std::wstring m_strText;
 		virtual void UpdateDc();
 		Button_Status m_ButtonStatus;
+		bool m_bShowCursor;
+		unsigned int m_Time;
 	};
 
 

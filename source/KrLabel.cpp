@@ -11,6 +11,7 @@ namespace KrUI
 		m_FontColor = Gdiplus::Color(0, 0, 0);
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentNear);
 		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentNear);
+		m_hCursor = LoadCursor(nullptr, IDC_ARROW);//设置鼠标进入后的样式
 	}
 
 

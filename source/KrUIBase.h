@@ -30,6 +30,7 @@ namespace KrUI
 		Gdiplus::Color m_BgColor;
 		bool m_bMouseIn;
 		bool m_bMouseDown;
+		HCURSOR m_hCursor;
 	public:
 		KrUIBase();
 		~KrUIBase();

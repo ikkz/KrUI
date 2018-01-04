@@ -209,6 +209,7 @@ namespace KrUI
 		m_pFont = new Gdiplus::Font(L"ËÎÌו", 10);
 		m_FontColor = Gdiplus::Color(255, 255, 255);
 		m_BorderColor = Gdiplus::Color(24, 132, 218);
+		m_hCursor = LoadCursor(nullptr, IDC_ARROW);
 	}
 	KrUIBase::~KrUIBase()
 	{
@@ -233,11 +234,27 @@ namespace KrUI
 		{
 			switch (Message)
 			{
+			case KM_MOUSEENTER:
+				if (m_pKrWindow!=nullptr)
+				{
+					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR,reinterpret_cast<LONG>(m_hCursor));
+				}
+				break;
+			case KM_MOUSELEAVE:
+				if (m_pKrWindow != nullptr)
+				{
+					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(LoadCursor(nullptr,IDC_ARROW)));
+				}
+				break;
 			case KM_LBTNDOWN:
 				m_bMouseDown = true;
 				break;
 			case KM_LBTNUP:
 				m_bMouseDown = false;
+				if (m_pKrWindow != nullptr)
+				{
+					m_pKrWindow->SetFocusedCtrl(this);
+				}
 			}
 			for (auto p : m_MsgProcMap)
 			{
@@ -272,7 +289,7 @@ namespace KrUI
 	{
 		return m_FontColor;
 	}
-	void KrUIBase::SetFont(const WCHAR* fontfamily,Gdiplus::REAL emSize)
+	void KrUIBase::SetFont(const WCHAR* fontfamily, Gdiplus::REAL emSize)
 	{
 		delete m_pFont;
 		m_pFont = new Gdiplus::Font(fontfamily, emSize);
