@@ -218,9 +218,6 @@ namespace KrUI
 		delete m_pGraphics;
 		delete m_pBmp;
 		m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
-#ifdef _DEBUG
-		cout << m_pBmp->GetWidth() << "  " << m_pBmp->GetHeight() << endl;
-#endif // _DEBUG
 		//DeleteObject(m_hDC);
 		//m_pGraphicsDC = new Graphics(::GetDC(m_hwnd));
 

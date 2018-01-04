@@ -179,8 +179,8 @@ namespace KrUI
 		Gdiplus::GdiplusShutdown(m_pGdiToken);
 		//todo
 	}
-
-	void KrUIManager::TimerProc(HWND hWnd, UINT nMsg, UINT nTimerid, DWORD dwTime)
+	//typedef VOID(CALLBACK* TIMERPROC)(HWND, UINT, UINT_PTR, DWORD);
+	void  KrUIManager::TimerProc(HWND hWnd, UINT nMsg, UINT_PTR nTimerid, DWORD dwTime)
 	{
 		for (auto p : GetpKrUIManager()->m_WndVec)
 		{

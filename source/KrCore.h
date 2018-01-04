@@ -42,7 +42,7 @@ namespace KrUI
 	public:
 		static KrUIManager* GetpKrUIManager();
 		static LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
-		static void CALLBACK TimerProc(HWND hWnd, UINT nMsg, UINT nTimerid, DWORD dwTime);
+		static void CALLBACK TimerProc(HWND hWnd, UINT nMsg, UINT_PTR nTimerid, DWORD dwTime);
 		bool Initialize(HINSTANCE hInstance);
 		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle);
 		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height);
