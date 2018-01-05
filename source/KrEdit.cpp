@@ -23,7 +23,7 @@ namespace KrUI
 				{
 					m_strText += static_cast<char>(wParam);
 				}
-				else if (wParam == 8 & m_strText.size() != 0)//ÍË¸ñ
+				else if (wParam == 8 && m_strText.size() != 0)//ÍË¸ñ
 				{
 					m_strText.pop_back();
 				}
