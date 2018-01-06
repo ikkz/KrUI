@@ -10,7 +10,7 @@ namespace KrUI
 		m_pGraphicsDC = nullptr;
 		m_hDC = NULL;
 		m_CaptionColor = Gdiplus::Color(9, 163, 220);
-		m_BgColor = Gdiplus::Color(255, 255, 255);
+		m_BgColor = Gdiplus::Color(240, 240, 240);
 		m_CaptionHeight = 30;
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentNear);
 		m_pFocusedCtrl = nullptr;
@@ -42,7 +42,19 @@ namespace KrUI
 		m_pGraphicsDC = new Gdiplus::Graphics(m_hDC);
 		SetWindowText(m_hwnd, m_lpName);
 		ChangeBmpSize();
-		AddControl(KrCloseButton_t, L"¡Á", 0, 0, 0, 0);
+
+
+		//Ìí¼Ó¹Ø±Õ°´Å¥
+		KrUIBase* pui = new KrCloseButton;
+		int Margin = dynamic_cast<KrCloseButton*>(pui)->GetMargin();
+		pui->SetSize(GetWidth() - m_CaptionHeight + Margin, Margin, m_CaptionHeight - Margin * 2, m_CaptionHeight - Margin * 2);
+		pui->Show();
+		pui->SetType(KrCloseButton_t);
+		pui->SetName(L"¡Á");
+		pui->SetParantWindow(this);
+		m_UIVec.push_back(pui);
+
+
 		RegMsg(WM_SIZE, (MSGPROC)KrWindow::SizeChange);
 	}
 
@@ -58,33 +70,16 @@ namespace KrUI
 		{
 		case KrEdit_t:
 			pui = new KrEdit;
-			pui->SetSize(x, y, width, height);
 			dynamic_cast<KrEdit*>(pui)->SetText(lpName);
 			break;
 		case KrLabel_t:
 			pui = new KrLabel(m_BgColor);
-			pui->SetSize(x, y, width, height);
 			break;
 		case KrButton_t:
 			pui = new KrButton;
-			pui->SetSize(x, y, width, height);
 			break;
-		case KrCloseButton_t:
-		{
-			pui = new KrCloseButton;
-			int Margin = dynamic_cast<KrCloseButton*>(pui)->GetMargin();
-			pui->SetSize(GetWidth() - m_CaptionHeight + Margin, Margin, m_CaptionHeight - Margin * 2, m_CaptionHeight - Margin * 2);
-			// 			pui = new KrButton;
-			// 			int m_Margin = 5;
-			// 			pui->SetSize(GetWidth() - m_CaptionHeight + m_Margin, m_Margin, m_CaptionHeight - m_Margin * 2,m_CaptionHeight - m_Margin * 2);
-			pui->Show();
-			// 			pui = new KrCloseButton;
-			//  			pui->Show();
-			
 		}
-			break;
-
-		}
+		pui->SetSize(x, y, width, height);
 		if (pui == nullptr)return nullptr;
 		pui->SetType(t);
 		pui->SetName(lpName);
@@ -164,10 +159,8 @@ namespace KrUI
 
 	bool KrWindow::IsCreated()
 	{
-		if (m_hwnd == NULL)
-		{
+		if (m_hwnd == NULL) 
 			return false;
-		}
 		return true;
 	}
 
@@ -175,6 +168,9 @@ namespace KrUI
 	{
 		switch (Message)
 		{
+		case WM_CREATE:
+			SetClassLong(m_hwnd, GCL_STYLE, GetClassLong(m_hwnd, GCL_STYLE) | CS_DROPSHADOW);
+			break;
 		case WM_LBUTTONDOWN:
 			if (GET_Y_LPARAM(lParam) < m_CaptionHeight)
 			{
@@ -244,30 +240,30 @@ namespace KrUI
 	}
 
 
-// 	int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
-// 	{
-// 		UINT num = 0; // number of image encoders
-// 		UINT size = 0; // size of the image encoder array in bytes
-// 		Gdiplus::ImageCodecInfo* pImageCodecInfo = NULL;
-// 		Gdiplus::GetImageEncodersSize(&num, &size);
-// 		if (size == 0)
-// 			return -1; // Failure
-// 		pImageCodecInfo = (Gdiplus::ImageCodecInfo*)(malloc(size));
-// 		if (pImageCodecInfo == NULL)
-// 			return -1; // Failure
-// 		GetImageEncoders(num, size, pImageCodecInfo);
-// 		for (UINT j = 0; j < num; ++j)
-// 		{
-// 			if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
-// 			{
-// 				*pClsid = pImageCodecInfo[j].Clsid;
-// 				free(pImageCodecInfo);
-// 				return j; // Success- 87 -
-// 			}
-// 		}
-// 		free(pImageCodecInfo);
-// 		return -1; // Failure
-// 	}
+	// 	int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
+	// 	{
+	// 		UINT num = 0; // number of image encoders
+	// 		UINT size = 0; // size of the image encoder array in bytes
+	// 		Gdiplus::ImageCodecInfo* pImageCodecInfo = NULL;
+	// 		Gdiplus::GetImageEncodersSize(&num, &size);
+	// 		if (size == 0)
+	// 			return -1; // Failure
+	// 		pImageCodecInfo = (Gdiplus::ImageCodecInfo*)(malloc(size));
+	// 		if (pImageCodecInfo == NULL)
+	// 			return -1; // Failure
+	// 		GetImageEncoders(num, size, pImageCodecInfo);
+	// 		for (UINT j = 0; j < num; ++j)
+	// 		{
+	// 			if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
+	// 			{
+	// 				*pClsid = pImageCodecInfo[j].Clsid;
+	// 				free(pImageCodecInfo);
+	// 				return j; // Success- 87 -
+	// 			}
+	// 		}
+	// 		free(pImageCodecInfo);
+	// 		return -1; // Failure
+	// 	}
 
 	void KrWindow::UpdateDc()
 	{
@@ -284,8 +280,8 @@ namespace KrUI
 					p->UpdateDc();
 				}
 			}
-			m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor,1),0, 0, GetWidth()-1, GetHeight()-1);
-			m_pGraphicsDC->DrawImage(m_pBmp, 0, 0,GetWidth(),GetHeight());
+			m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, 1), 0, 0, GetWidth() - 1, GetHeight() - 1);
+			m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());
 		}
 	}
 

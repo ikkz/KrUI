@@ -34,12 +34,19 @@ namespace KrUI
 		void SetText(std::wstring str);
 		std::wstring GetText();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+		unsigned int GetCursorPosByX(unsigned int x);
+		unsigned int GetXByCursorPos(unsigned int CursorPos);
+		unsigned int GetStrHeight();
+		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 	protected:
 		std::wstring m_strText;
 		virtual void UpdateDc();
 		Button_Status m_ButtonStatus;
 		bool m_bShowCursor;
+		unsigned int m_Margin;
 		unsigned int m_Time;
+		unsigned int m_SelectTextPosFirst;
+		unsigned int m_SelectTextPosSecond;
 	};
 
 
