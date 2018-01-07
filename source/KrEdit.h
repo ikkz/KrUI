@@ -38,6 +38,7 @@ namespace KrUI
 		unsigned int GetXByCursorPos(unsigned int CursorPos);
 		unsigned int GetStrHeight();
 		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
+		Gdiplus::SizeF GetTextBounds(const wchar_t* szText);
 	protected:
 		std::wstring m_strText;
 		virtual void UpdateDc();
@@ -48,9 +49,5 @@ namespace KrUI
 		unsigned int m_SelectTextPosFirst;
 		unsigned int m_SelectTextPosSecond;
 	};
-
-
 }
 #endif
-
-

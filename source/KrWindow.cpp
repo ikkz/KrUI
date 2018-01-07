@@ -43,7 +43,6 @@ namespace KrUI
 		SetWindowText(m_hwnd, m_lpName);
 		ChangeBmpSize();
 
-
 		//添加关闭按钮
 		KrUIBase* pui = new KrCloseButton;
 		int Margin = dynamic_cast<KrCloseButton*>(pui)->GetMargin();
@@ -53,7 +52,6 @@ namespace KrUI
 		pui->SetName(L"×");
 		pui->SetParantWindow(this);
 		m_UIVec.push_back(pui);
-
 
 		RegMsg(WM_SIZE, (MSGPROC)KrWindow::SizeChange);
 	}
@@ -92,7 +90,6 @@ namespace KrUI
 	{
 		KrUIBase::SetRect(pRect);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
-
 	}
 
 	void KrWindow::SetStyle(DWORD dwStyle)
@@ -110,14 +107,12 @@ namespace KrUI
 	{
 		KrUIBase::SetX(x);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
-
 	}
 
 	void KrWindow::SetY(UINT y)
 	{
 		KrUIBase::SetY(y);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
-
 	}
 
 	void KrWindow::SetXY(UINT x, UINT y)
@@ -159,7 +154,7 @@ namespace KrUI
 
 	bool KrWindow::IsCreated()
 	{
-		if (m_hwnd == NULL) 
+		if (m_hwnd == NULL)
 			return false;
 		return true;
 	}
@@ -230,15 +225,12 @@ namespace KrUI
 		//DeleteObject(m_hDC);
 		//m_pGraphicsDC = new Graphics(::GetDC(m_hwnd));
 
-
 		delete m_pGraphicsDC;
 		m_pGraphicsDC = new Gdiplus::Graphics(m_hDC);
-
 
 		m_pGraphics = new Gdiplus::Graphics(m_pBmp);
 		//m_pGraphicsDC->Clear(Color(255, 255, 255));
 	}
-
 
 	// 	int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 	// 	{
@@ -299,7 +291,6 @@ namespace KrUI
 
 	void KrWindow::Draw()
 	{
-
 	}
 
 	//定义默认消息处理函数，注册在SetHWND中

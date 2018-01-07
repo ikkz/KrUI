@@ -7,32 +7,25 @@ namespace KrUI
 		return &m_rect;
 	}
 
-
 	int KrUIBase::GetX()
 	{
 		return m_rect.left;
 	}
-
 
 	int KrUIBase::GetY()
 	{
 		return m_rect.top;
 	}
 
-
-
 	int KrUIBase::GetWidth()
 	{
 		return m_rect.right - m_rect.left;
 	}
 
-
-
 	int KrUIBase::GetHeight()
 	{
 		return m_rect.bottom - m_rect.top;
 	}
-
 
 	void KrUIBase::SetX(UINT x)
 	{
@@ -83,7 +76,6 @@ namespace KrUI
 		this->ChangeBmpSize();
 	}
 
-
 	bool KrUIBase::IsVisible()
 	{
 		return m_bVisible;
@@ -125,7 +117,6 @@ namespace KrUI
 
 	void KrUIBase::SetDc(HDC hdc)
 	{
-
 	}
 
 	Gdiplus::Graphics* KrUIBase::GetBmpGraphics()
@@ -207,7 +198,7 @@ namespace KrUI
 		m_bVisible = true;
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentCenter);
 		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentCenter);
-		m_pFont = new Gdiplus::Font(L"ËÎÌו", 10);
+		m_pFont = new Gdiplus::Font(L"ËÎÌו", 13,Gdiplus::FontStyle::FontStyleRegular,Gdiplus::Unit::UnitPixel);
 		m_FontColor = Gdiplus::Color(255, 255, 255);
 		m_BorderColor = Gdiplus::Color(24, 132, 218);
 		m_hCursor = LoadCursor(nullptr, IDC_ARROW);
@@ -236,15 +227,15 @@ namespace KrUI
 			switch (Message)
 			{
 			case KM_MOUSEENTER:
-				if (m_pKrWindow!=nullptr)
+				if (m_pKrWindow != nullptr)
 				{
-					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR,reinterpret_cast<LONG>(m_hCursor));
+					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(m_hCursor));
 				}
 				break;
 			case KM_MOUSELEAVE:
 				if (m_pKrWindow != nullptr)
 				{
-					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(LoadCursor(nullptr,IDC_ARROW)));
+					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(LoadCursor(nullptr, IDC_ARROW)));
 				}
 				break;
 			case KM_LBTNDOWN:
@@ -266,7 +257,6 @@ namespace KrUI
 			}
 		}
 	}
-
 
 	void KrUIBase::SetType(KrUIType ut)
 	{
@@ -295,7 +285,6 @@ namespace KrUI
 		delete m_pFont;
 		m_pFont = new Gdiplus::Font(fontfamily, emSize);
 	}
-
 
 	Gdiplus::Color KrUIBase::GetBgColor()
 	{
