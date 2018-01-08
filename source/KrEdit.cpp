@@ -150,10 +150,10 @@ namespace KrUI
 		{
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color(200, 200, 200)),
 				GetXByCursorPos(m_SelectTextPosFirst < m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond),
-				(GetHeight() - GetStrHeight()) / 2,
+				(GetHeight() - 1.3*GetStrHeight()) / 2,
 				GetXByCursorPos(m_SelectTextPosFirst > m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond) -
 				GetXByCursorPos(m_SelectTextPosFirst < m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond),
-				static_cast<int>(GetStrHeight())
+				static_cast<int>(1.3*GetStrHeight())
 			);
 		}
 		//»­¹â±ê
