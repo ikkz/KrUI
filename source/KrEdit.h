@@ -39,6 +39,7 @@ namespace KrUI
 		unsigned int GetStrHeight();
 		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 		Gdiplus::SizeF GetTextBounds(const wchar_t* szText);
+		void StringChange();
 	protected:
 		std::wstring m_strText;
 		virtual void UpdateDc();
@@ -48,6 +49,7 @@ namespace KrUI
 		unsigned int m_Time;
 		unsigned int m_SelectTextPosFirst;
 		unsigned int m_SelectTextPosSecond;
+		std::vector<unsigned int> m_StringLength;
 	};
 }
 #endif

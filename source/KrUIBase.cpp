@@ -134,6 +134,8 @@ namespace KrUI
 	}
 	LRESULT KrUIBase::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
+		LPARAM new_lparam;
+		new_lparam = MAKELONG(GET_X_LPARAM(lParam) - m_rect.left, GET_Y_LPARAM(lParam) - m_rect.top);
 		//对原来的消息进行一些转换成为KM
 		switch (Message)
 		{
@@ -148,13 +150,16 @@ namespace KrUI
 				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
 				//使用这种方法还需要在后两个参数之一中标识消息属于哪个UIBase并在处理时dynamic_cast
 				//最后消息还是回到这里，所以直接在这调用MsgProc算了，下面也一样
-				this->CallMsgProc(KM_MOUSEENTER, wParam, lParam);
+				this->CallMsgProc(KM_MOUSEENTER, wParam,new_lparam);
 			}
 			else if (m_bMouseIn == true && bMouseIn == false)
 			{
-				this->CallMsgProc(KM_MOUSELEAVE, wParam, lParam);
+				this->CallMsgProc(KM_MOUSELEAVE, wParam, new_lparam);
 			}
 			m_bMouseIn = bMouseIn;
+
+			this->CallMsgProc(KM_MOUSEMOVE, wParam, new_lparam);
+
 			break;
 		}
 		case WM_LBUTTONDOWN:
@@ -165,7 +170,7 @@ namespace KrUI
 			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
 			if (bMouseIn)
 			{
-				this->CallMsgProc(KM_LBTNDOWN, wParam, lParam);
+				this->CallMsgProc(KM_LBTNDOWN, wParam, new_lparam);
 				m_bMouseDown = true;
 			}
 			break;
@@ -178,7 +183,7 @@ namespace KrUI
 			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
 			if (bMouseIn)
 			{
-				this->CallMsgProc(KM_LBTNUP, wParam, lParam);
+				this->CallMsgProc(KM_LBTNUP, wParam, new_lparam);
 			}
 			m_bMouseDown = false;
 			break;

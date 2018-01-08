@@ -8,5 +8,5 @@
 #define KM_MOUSELEAVE (WM_USER+2)
 #define KM_LBTNUP (WM_USER+3)
 #define KM_LBTNDOWN (WM_USER+4)
-
+#define KM_MOUSEMOVE (WM_USER+5)
 

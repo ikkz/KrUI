@@ -8,9 +8,7 @@ namespace KrUI
 		Gdiplus::GraphicsPath path;
 		Gdiplus::FontFamily fontfamily;
 		m_pFont->GetFamily(&fontfamily);
-// 		path.AddString(szText, -1, &fontfamily, m_pFont->GetStyle(), m_pFont->GetSize(), Gdiplus::PointF(0, 0),
-// 			Gdiplus::StringFormat::GenericTypographic()/*&m_StringFormat*/);
-		path.AddString(szText,-1, &fontfamily, m_pFont->GetStyle(), m_pFont->GetSize(), Gdiplus::PointF(0, 0),
+		path.AddString(szText, -1, &fontfamily, m_pFont->GetStyle(), m_pFont->GetSize(), Gdiplus::PointF(0, 0),
 			Gdiplus::StringFormat::GenericTypographic()/*&m_StringFormat*/);
 		Gdiplus::RectF bounds;
 		path.GetBounds(&bounds);
@@ -20,6 +18,7 @@ namespace KrUI
 	void KrEdit::SetText(std::wstring str)
 	{
 		m_strText = str;
+		StringChange();
 	}
 
 	std::wstring KrEdit::GetText()
@@ -29,31 +28,107 @@ namespace KrUI
 
 	LRESULT KrEdit::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
+
 		if (m_pKrWindow->GetFocusedCtrl() == this)
 		{
 			switch (Message)
 			{
 			case WM_CHAR:
-				if (wParam >= 32 && wParam <= 126)//字符
+				if (wParam <= 31 || wParam == 127)break;
+				if (m_SelectTextPosFirst == m_SelectTextPosSecond)//相等时
 				{
-					m_strText += static_cast<char>(wParam);
+					m_strText.insert(m_SelectTextPosFirst, 1, static_cast<wchar_t>(wParam));
 					m_SelectTextPosFirst++;
 					m_SelectTextPosSecond++;
+					StringChange();
 				}
-				else if (wParam == 8 && m_strText.size() != 0)//退格
+				else//不相等时
 				{
-					m_strText.pop_back();
-					m_SelectTextPosFirst--;
-					m_SelectTextPosSecond--;
+					m_strText.erase(m_SelectTextPosFirst < m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond,
+						(m_SelectTextPosFirst > m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond) -
+						(m_SelectTextPosFirst < m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond));
+
+					if (m_SelectTextPosFirst == (m_SelectTextPosFirst > m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond))
+					{
+						m_SelectTextPosFirst = m_SelectTextPosSecond;
+					}
+					else
+					{
+						m_SelectTextPosSecond = m_SelectTextPosFirst;
+					}
+					m_strText.insert(m_SelectTextPosFirst, 1, static_cast<wchar_t>(wParam));
+					m_SelectTextPosFirst++;
+					m_SelectTextPosSecond++;
+					StringChange();
 				}
-				// 				if (wParam == 8 && m_strText.size() != 0)//退格
-				// 				{
-				// 					m_strText.pop_back();
-				// 				}
-				// 				else
-				// 				{
-				// 					m_strText += static_cast<wchar_t>(wParam);
-				// 				}
+				break;
+			case WM_KEYUP:
+				if (m_SelectTextPosFirst == m_SelectTextPosSecond)
+				{
+					switch (wParam)
+					{
+					case VK_BACK:
+						if (m_strText.size() != 0)
+						{
+							m_strText.erase(m_SelectTextPosFirst - 1, 1);
+							m_SelectTextPosFirst--;
+							m_SelectTextPosSecond--;
+							StringChange();
+						}
+						break;
+					case VK_RIGHT:
+						if (m_SelectTextPosFirst == m_strText.size())break;
+						m_SelectTextPosFirst++;
+						m_SelectTextPosSecond++;
+						break;
+					case VK_LEFT:
+						if (m_SelectTextPosFirst == 0)break;
+						m_SelectTextPosFirst--;
+						m_SelectTextPosSecond--;
+						break;
+					case VK_DELETE:
+						if (m_SelectTextPosFirst < m_strText.size())m_strText.erase(m_SelectTextPosFirst, 1);
+						StringChange();
+						break;
+					default:
+						break;
+					}
+				}
+				else
+				{
+					switch (wParam)
+					{
+					case VK_BACK:
+					case VK_DELETE:
+						m_strText.erase(m_SelectTextPosFirst < m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond,
+							(m_SelectTextPosFirst > m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond) -
+							(m_SelectTextPosFirst < m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond));
+
+						if (m_SelectTextPosFirst == (m_SelectTextPosFirst > m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond))
+						{
+							m_SelectTextPosFirst = m_SelectTextPosSecond;
+						}
+						else
+						{
+							m_SelectTextPosSecond = m_SelectTextPosFirst;
+						}
+						StringChange();
+						break;
+					case VK_RIGHT:
+						m_SelectTextPosFirst = m_SelectTextPosFirst > m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond;
+						m_SelectTextPosSecond = m_SelectTextPosFirst;
+						break;
+					case VK_LEFT:
+						m_SelectTextPosFirst = m_SelectTextPosFirst < m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond;
+						m_SelectTextPosSecond = m_SelectTextPosFirst;
+						break;
+					default:
+						break;
+					}
+				}
+				
+				break;
+			default:
 				break;
 			}
 		}
@@ -70,31 +145,27 @@ namespace KrUI
 		}
 		//画背景:
 		m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_BgColor), 0, 0, GetWidth(), GetHeight());
+		//画选中背景
+		if (m_SelectTextPosFirst != m_SelectTextPosSecond&&m_pKrWindow->GetFocusedCtrl() == this)
+		{
+			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color(200, 200, 200)),
+				GetXByCursorPos(m_SelectTextPosFirst < m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond),
+				(GetHeight() - GetStrHeight()) / 2,
+				GetXByCursorPos(m_SelectTextPosFirst > m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond) -
+				GetXByCursorPos(m_SelectTextPosFirst < m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond),
+				static_cast<int>(GetStrHeight())
+			);
+		}
 		//画光标
 		if (m_bShowCursor && m_pKrWindow->GetFocusedCtrl() == this && m_SelectTextPosFirst == m_SelectTextPosSecond)
 		{
-			m_pGraphics->DrawLine(&Gdiplus::Pen(Gdiplus::Color::Black), GetXByCursorPos(m_SelectTextPosFirst) + 2,//把光标向后移动一个像素
+			m_pGraphics->DrawLine(&Gdiplus::Pen(Gdiplus::Color::Black), GetXByCursorPos(m_SelectTextPosFirst) + 2,//把光标向后移动1个像素
 				static_cast<int>((GetHeight() - GetStrHeight()) / 2), GetXByCursorPos(m_SelectTextPosFirst) + 2,
 				static_cast<int>((GetHeight() + GetStrHeight()) / 2));
 		}
-		//框选文字
-		//m_pGraphics->DrawRectangle(&Gdiplus::Pen(Gdiplus::Color::Black), m_Margin, static_cast<int>((GetHeight() - GetStrHeight()) / 2),
-		//	GetXByCursorPos(m_SelectTextPosFirst) - m_Margin, GetStrHeight());
 		//画文字内容:
- 		m_pGraphics->DrawString(m_strText.c_str(), -1, m_pFont, Gdiplus::RectF(m_Margin, (GetHeight() - GetStrHeight()) / 2,
- 			GetWidth() - m_Margin, GetHeight()), Gdiplus::StringFormat::GenericTypographic()/*&m_StringFormat*/, &Gdiplus::SolidBrush(m_FontColor));
-	
-// 		Gdiplus::GraphicsPath path;
-// 		Gdiplus::FontFamily fontfamily;
-// 		m_pFont->GetFamily(&fontfamily);
-// 		// 		path.AddString(szText, -1, &fontfamily, m_pFont->GetStyle(), m_pFont->GetSize(), Gdiplus::PointF(0, 0),
-// 		// 			Gdiplus::StringFormat::GenericTypographic()/*&m_StringFormat*/);
-// 		path.AddString(m_strText.c_str(), -1, &fontfamily, m_pFont->GetStyle(), m_pFont->GetSize(), Gdiplus::PointF(0, 0),
-// 			Gdiplus::StringFormat::GenericTypographic()/*&m_StringFormat*/);
-// 		m_pGraphics->DrawPath(&Gdiplus::Pen(Gdiplus::Color::Black), &path);
-
-		
-		//m_pGraphics->DrawString(m_strText.c_str(), -1, m_pFont, Gdiplus::PointF(m_Margin, (GetHeight() - GetStrHeight()) / 2),&Gdiplus::SolidBrush(m_FontColor));
+		m_pGraphics->DrawString(m_strText.c_str(), -1, m_pFont, Gdiplus::RectF(m_Margin, (GetHeight() - GetStrHeight()) / 2,
+			GetWidth() - m_Margin, GetHeight()), Gdiplus::StringFormat::GenericTypographic()/*&m_StringFormat*/, &Gdiplus::SolidBrush(m_FontColor));
 		//画边框:
 		if ((m_bMouseIn && !m_bMouseDown) && m_ButtonStatus != mouse_hover)
 		{
@@ -121,6 +192,7 @@ namespace KrUI
 		// 0 1 2
 		//转换为文本矩形的横坐标
 		if (x < (m_Margin + GetXByCursorPos(1)) / 2)return 0;
+		if (x >= GetXByCursorPos(m_strText.size()))return m_strText.size();
 		for (int i = 0; i <= m_strText.size(); i++)
 		{
 			if (x >= ((GetXByCursorPos(i - 1) + GetXByCursorPos(i)) / 2) && x <= ((GetXByCursorPos(i) + GetXByCursorPos(i + 1)) / 2)) return i;
@@ -131,7 +203,19 @@ namespace KrUI
 	unsigned int KrEdit::GetXByCursorPos(unsigned int CursorPos)
 	{
 		if (CursorPos <= 0) return m_Margin;
-		return m_Margin + GetTextBounds(m_strText.substr(0, CursorPos).c_str()).Width;
+		if (CursorPos > m_strText.size()) CursorPos = m_strText.size();
+		return m_Margin + m_StringLength[CursorPos];
+	}
+
+
+	//更新字符串长度
+	void KrEdit::StringChange()
+	{
+		m_StringLength.clear();
+		for (int i = 0; i <= m_strText.size(); i++)
+		{
+			m_StringLength.push_back(GetTextBounds(m_strText.substr(0, i).c_str()).Width);
+		}
 	}
 
 	unsigned int KrEdit::GetStrHeight()
@@ -143,17 +227,18 @@ namespace KrUI
 
 	void KrEdit::CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-		int x = GET_X_LPARAM(lParam) - m_rect.left;
+		//int x = GET_X_LPARAM(lParam) - m_rect.left;
 		switch (Message)
 		{
 		case KM_LBTNDOWN:
-			m_SelectTextPosFirst = GetCursorPosByX(x);
+			m_SelectTextPosFirst = GetCursorPosByX(GET_X_LPARAM(lParam));
+			m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
 			break;
 		case KM_LBTNUP:
-			m_SelectTextPosSecond = GetCursorPosByX(x);
+			m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
 			break;
-		case WM_MOUSEMOVE:
-			if (m_bMouseDown) m_SelectTextPosSecond = GetCursorPosByX(x);
+		case KM_MOUSEMOVE:
+			if (m_ButtonStatus == mouse_down&&m_bMouseIn) m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
 			break;
 		}
 		KrUIBase::CallMsgProc(Message, wParam, lParam);
@@ -165,7 +250,7 @@ namespace KrUI
 		m_BorderColor = Gdiplus::Color(170, 170, 170);
 		m_FontColor = Gdiplus::Color::Black;
 		delete m_pFont;
-		m_pFont = new Gdiplus::Font(L"新宋体", 14, Gdiplus::FontStyle::FontStyleRegular, Gdiplus::Unit::UnitPixel);
+		m_pFont = new Gdiplus::Font(L"新宋体", 13, Gdiplus::FontStyle::FontStyleRegular, Gdiplus::Unit::UnitPixel);
 		//							这里使用新宋体，等宽字体防止画字符串的时候字符间距随着长度变化的问题
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentNear);
 		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentNear);
