@@ -166,7 +166,7 @@ namespace KrUI
 	{
 		for (auto p : GetpKrUIManager()->m_WndVec)
 		{
-			p->UpdateDc();
+			p->Update();
 		}
 	}
 

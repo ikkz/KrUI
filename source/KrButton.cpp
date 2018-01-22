@@ -45,7 +45,7 @@ namespace KrUI
 	{
 		return m_BorderColor;
 	}
-	void KrButton::UpdateDc()
+	void KrButton::Update()
 	{
 		//m_pGraphics->DrawImage(m_pKrWindow->m_pBmp, 0, 0, GetX(), GetY(), GetWidth(), GetHeight(), Gdiplus::Unit::UnitPixel);
 		if ((m_bMouseIn && !m_bMouseDown) && m_ButtonStatus != mouse_hover)
@@ -83,13 +83,13 @@ namespace KrUI
 	}
 	void KrButton::DrawContent()
 	{
-		this->m_pGraphics->DrawString((WCHAR*)m_Name, -1, m_pFont, Gdiplus::RectF(0, 0, GetWidth(), GetHeight()), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
+		this->m_pGraphics->DrawString((WCHAR*)m_Name, -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(GetWidth()), static_cast<Gdiplus::REAL>(GetHeight())), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
 	}
 	KrButton::~KrButton()
 	{
 	}
 
-	void KrButton::SetButtonStatus(Button_Status bs)
+	void KrButton::SetButtonStatus(Mouse_Status bs)
 	{
 		m_ButtonStatus = bs;
 	}

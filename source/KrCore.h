@@ -1,5 +1,5 @@
-#ifndef KRCORE_H
-#define KRCORE_H
+#ifndef _KR_CORE_H
+#define _KR_CORE_H
 #pragma once
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -102,7 +102,7 @@ namespace KrUI
 		virtual void SetHeight(UINT height);
 		virtual void Show();
 		virtual void Hide();
-		virtual void UpdateDc();
+		virtual void Update();
 		virtual void ChangeBmpSize();
 		virtual void Draw();//自定义绘制的窗口重写此方法
 		KrUIBase* GetFocusedCtrl();

@@ -167,13 +167,13 @@ namespace KrUI
 			SetClassLong(m_hwnd, GCL_STYLE, GetClassLong(m_hwnd, GCL_STYLE) | CS_DROPSHADOW);
 			break;
 		case WM_LBUTTONDOWN:
-			if (GET_Y_LPARAM(lParam) < m_CaptionHeight)
+			if (GET_Y_LPARAM(lParam) < static_cast<int>(m_CaptionHeight))
 			{
 				SendMessage(m_hwnd, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
 			}
 			break;
 		case WM_LBUTTONUP:
-			if (GET_Y_LPARAM(lParam) < m_CaptionHeight)
+			if (GET_Y_LPARAM(lParam) < static_cast<int>(m_CaptionHeight))
 			{
 				ReleaseCapture();
 			}
@@ -187,7 +187,7 @@ namespace KrUI
 		case WM_SIZE:
 			GetWindowRect(m_hwnd, GetRect());
 		case WM_PAINT:
-			UpdateDc();
+			Update();
 			break;
 		case WM_KILLFOCUS:
 			m_pFocusedCtrl = nullptr;
@@ -257,19 +257,19 @@ namespace KrUI
 	// 		return -1; // Failure
 	// 	}
 
-	void KrWindow::UpdateDc()
+	void KrWindow::Update()
 	{
 		if (m_bVisible && (m_pBmp != NULL))
 		{
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_BgColor), 0, 0, m_pBmp->GetWidth(), m_pBmp->GetHeight());
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_CaptionColor), 0, 0, m_pBmp->GetWidth(), m_CaptionHeight);
-			m_pGraphics->DrawString((WCHAR*)m_lpName, -1, m_pFont, Gdiplus::RectF(10, 0, m_pBmp->GetWidth() - 10, m_CaptionHeight), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
+			m_pGraphics->DrawString((WCHAR*)m_lpName, -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(m_pBmp->GetWidth() - 10), static_cast<Gdiplus::REAL>(m_CaptionHeight)), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
 			this->Draw();
 			for (auto p : m_UIVec)
 			{
 				if (p != nullptr&&p->IsVisible())
 				{
-					p->UpdateDc();
+					p->Update();
 				}
 			}
 			m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, 1), 0, 0, GetWidth() - 1, GetHeight() - 1);

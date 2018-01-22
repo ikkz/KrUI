@@ -1,5 +1,5 @@
-#ifndef KRMESSAGEHANDLER_H
-#define KRMESSAGEHANDLER_H
+#ifndef _KR_MESSAGEHANDLER_H
+#define _KR_MESSAGEHANDLER_H
 #pragma once
 
 #include <windows.h>

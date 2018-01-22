@@ -102,7 +102,7 @@ namespace KrUI
 		delete m_pBmp;
 		m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
 		m_pGraphics = new Gdiplus::Graphics(m_pBmp);
-		this->UpdateDc();
+		this->Update();
 	}
 
 	void KrUIBase::Show()
@@ -150,7 +150,7 @@ namespace KrUI
 				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
 				//使用这种方法还需要在后两个参数之一中标识消息属于哪个UIBase并在处理时dynamic_cast
 				//最后消息还是回到这里，所以直接在这调用MsgProc算了，下面也一样
-				this->CallMsgProc(KM_MOUSEENTER, wParam,new_lparam);
+				this->CallMsgProc(KM_MOUSEENTER, wParam, new_lparam);
 			}
 			else if (m_bMouseIn == true && bMouseIn == false)
 			{
@@ -203,9 +203,10 @@ namespace KrUI
 		m_bVisible = true;
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentCenter);
 		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentCenter);
-		m_pFont = new Gdiplus::Font(L"宋体", 13,Gdiplus::FontStyle::FontStyleRegular,Gdiplus::Unit::UnitPixel);
+		m_pFont = new Gdiplus::Font(L"宋体", 13, Gdiplus::FontStyle::FontStyleRegular, Gdiplus::Unit::UnitPixel);
 		m_FontColor = Gdiplus::Color(255, 255, 255);
 		m_BorderColor = Gdiplus::Color(24, 132, 218);
+		m_BgColor = Gdiplus::Color::White;
 		m_hCursor = LoadCursor(nullptr, IDC_ARROW);
 	}
 	KrUIBase::~KrUIBase()

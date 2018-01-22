@@ -1,5 +1,5 @@
-#ifndef KRLABEL_H
-#define KRLABEL_H
+#ifndef _KR_LABEL_H
+#define _KR_LABEL_H
 #pragma once
 
 #include "KrButton.h"
@@ -12,7 +12,7 @@ namespace KrUI
 	public:
 		KrLabel(Gdiplus::Color bgcolor);
 	protected:
-		
+
 	};
 }// !namespace KrUI
 

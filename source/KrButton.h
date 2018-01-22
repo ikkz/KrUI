@@ -1,5 +1,5 @@
-#ifndef KRBUTTON_H
-#define  KRBUTTON_H
+#ifndef _KR_BUTTON_H
+#define  _KR_BUTTON_H
 #pragma once
 #include "KrUIBase.h"
 #include "KrMessageHandler.h"
@@ -23,15 +23,15 @@ namespace KrUI
 		virtual void DrawMouseHoverBmp();
 		virtual void DrawMouseLeaveBmp();
 		virtual void DrawContent();
-		virtual void UpdateDc();
-		void SetButtonStatus(Button_Status bs);
+		virtual void Update();
+		void SetButtonStatus(Mouse_Status bs);
 		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 	protected:
 		Gdiplus::Color m_MouseHoverColor;
 		Gdiplus::Color m_MouseDownColor;
 		Gdiplus::Color m_MouseLeaveColor;
 		Gdiplus::Color m_BorderColor;
-		Button_Status m_ButtonStatus;
+		Mouse_Status m_ButtonStatus;
 	};
 
 

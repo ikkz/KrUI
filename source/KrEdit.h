@@ -1,5 +1,5 @@
-#ifndef KREDIT_H
-#define  KREDIT_H
+#ifndef _KR_EDIT_H
+#define  _KR_EDIT_H
 #pragma once
 
 #include "KrCore.h"
@@ -42,8 +42,8 @@ namespace KrUI
 		void StringChange();
 	protected:
 		std::wstring m_strText;
-		virtual void UpdateDc();
-		Button_Status m_ButtonStatus;
+		virtual void Update();
+		Mouse_Status m_ButtonStatus;
 		bool m_bShowCursor;
 		unsigned int m_Margin;
 		unsigned int m_Time;

@@ -126,7 +126,7 @@ namespace KrUI
 						break;
 					}
 				}
-				
+
 				break;
 			default:
 				break;
@@ -135,7 +135,7 @@ namespace KrUI
 		return KrUIBase::HandleMessage(Message, wParam, lParam);
 	}
 
-	void KrEdit::UpdateDc()
+	void KrEdit::Update()
 	{
 		m_Time += TIMER_INTERVAL;
 		if (m_Time >= 500)
@@ -150,7 +150,7 @@ namespace KrUI
 		{
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color(200, 200, 200)),
 				GetXByCursorPos(m_SelectTextPosFirst < m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond),
-				(GetHeight() - 1.3*GetStrHeight()) / 2,
+				static_cast<int>((GetHeight() - 1.3*GetStrHeight()) / 2),
 				GetXByCursorPos(m_SelectTextPosFirst > m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond) -
 				GetXByCursorPos(m_SelectTextPosFirst < m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond),
 				static_cast<int>(1.3*GetStrHeight())
@@ -164,8 +164,8 @@ namespace KrUI
 				static_cast<int>((GetHeight() + GetStrHeight()) / 2));
 		}
 		//画文字内容:
-		m_pGraphics->DrawString(m_strText.c_str(), -1, m_pFont, Gdiplus::RectF(m_Margin, (GetHeight() - GetStrHeight()) / 2,
-			GetWidth() - m_Margin, GetHeight()), Gdiplus::StringFormat::GenericTypographic()/*&m_StringFormat*/, &Gdiplus::SolidBrush(m_FontColor));
+		m_pGraphics->DrawString(m_strText.c_str(), -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(m_Margin), static_cast<Gdiplus::REAL>((GetHeight() - GetStrHeight()) / 2),
+			static_cast<Gdiplus::REAL>(GetWidth() - m_Margin), static_cast<Gdiplus::REAL>(GetHeight())), Gdiplus::StringFormat::GenericTypographic()/*&m_StringFormat*/, &Gdiplus::SolidBrush(m_FontColor));
 		//画边框:
 		if ((m_bMouseIn && !m_bMouseDown) && m_ButtonStatus != mouse_hover)
 		{
@@ -193,7 +193,7 @@ namespace KrUI
 		//转换为文本矩形的横坐标
 		if (x < (m_Margin + GetXByCursorPos(1)) / 2)return 0;
 		if (x >= GetXByCursorPos(m_strText.size()))return m_strText.size();
-		for (int i = 0; i <= m_strText.size(); i++)
+		for (unsigned int i = 0; i <= m_strText.size(); i++)
 		{
 			if (x >= ((GetXByCursorPos(i - 1) + GetXByCursorPos(i)) / 2) && x <= ((GetXByCursorPos(i) + GetXByCursorPos(i + 1)) / 2)) return i;
 		}
@@ -212,17 +212,17 @@ namespace KrUI
 	void KrEdit::StringChange()
 	{
 		m_StringLength.clear();
-		for (int i = 0; i <= m_strText.size(); i++)
+		for (unsigned int i = 0; i <= m_strText.size(); i++)
 		{
-			m_StringLength.push_back(GetTextBounds(m_strText.substr(0, i).c_str()).Width);
+			m_StringLength.push_back(static_cast<unsigned int>(GetTextBounds(m_strText.substr(0, i).c_str()).Width));
 		}
 	}
 
 	unsigned int KrEdit::GetStrHeight()
 	{
 		Gdiplus::RectF strRc;
-		m_pGraphics->MeasureString(L"KrEdit", -1, m_pFont, Gdiplus::RectF(5, 0, GetWidth(), GetHeight()), Gdiplus::StringFormat::GenericTypographic(), &strRc);
-		return  strRc.Height;
+		m_pGraphics->MeasureString(L"KrEdit", -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(5), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(GetWidth()), static_cast<Gdiplus::REAL>(GetHeight())), Gdiplus::StringFormat::GenericTypographic(), &strRc);
+		return  static_cast<unsigned int>(strRc.Height);
 	}
 
 	void KrEdit::CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam)

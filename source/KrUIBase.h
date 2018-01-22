@@ -1,5 +1,5 @@
-#ifndef KRUIBASE_H
-#define KRUIBASE_H
+#ifndef _KR_UIBASE_H
+#define _KR_UIBASE_H
 
 #pragma once
 #include "KrMessageHandler.h"
@@ -10,8 +10,8 @@
 namespace KrUI
 {
 	class KrWindow;
-	enum KrUIType{KrWindow_t,KrButton_t,KrCloseButton_t,KrLabel_t,KrEdit_t};
-	enum Button_Status { mouse_down, mouse_leave, mouse_hover };
+	enum KrUIType { KrWindow_t, KrButton_t, KrCloseButton_t, KrLabel_t, KrEdit_t };
+	enum Mouse_Status { mouse_down, mouse_leave, mouse_hover };
 	class KrUIBase :public KrMessageHandler
 	{
 	protected:
@@ -58,14 +58,14 @@ namespace KrUI
 		Gdiplus::Color GetFontColor();
 		Gdiplus::Color GetBgColor();
 		void SetBgColor(Gdiplus::Color c);
-		virtual void UpdateDc()=0;
+		virtual void Update() = 0;
 		virtual void ChangeBmpSize();
 		Gdiplus::Graphics* GetBmpGraphics();
 		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 		void SetName(LPCWSTR name);
 		LPCWSTR GetName();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
-		void SetFont(const WCHAR* fontfamily,Gdiplus::REAL emSize);
+		void SetFont(const WCHAR* fontfamily, Gdiplus::REAL emSize);
 	};
 
 }//!KrUI
