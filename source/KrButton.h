@@ -44,9 +44,11 @@ namespace KrUI
  		virtual void DrawContent();
 		UINT GetMargin();
 		KrCloseButton();
+		~KrCloseButton();
 		static LRESULT DestroyKrWindow(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 	protected:
 		UINT m_Margin;
+		Gdiplus::Pen* m_pPen;
 	};
 
 

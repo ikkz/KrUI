@@ -104,12 +104,19 @@ namespace KrUI
 	{
 		m_MouseDownColor = Gdiplus::Color(203, 51, 39);
 		m_MouseHoverColor = Gdiplus::Color(250, 99, 87);
+		//新建笔
+		m_pPen = new Gdiplus::Pen(Gdiplus::Color::White, 2);
+
 		m_Margin = 5;
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentCenter);
 		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentCenter);
 		RegMsg(KM_LBTNDOWN, KrCloseButton::DestroyKrWindow);
 	}
 
+	KrCloseButton::~KrCloseButton()
+	{
+		delete m_pPen;
+	}
 
 	UINT KrCloseButton::GetMargin()
 	{
@@ -121,11 +128,17 @@ namespace KrUI
 		m_rect.top = m_Margin;
 		m_rect.right = m_pKrWindow->GetWidth() - m_Margin;
 		m_rect.bottom = m_pKrWindow->m_CaptionHeight - m_Margin;
-		Gdiplus::Font* pfont = m_pFont;
-		m_pFont = new Gdiplus::Font(L"宋体", 14, Gdiplus::FontStyleBold);
-		KrButton::DrawContent();
-		delete m_pFont;
-		m_pFont = pfont;
+		// 		Gdiplus::Font* pfont = m_pFont;
+		// 		m_pFont = new Gdiplus::Font(L"宋体", 14, Gdiplus::FontStyleBold);
+		// 		//KrButton::DrawContent();
+		// 
+		// 		//this->m_pGraphics->DrawString(L"∫", -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(GetWidth()), static_cast<Gdiplus::REAL>(GetHeight())), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
+		// 
+		// 		delete m_pFont;
+		// 		m_pFont = pfont;
+
+		m_pGraphics->DrawLine(m_pPen, 3, 3, GetWidth() - 6, GetHeight() - 6);
+		m_pGraphics->DrawLine(m_pPen, 3, GetHeight() - 6, GetWidth() - 6, 3);
 	}
 
 	LRESULT KrCloseButton::DestroyKrWindow(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam)
