@@ -22,9 +22,7 @@
 #include "KrButton.h"
 #include "KrLabel.h"
 #include "KrEdit.h"
-
-//using namespace std;
-//using namespace Gdiplus;
+#include "KrProgressBar.h"
 
 
 namespace KrUI

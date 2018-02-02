@@ -10,7 +10,7 @@
 namespace KrUI
 {
 	class KrWindow;
-	enum KrUIType { KrWindow_t, KrButton_t, KrCloseButton_t, KrLabel_t, KrEdit_t };
+	enum KrUIType { KrWindow_t, KrButton_t, KrCloseButton_t, KrLabel_t, KrEdit_t,KrProgressBar_t };
 	enum Mouse_Status { mouse_down, mouse_leave, mouse_hover };
 	class KrUIBase :public KrMessageHandler
 	{
@@ -58,7 +58,7 @@ namespace KrUI
 		Gdiplus::Color GetFontColor();
 		Gdiplus::Color GetBgColor();
 		void SetBgColor(Gdiplus::Color c);
-		virtual void Update() = 0;
+		virtual void Update();
 		virtual void ChangeBmpSize();
 		Gdiplus::Graphics* GetBmpGraphics();
 		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);

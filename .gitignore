@@ -23,3 +23,16 @@ KrUI.rc
 small.ico
 source/KrBitmapInfo.h
 Debug/kredit.obj.enc
+Debug/krbutton.nativecodeanalysis.xml
+Debug/kredit.nativecodeanalysis.xml
+Debug/krlabel.nativecodeanalysis.xml
+Debug/krmessagehandler.nativecodeanalysis.xml
+Debug/krprogressbar.nativecodeanalysis.xml
+Debug/krui.nativecodeanalysis.xml
+Debug/kruibase.nativecodeanalysis.xml
+Debug/kruimanager.nativecodeanalysis.xml
+Debug/krwindow.nativecodeanalysis.xml
+Debug/vc.nativecodeanalysis.all.xml
+KrUI1.rc
+resource.h
+source.zip

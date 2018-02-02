@@ -63,7 +63,7 @@ namespace KrUI
 			this->DrawMouseDownBmp();
 			this->DrawContent();
 		}
-		m_pKrWindow->GetBmpGraphics()->DrawImage(m_pBmp, GetX(), GetY(), GetWidth(), GetHeight());
+		KrUIBase::Update();
 	}
 
 	void KrButton::DrawMouseDownBmp()
@@ -143,6 +143,7 @@ namespace KrUI
 
 	LRESULT KrCloseButton::DestroyKrWindow(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam)
 	{
-		return SendMessage(dynamic_cast<KrCloseButton*>(pKrMessageHandler)->GetParantWindow()->GetHWND(), WM_CLOSE, wParam, lParam);
+		KrUIManager::GetpKrUIManager()->DeleteWindow(dynamic_cast<KrCloseButton*>(pKrMessageHandler)->GetParantWindow());
+		return 0;
 	}
 }//!KrUI

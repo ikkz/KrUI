@@ -301,4 +301,8 @@ namespace KrUI
 	{
 		m_BgColor = c;
 	}
+	void KrUIBase::Update()
+	{
+		m_pKrWindow->GetBmpGraphics()->DrawImage(m_pBmp, GetX(), GetY(), GetWidth(), GetHeight());
+	}
 }// namespace KrUI

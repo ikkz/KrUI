@@ -59,7 +59,7 @@ namespace KrUI
 
 	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height)
 	{
-		return AddWindow(lpWindowName, x, y, width, height,WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_MINIMIZEBOX /*WS_OVERLAPPEDWINDOW | WS_VISIBLE*/);
+		return AddWindow(lpWindowName, x, y, width, height, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_MINIMIZEBOX /*WS_OVERLAPPEDWINDOW | WS_VISIBLE*/);
 	}
 
 
@@ -74,7 +74,7 @@ namespace KrUI
 		rect.bottom = y + height;
 		pKrWindow->SetRect(&rect);
 		pKrWindow->SetWindowName(lpWindowName);
-		HWND hwnd = CreateWindowEx(WS_EX_WINDOWEDGE ,KrUIManager::GetpKrUIManager()->GetWindowClassName(), lpWindowName, /*WS_POPUP | WS_VISIBLE *//* WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER | WS_MINIMIZEBOX*/dwStyle, rect.left, rect.top,
+		HWND hwnd = CreateWindowEx(WS_EX_WINDOWEDGE, KrUIManager::GetpKrUIManager()->GetWindowClassName(), lpWindowName, /*WS_POPUP | WS_VISIBLE *//* WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER | WS_MINIMIZEBOX*/dwStyle, rect.left, rect.top,
 			rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
 		//SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER | WS_MINIMIZEBOX);
 		pKrWindow->SetHWND(hwnd);
@@ -137,10 +137,19 @@ namespace KrUI
 
 	void KrUIManager::DeleteWindow(KrWindow* pKrWindow)
 	{
-		auto result = std::find(m_WndVec.begin(), m_WndVec.end(), pKrWindow);
-		if (result != m_WndVec.end())
+		auto it = m_WndVec.begin();
+		while (it != m_WndVec.end())
 		{
-			m_WndVec.erase(result);
+			if ((*it) == pKrWindow)
+			{
+				it = m_WndVec.erase(it);
+				SendMessage(pKrWindow->GetHWND(), WM_CLOSE, NULL, NULL);
+				delete pKrWindow;
+			}
+			else
+			{
+				++it;
+			}
 		}
 		if (GetWindowNum() == 0)
 		{

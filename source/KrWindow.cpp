@@ -1,5 +1,6 @@
 #include "KrCore.h"
 #include "KrButton.h"
+#include "KrProgressBar.h"
 namespace KrUI
 {
 	KrWindow::KrWindow()
@@ -75,6 +76,9 @@ namespace KrUI
 			break;
 		case KrButton_t:
 			pui = new KrButton;
+			break;
+		case KrProgressBar_t:
+			pui = new KrProgressBar;
 			break;
 		}
 		pui->SetSize(x, y, width, height);
