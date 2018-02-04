@@ -93,11 +93,11 @@ namespace KrUI
 		friend class KrCloseButton;
 		friend class KrLabel;
 		virtual void SetRect(RECT* pRect);
-		virtual void SetX(UINT x);
-		virtual void SetY(UINT y);
-		virtual void SetXY(UINT x, UINT y);
-		virtual void SetWidth(UINT width);
-		virtual void SetHeight(UINT height);
+		virtual void SetX(unsigned int x);
+		virtual void SetY(unsigned int y);
+		virtual void SetXY(unsigned int x, unsigned int y);
+		virtual void SetWidth(unsigned int width);
+		virtual void SetHeight(unsigned int height);
 		virtual void Show();
 		virtual void Hide();
 		virtual void Update();
@@ -110,6 +110,8 @@ namespace KrUI
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		KrUIBase* AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height);
 		void RemoveControl(KrUIBase* pui);
+		void SetCaptionHeight(unsigned int ch);
+		unsigned int GetCaptionHeight();
 	};
 }//namespace KrUI
 

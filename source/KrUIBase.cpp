@@ -7,27 +7,27 @@ namespace KrUI
 		return &m_rect;
 	}
 
-	int KrUIBase::GetX()
+	unsigned int KrUIBase::GetX()
 	{
 		return m_rect.left;
 	}
 
-	int KrUIBase::GetY()
+	unsigned int KrUIBase::GetY()
 	{
 		return m_rect.top;
 	}
 
-	int KrUIBase::GetWidth()
+	unsigned int KrUIBase::GetWidth()
 	{
 		return m_rect.right - m_rect.left;
 	}
 
-	int KrUIBase::GetHeight()
+	unsigned int KrUIBase::GetHeight()
 	{
 		return m_rect.bottom - m_rect.top;
 	}
 
-	void KrUIBase::SetX(UINT x)
+	void KrUIBase::SetX(unsigned int x)
 	{
 		int width = GetWidth();
 		m_rect.left = x;
@@ -35,7 +35,7 @@ namespace KrUI
 
 		this->ChangeBmpSize();
 	}
-	void KrUIBase::SetY(UINT y)
+	void KrUIBase::SetY(unsigned int y)
 	{
 		int height = GetHeight();
 		m_rect.top = y;
@@ -44,7 +44,7 @@ namespace KrUI
 		this->ChangeBmpSize();
 	}
 
-	void KrUIBase::SetXY(UINT x, UINT y)
+	void KrUIBase::SetXY(unsigned int x, unsigned int y)
 	{
 		int width = GetWidth();
 		int height = GetHeight();
@@ -55,19 +55,19 @@ namespace KrUI
 		this->ChangeBmpSize();
 	}
 
-	void KrUIBase::SetWidth(UINT width)
+	void KrUIBase::SetWidth(unsigned int width)
 	{
 		m_rect.right = m_rect.left + width;
 		this->ChangeBmpSize();
 	}
 
-	void KrUIBase::SetHeight(UINT height)
+	void KrUIBase::SetHeight(unsigned int height)
 	{
 		m_rect.bottom = m_rect.top + height;
 		this->ChangeBmpSize();
 	}
 
-	void KrUIBase::SetSize(UINT x, UINT y, UINT width, UINT height)
+	void KrUIBase::SetSize(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
 	{
 		m_rect.left = x;
 		m_rect.right = x + width;
@@ -124,13 +124,13 @@ namespace KrUI
 		return m_pGraphics;
 	}
 
-	void KrUIBase::SetName(LPCWSTR name)
+	void KrUIBase::SetName(std::wstring name)
 	{
-		m_Name = name;
+		m_strName = name;
 	}
-	LPCWSTR KrUIBase::GetName()
+	std::wstring KrUIBase::GetName()
 	{
-		return m_Name;
+		return m_strName;
 	}
 	LRESULT KrUIBase::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
@@ -303,6 +303,15 @@ namespace KrUI
 	}
 	void KrUIBase::Update()
 	{
-		m_pKrWindow->GetBmpGraphics()->DrawImage(m_pBmp, GetX(), GetY(), GetWidth(), GetHeight());
+		m_pKrWindow->GetBmpGraphics()->DrawImage(m_pBmp, static_cast<int>(GetX()), GetY(), GetWidth(), GetHeight());
+	}
+
+	void KrUIBase::SetAlignment(Gdiplus::StringAlignment align)
+	{
+		m_StringFormat.SetAlignment(align);
+	}
+	void KrUIBase::SetLineAlignment(Gdiplus::StringAlignment align)
+	{
+		m_StringFormat.SetLineAlignment(align);
 	}
 }// namespace KrUI

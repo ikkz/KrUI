@@ -11,8 +11,6 @@ namespace KrUI
 	{
 	public:
 		KrLabel(Gdiplus::Color bgcolor);
-	protected:
-
 	};
 }// !namespace KrUI
 

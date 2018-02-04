@@ -61,6 +61,7 @@ namespace KrUI
 					m_SelectTextPosSecond++;
 					StringChange();
 				}
+				CallMsgProc(KM_TEXTCHANGE, lParam, wParam);
 				break;
 			case WM_KEYUP:
 				if (m_SelectTextPosFirst == m_SelectTextPosSecond)
@@ -74,6 +75,7 @@ namespace KrUI
 							m_SelectTextPosFirst--;
 							m_SelectTextPosSecond--;
 							StringChange();
+							CallMsgProc(KM_TEXTCHANGE, lParam, wParam);
 						}
 						break;
 					case VK_RIGHT:
@@ -89,6 +91,7 @@ namespace KrUI
 					case VK_DELETE:
 						if (m_SelectTextPosFirst < m_strText.size())m_strText.erase(m_SelectTextPosFirst, 1);
 						StringChange();
+						CallMsgProc(KM_TEXTCHANGE, lParam, wParam);
 						break;
 					default:
 						break;
@@ -113,6 +116,7 @@ namespace KrUI
 							m_SelectTextPosSecond = m_SelectTextPosFirst;
 						}
 						StringChange();
+						CallMsgProc(KM_TEXTCHANGE, lParam, wParam);
 						break;
 					case VK_RIGHT:
 						m_SelectTextPosFirst = m_SelectTextPosFirst > m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond;
@@ -241,6 +245,7 @@ namespace KrUI
 		switch (Message)
 		{
 		case KM_LBTNDOWN:
+			if (m_pKrWindow != nullptr)m_pKrWindow->SetFocusedCtrl(this);
 			m_SelectTextPosFirst = GetCursorPosByX(GET_X_LPARAM(lParam));
 			m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
 			break;

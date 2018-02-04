@@ -48,21 +48,21 @@ namespace KrUI
 	void KrButton::Update()
 	{
 		//m_pGraphics->DrawImage(m_pKrWindow->m_pBmp, 0, 0, GetX(), GetY(), GetWidth(), GetHeight(), Gdiplus::Unit::UnitPixel);
+		//m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color::AlphaMask), 0, 0, m_pBmp->GetWidth(), m_pBmp->GetHeight());
+
 		if ((m_bMouseIn && !m_bMouseDown) && m_ButtonStatus != mouse_hover)
 		{
 			this->DrawMouseHoverBmp();
-			this->DrawContent();
-		}
-		else if (((!m_bMouseDown) && (!m_bMouseIn)) && m_ButtonStatus != mouse_leave)
-		{
-			this->DrawMouseLeaveBmp();
-			this->DrawContent();
 		}
 		else if (m_bMouseDown && (m_ButtonStatus != mouse_down))
 		{
 			this->DrawMouseDownBmp();
-			this->DrawContent();
 		}
+		else if (((!m_bMouseDown) && (!m_bMouseIn)) && m_ButtonStatus != mouse_leave)
+		{
+			this->DrawMouseLeaveBmp();
+		}
+		this->DrawContent();
 		KrUIBase::Update();
 	}
 
@@ -83,7 +83,7 @@ namespace KrUI
 	}
 	void KrButton::DrawContent()
 	{
-		this->m_pGraphics->DrawString((WCHAR*)m_Name, -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(GetWidth()), static_cast<Gdiplus::REAL>(GetHeight())), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
+		this->m_pGraphics->DrawString(m_strName.c_str(), -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(GetWidth()), static_cast<Gdiplus::REAL>(GetHeight())), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
 	}
 	KrButton::~KrButton()
 	{
@@ -98,6 +98,27 @@ namespace KrUI
 		return KrUIBase::HandleMessage(Message, wParam, lParam);
 	}
 
+	void KrButton::SetName(std::wstring name)
+	{
+		if (m_pGraphics != nullptr)
+		{
+			switch (m_ButtonStatus)
+			{
+			case KrUI::mouse_down:
+				DrawMouseDownBmp();
+				break;
+			case KrUI::mouse_leave:
+				DrawMouseLeaveBmp();
+				break;
+			case KrUI::mouse_hover:
+				DrawMouseHoverBmp();
+				break;
+			default:
+				break;
+			}
+		}
+		KrUIBase::SetName(name);
+	}
 
 	//¹Ø±Õ°´Å¥£º
 	KrCloseButton::KrCloseButton()

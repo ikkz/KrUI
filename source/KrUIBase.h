@@ -15,7 +15,7 @@ namespace KrUI
 	class KrUIBase :public KrMessageHandler
 	{
 	protected:
-		LPCWSTR m_Name;
+		std::wstring m_strName;
 		RECT m_rect;
 		bool m_bVisible;
 		Gdiplus::Bitmap* m_pBmp;
@@ -38,16 +38,16 @@ namespace KrUI
 		KrUIType GetType();
 		virtual RECT* GetRect();
 		virtual void SetRect(RECT* pRect);
-		virtual int GetX();
-		virtual int GetY();
-		virtual int GetWidth();
-		virtual int GetHeight();
-		virtual void SetX(UINT x);
-		virtual void SetY(UINT y);
-		virtual void SetXY(UINT x, UINT y);
-		virtual void SetWidth(UINT width);
-		virtual void SetHeight(UINT height);
-		virtual void SetSize(UINT x, UINT y, UINT width, UINT height);
+		virtual unsigned int GetX();
+		virtual unsigned int GetY();
+		virtual unsigned int GetWidth();
+		virtual unsigned int GetHeight();
+		virtual void SetX(unsigned int x);
+		virtual void SetY(unsigned int y);
+		virtual void SetXY(unsigned int x, unsigned int y);
+		virtual void SetWidth(unsigned int width);
+		virtual void SetHeight(unsigned int height);
+		virtual void SetSize(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 		virtual void Show();
 		virtual void Hide();
 		virtual bool IsVisible();
@@ -62,10 +62,12 @@ namespace KrUI
 		virtual void ChangeBmpSize();
 		Gdiplus::Graphics* GetBmpGraphics();
 		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
-		void SetName(LPCWSTR name);
-		LPCWSTR GetName();
+		virtual void SetName(std::wstring name);
+		std::wstring GetName();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		void SetFont(const WCHAR* fontfamily, Gdiplus::REAL emSize);
+		void SetAlignment(Gdiplus::StringAlignment align);
+		void SetLineAlignment(Gdiplus::StringAlignment align);
 	};
 
 }//!KrUI

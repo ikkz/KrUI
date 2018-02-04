@@ -144,7 +144,8 @@ namespace KrUI
 			{
 				it = m_WndVec.erase(it);
 				SendMessage(pKrWindow->GetHWND(), WM_CLOSE, NULL, NULL);
-				delete pKrWindow;
+				pKrWindow = nullptr;
+				//delete pKrWindow;
 			}
 			else
 			{
@@ -175,7 +176,8 @@ namespace KrUI
 	{
 		for (auto p : GetpKrUIManager()->m_WndVec)
 		{
-			p->Update();
+			//p->Update();
+			if (p->IsVisible())SendMessage(p->GetHWND(), WM_PAINT, NULL, NULL);
 		}
 	}
 

@@ -62,6 +62,16 @@ namespace KrUI
 		return m_hwnd;
 	}
 
+	void KrWindow::SetCaptionHeight(unsigned int ch)
+	{
+		if (ch > GetHeight())ch = GetHeight();
+		m_CaptionHeight = ch;
+	}
+	unsigned int KrWindow::GetCaptionHeight()
+	{
+		return m_CaptionHeight;
+	}
+
 	KrUIBase* KrWindow::AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height)
 	{
 		KrUIBase* pui = nullptr;
@@ -107,31 +117,31 @@ namespace KrUI
 		return m_dwStyle;
 	}
 
-	void KrWindow::SetX(UINT x)
+	void KrWindow::SetX(unsigned int x)
 	{
 		KrUIBase::SetX(x);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 	}
 
-	void KrWindow::SetY(UINT y)
+	void KrWindow::SetY(unsigned int y)
 	{
 		KrUIBase::SetY(y);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 	}
 
-	void KrWindow::SetXY(UINT x, UINT y)
+	void KrWindow::SetXY(unsigned int x, unsigned int y)
 	{
 		KrUIBase::SetXY(x, y);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 	}
 
-	void KrWindow::SetWidth(UINT width)
+	void KrWindow::SetWidth(unsigned int width)
 	{
 		KrUIBase::SetWidth(width);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
 	}
 
-	void KrWindow::SetHeight(UINT height)
+	void KrWindow::SetHeight(unsigned int height)
 	{
 		KrUIBase::SetHeight(height);
 		if (IsCreated())MoveWindow(m_hwnd, m_rect.left, m_rect.top, m_rect.right - m_rect.left, m_rect.bottom - m_rect.top, TRUE);
@@ -191,7 +201,12 @@ namespace KrUI
 		case WM_SIZE:
 			GetWindowRect(m_hwnd, GetRect());
 		case WM_PAINT:
+		{
+			PAINTSTRUCT ps;
+			HDC hdc = BeginPaint(this->GetHWND(), &ps);
 			Update();
+			EndPaint(this->GetHWND(), &ps);
+		}
 			break;
 		case WM_KILLFOCUS:
 			m_pFocusedCtrl = nullptr;
@@ -263,7 +278,7 @@ namespace KrUI
 
 	void KrWindow::Update()
 	{
-		if (m_bVisible && (m_pBmp != NULL))
+		if (m_bVisible && (m_pBmp != nullptr))
 		{
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_BgColor), 0, 0, m_pBmp->GetWidth(), m_pBmp->GetHeight());
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_CaptionColor), 0, 0, m_pBmp->GetWidth(), m_CaptionHeight);
@@ -273,6 +288,7 @@ namespace KrUI
 			{
 				if (p != nullptr&&p->IsVisible())
 				{
+
 					p->Update();
 				}
 			}
