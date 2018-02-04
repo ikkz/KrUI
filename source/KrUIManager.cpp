@@ -66,7 +66,7 @@ namespace KrUI
 	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle)
 	{
 		KrWindow* pKrWindow = new KrWindow;
-		if (!pKrWindow) return NULL;
+		if (!pKrWindow) return nullptr;
 		RECT rect;
 		rect.left = x;
 		rect.top = y;

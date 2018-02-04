@@ -233,13 +233,13 @@ namespace KrUI
 			switch (Message)
 			{
 			case KM_MOUSEENTER:
-				if (m_pKrWindow != nullptr)
+				if (m_pKrWindow != nullptr&&m_hCursor != nullptr)
 				{
 					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(m_hCursor));
 				}
 				break;
 			case KM_MOUSELEAVE:
-				if (m_pKrWindow != nullptr)
+				if (m_pKrWindow != nullptr&&m_hCursor != nullptr)
 				{
 					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(LoadCursor(nullptr, IDC_ARROW)));
 				}

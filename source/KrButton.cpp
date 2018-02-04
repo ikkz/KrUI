@@ -10,7 +10,7 @@ namespace KrUI
 		m_MouseDownColor = Gdiplus::Color(9, 140, 188);
 		m_MouseHoverColor = Gdiplus::Color(60, 195, 245);
 		m_MouseLeaveColor = Gdiplus::Color(9, 163, 220);
-		m_hCursor = LoadCursor(nullptr, IDC_HAND);//设置鼠标进入后的样式
+		m_hCursor = nullptr;//设置鼠标进入后的样式
 	}
 
 	void KrButton::SetMouseHoverColor(Gdiplus::Color color)
