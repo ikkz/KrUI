@@ -12,7 +12,7 @@ namespace KrUI
 		m_hDC = NULL;
 		m_CaptionColor = Gdiplus::Color(9, 163, 220);
 		m_BgColor = Gdiplus::Color(240, 240, 240);
-		m_CaptionHeight = 30;
+		m_CaptionHeight = 38;
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentNear);
 		m_pFocusedCtrl = nullptr;
 		m_pKrWindow = nullptr;

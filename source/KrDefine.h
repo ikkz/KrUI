@@ -11,4 +11,5 @@
 #define KM_CLICK KM_LBTNUP
 #define KM_MOUSEMOVE (WM_USER+5)
 #define KM_TEXTCHANGE (WM_USER+6)
+#define KM_CREATE (WM_USER+7)
 

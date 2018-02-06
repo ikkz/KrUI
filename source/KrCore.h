@@ -4,7 +4,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 #define TIMER_ID 1
-#define TIMER_INTERVAL 60
+#define TIMER_INTERVAL 70
 #ifdef _DEBUG
 #include <iostream>
 #endif
@@ -42,8 +42,8 @@ namespace KrUI
 		static LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
 		static void CALLBACK TimerProc(HWND hWnd, UINT nMsg, UINT_PTR nTimerid, DWORD dwTime);
 		bool Initialize(HINSTANCE hInstance);
-		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle);
 		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height);
+		KrWindow* AddWindow(KrWindow* pKrWindow, LPCWSTR lpWindowName, int x, int y, int width, int height);
 		LPCWSTR GetWindowClassName();
 		HINSTANCE GetHINSTANCE();
 		int MessageLoop();

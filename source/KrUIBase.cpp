@@ -203,7 +203,7 @@ namespace KrUI
 		m_bVisible = true;
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentCenter);
 		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentCenter);
-		m_pFont = new Gdiplus::Font(L"ËÎÌå", 13, Gdiplus::FontStyle::FontStyleRegular, Gdiplus::Unit::UnitPixel);
+		m_pFont = new Gdiplus::Font(L"Î¢ÈíÑÅºÚ", 16, Gdiplus::FontStyle::FontStyleRegular, Gdiplus::Unit::UnitPixel);
 		m_FontColor = Gdiplus::Color(255, 255, 255);
 		m_BorderColor = Gdiplus::Color(24, 132, 218);
 		m_BgColor = Gdiplus::Color::White;
@@ -290,6 +290,11 @@ namespace KrUI
 	{
 		delete m_pFont;
 		m_pFont = new Gdiplus::Font(fontfamily, emSize);
+	}
+
+	Gdiplus::Font* KrUIBase::GetFont()
+	{
+		return m_pFont;
 	}
 
 	Gdiplus::Color KrUIBase::GetBgColor()

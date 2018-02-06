@@ -265,7 +265,7 @@ namespace KrUI
 		m_BorderColor = Gdiplus::Color(170, 170, 170);
 		m_FontColor = Gdiplus::Color::Black;
 		delete m_pFont;
-		m_pFont = new Gdiplus::Font(L"新宋体", 13, Gdiplus::FontStyle::FontStyleRegular, Gdiplus::Unit::UnitPixel);
+		m_pFont = new Gdiplus::Font(L"新宋体", 17, Gdiplus::FontStyle::FontStyleRegular, Gdiplus::Unit::UnitPixel);
 		//							这里使用新宋体，等宽字体防止画字符串的时候字符间距随着长度变化的问题
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentNear);
 		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentNear);

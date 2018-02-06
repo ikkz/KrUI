@@ -11,6 +11,8 @@ namespace KrUI
 		m_MouseHoverColor = Gdiplus::Color(60, 195, 245);
 		m_MouseLeaveColor = Gdiplus::Color(9, 163, 220);
 		m_hCursor = nullptr;//设置鼠标进入后的样式
+		delete m_pFont;
+		m_pFont = new Gdiplus::Font(L"宋体", 16, Gdiplus::FontStyle::FontStyleRegular, Gdiplus::Unit::UnitPixel);
 	}
 
 	void KrButton::SetMouseHoverColor(Gdiplus::Color color)
@@ -128,7 +130,7 @@ namespace KrUI
 		//新建笔
 		m_pPen = new Gdiplus::Pen(Gdiplus::Color::White, 2);
 
-		m_Margin = 5;
+		m_Margin = 7;
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentCenter);
 		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentCenter);
 		RegMsg(KM_LBTNDOWN, KrCloseButton::DestroyKrWindow);

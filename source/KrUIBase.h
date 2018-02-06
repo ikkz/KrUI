@@ -66,6 +66,7 @@ namespace KrUI
 		std::wstring GetName();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		void SetFont(const WCHAR* fontfamily, Gdiplus::REAL emSize);
+		Gdiplus::Font* GetFont();
 		void SetAlignment(Gdiplus::StringAlignment align);
 		void SetLineAlignment(Gdiplus::StringAlignment align);
 	};
