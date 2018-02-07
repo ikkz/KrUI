@@ -102,7 +102,8 @@ namespace KrUI
 		delete m_pBmp;
 		m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
 		m_pGraphics = new Gdiplus::Graphics(m_pBmp);
-		this->Update();
+		//m_pGraphics->SetTextRenderingHint(Gdiplus::TextRenderingHint::TextRenderingHintAntiAlias);
+		//this->Update();
 	}
 
 	void KrUIBase::Show()
@@ -223,6 +224,7 @@ namespace KrUI
 			m_hBmp = CreateCompatibleBitmap(m_pKrWindow->GetDc(), GetWidth(), GetHeight());
 			m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
 			m_pGraphics = new Gdiplus::Graphics(m_pBmp);
+			//m_pGraphics->SetTextRenderingHint(Gdiplus::TextRenderingHint::TextRenderingHintAntiAlias);
 		}
 	}
 
@@ -235,13 +237,23 @@ namespace KrUI
 			case KM_MOUSEENTER:
 				if (m_pKrWindow != nullptr&&m_hCursor != nullptr)
 				{
+
+#ifdef _WIN64
+					SetClassLong(m_pKrWindow->GetHWND(), (-12), reinterpret_cast<LONG>(m_hCursor));
+#else
 					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(m_hCursor));
+#endif
 				}
 				break;
 			case KM_MOUSELEAVE:
 				if (m_pKrWindow != nullptr&&m_hCursor != nullptr)
 				{
+#ifdef _WIN64
+					SetClassLong(m_pKrWindow->GetHWND(), (-12), reinterpret_cast<LONG>(LoadCursor(nullptr, IDC_ARROW)));
+#else
 					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(LoadCursor(nullptr, IDC_ARROW)));
+#endif
+
 				}
 				break;
 			case KM_LBTNDOWN:

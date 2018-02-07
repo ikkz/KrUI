@@ -189,6 +189,12 @@ namespace KrUI
 		KrUIBase::Update();
 	}
 
+	void KrEdit::ChangeBmpSize()
+	{
+		KrUIBase::ChangeBmpSize();
+		m_pGraphics->SetTextRenderingHint(Gdiplus::TextRenderingHint::TextRenderingHintAntiAlias);
+	}
+
 	unsigned int KrEdit::GetCursorPosByX(unsigned int x)
 	{
 		//  t h i s
@@ -265,8 +271,10 @@ namespace KrUI
 		m_BorderColor = Gdiplus::Color(170, 170, 170);
 		m_FontColor = Gdiplus::Color::Black;
 		delete m_pFont;
-		m_pFont = new Gdiplus::Font(L"新宋体", 17, Gdiplus::FontStyle::FontStyleRegular, Gdiplus::Unit::UnitPixel);
+		m_pFont = new Gdiplus::Font(L"新宋体", 20, Gdiplus::FontStyle::FontStyleRegular, Gdiplus::Unit::UnitPixel);
 		//							这里使用新宋体，等宽字体防止画字符串的时候字符间距随着长度变化的问题
+		//Gdi+里相同字体使用同一种StringFormat在path和bitmap上面画出来的字符串长度不一样
+		//在bitmap上面画字符串时会自动调整字符间距
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentNear);
 		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentNear);
 		m_hCursor = LoadCursor(nullptr, IDC_IBEAM);//设置鼠标进入后的样式

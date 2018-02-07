@@ -33,7 +33,7 @@ namespace KrUI
 #endif
 		m_lpWindowClassName = L"KrUI";
 		m_hInstance = hInstance;
-		WNDCLASSEX wcex;
+		WNDCLASSEXW wcex;
 		memset(&wcex, 0, sizeof(wcex));
 		wcex.cbSize = sizeof(WNDCLASSEX);
 		wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -73,7 +73,7 @@ namespace KrUI
 		rect.bottom = y + height;
 		pKrWindow->SetRect(&rect);
 		pKrWindow->SetWindowName(lpWindowName);
-		HWND hwnd = CreateWindowEx(WS_EX_WINDOWEDGE, KrUIManager::GetpKrUIManager()->GetWindowClassName(), lpWindowName,
+		HWND hwnd = CreateWindowExW(WS_EX_WINDOWEDGE, KrUIManager::GetpKrUIManager()->GetWindowClassName(), lpWindowName,
 			WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_MINIMIZEBOX, rect.left, rect.top,
 			rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
 		//SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER | WS_MINIMIZEBOX);

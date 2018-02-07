@@ -32,7 +32,7 @@ namespace KrUI
 
 	void KrWindow::SetWindowName(LPCWSTR lpWindowName)
 	{
-		if (IsCreated())SetWindowText(m_hwnd, lpWindowName);
+		if (IsCreated())SetWindowTextW(m_hwnd, lpWindowName);
 		m_lpName = lpWindowName;
 	}
 
@@ -41,7 +41,7 @@ namespace KrUI
 		m_hwnd = hwnd;
 		m_hDC = ::GetDC(hwnd);
 		m_pGraphicsDC = new Gdiplus::Graphics(m_hDC);
-		SetWindowText(m_hwnd, m_lpName);
+		SetWindowTextW(m_hwnd, m_lpName);
 		ChangeBmpSize();
 
 		//Ìí¼Ó¹Ø±Õ°´Å¥
@@ -91,11 +91,11 @@ namespace KrUI
 			pui = new KrProgressBar;
 			break;
 		}
-		pui->SetSize(x, y, width, height);
 		if (pui == nullptr)return nullptr;
 		pui->SetType(t);
 		pui->SetName(lpName);
 		pui->SetParantWindow(this);
+		pui->SetSize(x, y, width, height);
 		m_UIVec.push_back(pui);
 		return pui;
 	}

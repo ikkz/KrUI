@@ -4,7 +4,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 #define TIMER_ID 1
-#define TIMER_INTERVAL 70
+#define TIMER_INTERVAL 100
 #ifdef _DEBUG
 #include <iostream>
 #endif
