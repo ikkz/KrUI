@@ -104,24 +104,28 @@ namespace KrUI
 
 	void KrButton::SetName(std::wstring name)
 	{
+		KrUIBase::SetName(name);
 		if (m_pGraphics != nullptr)
 		{
 			switch (m_ButtonStatus)
 			{
 			case KrUI::mouse_down:
-				DrawMouseDownBmp();
+				this->DrawMouseDownBmp();
+				this->DrawContent();
 				break;
 			case KrUI::mouse_leave:
-				DrawMouseLeaveBmp();
+				this->DrawMouseLeaveBmp();
+				this->DrawContent();
 				break;
 			case KrUI::mouse_hover:
-				DrawMouseHoverBmp();
+				this->DrawMouseHoverBmp();
+				this->DrawContent();
 				break;
 			default:
 				break;
 			}
 		}
-		KrUIBase::SetName(name);
+	
 	}
 
 	//¹Ø±Õ°´Å¥£º
