@@ -57,13 +57,21 @@ namespace KrUI
 	}
 
 
+	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle)
+	{
+		return AddWindow(new KrWindow, lpWindowName, x, y, width, height, dwStyle);
+	}
 
 	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height)
 	{
 		return AddWindow(new KrWindow, lpWindowName, x, y, width, height);
 	}
-
 	KrWindow* KrUIManager::AddWindow(KrWindow* pKrWindow, LPCWSTR lpWindowName, int x, int y, int width, int height)
+	{
+		return AddWindow(pKrWindow, lpWindowName, x, y, width, height, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_MINIMIZEBOX);
+	}
+
+	KrWindow* KrUIManager::AddWindow(KrWindow* pKrWindow, LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle)
 	{
 		if (!pKrWindow) return nullptr;
 		RECT rect;
@@ -74,9 +82,7 @@ namespace KrUI
 		pKrWindow->SetRect(&rect);
 		pKrWindow->SetWindowName(lpWindowName);
 		HWND hwnd = CreateWindowExW(WS_EX_WINDOWEDGE, KrUIManager::GetpKrUIManager()->GetWindowClassName(), lpWindowName,
-			WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_MINIMIZEBOX, rect.left, rect.top,
-			rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
-		//SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_BORDER | WS_MINIMIZEBOX);
+			dwStyle, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
 		pKrWindow->SetHWND(hwnd);
 		pKrWindow->SetWindowName(lpWindowName);
 		m_WndVec.push_back(pKrWindow);

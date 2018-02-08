@@ -43,8 +43,10 @@ namespace KrUI
 		m_pGraphicsDC = new Gdiplus::Graphics(m_hDC);
 		SetWindowTextW(m_hwnd, m_lpName);
 		ChangeBmpSize();
+		RegMsg(WM_SIZE, (MSGPROC)KrWindow::SizeChange);
 
 		//Ìí¼Ó¹Ø±Õ°´Å¥
+		if (m_CaptionHeight == 0)return;
 		KrUIBase* pui = new KrCloseButton;
 		int Margin = dynamic_cast<KrCloseButton*>(pui)->GetMargin();
 		pui->SetSize(GetWidth() - m_CaptionHeight + Margin, Margin, m_CaptionHeight - Margin * 2, m_CaptionHeight - Margin * 2);
@@ -54,7 +56,7 @@ namespace KrUI
 		pui->SetParantWindow(this);
 		m_UIVec.push_back(pui);
 
-		RegMsg(WM_SIZE, (MSGPROC)KrWindow::SizeChange);
+
 	}
 
 	HWND KrWindow::GetHWND()
@@ -207,7 +209,7 @@ namespace KrUI
 			Update();
 			EndPaint(this->GetHWND(), &ps);
 		}
-			break;
+		break;
 		case WM_KILLFOCUS:
 			m_pFocusedCtrl = nullptr;
 			break;
@@ -281,8 +283,11 @@ namespace KrUI
 		if (m_bVisible && (m_pBmp != nullptr))
 		{
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_BgColor), 0, 0, m_pBmp->GetWidth(), m_pBmp->GetHeight());
-			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_CaptionColor), 0, 0, m_pBmp->GetWidth(), m_CaptionHeight);
-			m_pGraphics->DrawString((WCHAR*)m_lpName, -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(m_pBmp->GetWidth() - 10), static_cast<Gdiplus::REAL>(m_CaptionHeight)), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
+			if (m_CaptionHeight > 0)
+			{
+				m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_CaptionColor), 0, 0, m_pBmp->GetWidth(), m_CaptionHeight);
+				m_pGraphics->DrawString((WCHAR*)m_lpName, -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(m_pBmp->GetWidth() - 10), static_cast<Gdiplus::REAL>(m_CaptionHeight)), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
+			}
 			this->Draw();
 			for (auto p : m_UIVec)
 			{
@@ -292,7 +297,7 @@ namespace KrUI
 					p->Update();
 				}
 			}
-			m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, 1), 0, 0, GetWidth() - 1, GetHeight() - 1);
+			if (m_CaptionHeight > 0)m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, 1), 0, 0, GetWidth() - 1, GetHeight() - 1);
 			m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());
 		}
 	}
