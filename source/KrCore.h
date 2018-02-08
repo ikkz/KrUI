@@ -23,7 +23,7 @@
 #include "KrLabel.h"
 #include "KrEdit.h"
 #include "KrProgressBar.h"
-
+#include "Tools/KrTools.h"
 
 namespace KrUI
 {
