@@ -183,7 +183,7 @@ namespace KrUI
 	{
 		for (auto p : GetpKrUIManager()->m_WndVec)
 		{
-			p->Update();
+			if (p != nullptr)p->Update();
 			//if (p->IsVisible())SendMessage(p->GetHWND(), WM_PAINT, NULL, NULL);
 		}
 	}

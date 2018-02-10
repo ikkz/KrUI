@@ -23,6 +23,7 @@
 #include "KrLabel.h"
 #include "KrEdit.h"
 #include "KrProgressBar.h"
+#include "KrList.h"
 #include "Tools/KrTools.h"
 
 namespace KrUI
@@ -83,6 +84,11 @@ namespace KrUI
 		std::vector<KrUIBase*> m_UIVec;
 		KrUIBase* m_pFocusedCtrl;
 	public:
+		friend class KrButton;
+		friend class KrCloseButton;
+		friend class KrLabel;
+		friend class KrEdit;
+		friend class KrList;
 		KrWindow();
 		static LRESULT SizeChange(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 		LPCWSTR GetWindowName();
@@ -91,9 +97,7 @@ namespace KrUI
 		HWND GetHWND();
 		void SetStyle(DWORD dwStyle);
 		DWORD GetStyle();
-		friend class KrButton;
-		friend class KrCloseButton;
-		friend class KrLabel;
+
 		virtual void SetRect(RECT* pRect);
 		virtual void SetX(unsigned int x);
 		virtual void SetY(unsigned int y);

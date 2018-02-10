@@ -10,7 +10,7 @@
 namespace KrUI
 {
 	class KrWindow;
-	enum KrUIType { KrWindow_t, KrButton_t, KrCloseButton_t, KrLabel_t, KrEdit_t,KrProgressBar_t };
+	enum KrUIType { KrWindow_t, KrButton_t, KrCloseButton_t, KrLabel_t, KrEdit_t, KrProgressBar_t, KrList_t };
 	enum Mouse_Status { mouse_down, mouse_leave, mouse_hover };
 	class KrUIBase :public KrMessageHandler
 	{
@@ -64,7 +64,7 @@ namespace KrUI
 		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 		virtual void SetName(std::wstring name);
 		std::wstring GetName();
-		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		void SetFont(const WCHAR* fontfamily, Gdiplus::REAL emSize);
 		Gdiplus::Font* GetFont();
 		void SetAlignment(Gdiplus::StringAlignment align);

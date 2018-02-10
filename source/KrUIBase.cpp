@@ -149,8 +149,6 @@ namespace KrUI
 			if (m_bMouseIn == false && bMouseIn == TRUE)
 			{
 				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
-				//使用这种方法还需要在后两个参数之一中标识消息属于哪个UIBase并在处理时dynamic_cast
-				//最后消息还是回到这里，所以直接在这调用MsgProc算了，下面也一样
 				this->CallMsgProc(KM_MOUSEENTER, wParam, new_lparam);
 			}
 			else if (m_bMouseIn == true && bMouseIn == false)

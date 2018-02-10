@@ -1,6 +1,7 @@
 #include "KrCore.h"
 #include "KrButton.h"
 #include "KrProgressBar.h"
+#include "KrList.h"
 namespace KrUI
 {
 	KrWindow::KrWindow()
@@ -43,7 +44,7 @@ namespace KrUI
 		m_pGraphicsDC = new Gdiplus::Graphics(m_hDC);
 		SetWindowTextW(m_hwnd, m_lpName);
 		ChangeBmpSize();
-		RegMsg(WM_SIZE, (MSGPROC)KrWindow::SizeChange);
+		RegMsg(WM_SIZE, reinterpret_cast<MSGPROC>(KrWindow::SizeChange));
 
 		//Ìí¼Ó¹Ø±Õ°´Å¥
 		if (m_CaptionHeight == 0)return;
@@ -91,6 +92,9 @@ namespace KrUI
 			break;
 		case KrProgressBar_t:
 			pui = new KrProgressBar;
+			break;
+		case KrList_t:
+			pui = new KrList;
 			break;
 		}
 		if (pui == nullptr)return nullptr;
@@ -179,6 +183,12 @@ namespace KrUI
 	{
 		switch (Message)
 		{
+		case WM_MOUSEMOVE:
+		{
+			m_ptMouse.x = GET_X_LPARAM(lParam);
+			m_ptMouse.y = GET_Y_LPARAM(lParam);
+		}
+		break;
 		case WM_CREATE:
 			SetClassLong(m_hwnd, GCL_STYLE, GetClassLong(m_hwnd, GCL_STYLE) | CS_DROPSHADOW);
 			break;
