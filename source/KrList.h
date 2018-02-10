@@ -7,6 +7,13 @@
 #include <vector>
 namespace KrUI
 {
+	struct KrListItem
+	{
+		unsigned int m_Index;
+		std::wstring m_ItemName;
+		unsigned int m_Height;
+		KrListItem(std::wstring wStr, unsigned int Index, unsigned int Height) : m_ItemName(wStr), m_Index(Index), m_Height(Height) {}
+	};
 
 	class KrList : public KrUIBase
 	{
@@ -16,17 +23,12 @@ namespace KrUI
 		//删除所有为wStr的项
 		int RemoveItem(std::wstring wStr);
 		bool RemoveItem(int nIndex);
+		//未选中时return KrListItem{ L"",0,0 }
+		KrListItem GetSelectedItem();
 		virtual void Update();
 		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		void SetPosition(int position);
 	private:
-		struct KrListItem
-		{
-			unsigned int m_Index;
-			std::wstring m_ItemName;
-			unsigned int m_Height;
-			KrListItem(std::wstring wStr, unsigned int Index, unsigned int Height) : m_ItemName(wStr), m_Index(Index), m_Height(Height) {}
-		};
 		unsigned int m_Position;
 		std::vector<KrListItem> m_ListItems;
 		unsigned int m_TotalHeight;

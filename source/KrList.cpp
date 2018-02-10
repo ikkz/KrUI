@@ -23,12 +23,18 @@ namespace KrUI
 			m_Position = 0;
 			return;
 		}
-		else if (position > m_TotalHeight - GetHeight())
+		else if (position > static_cast<int>(m_TotalHeight - GetHeight()))
 		{
 			m_Position = m_TotalHeight - GetHeight();
 			return;
 		}
 		m_Position = position;
+	}
+
+	KrListItem KrList::GetSelectedItem()
+	{
+		if (m_SelectedItem == -1)return KrListItem{ L"",0,0 };
+		return m_ListItems[m_SelectedItem];
 	}
 
 	LRESULT KrList::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
@@ -39,7 +45,10 @@ namespace KrUI
 			//如果鼠标按下时在列表内，就把当前选中的项目设置为鼠标停留在的那一项
 			if (!(static_cast<int>(m_pKrWindow->m_ptMouse.x) >= static_cast<int>(GetX()) && static_cast<int>(m_pKrWindow->m_ptMouse.y) >= static_cast<int>(GetY()) &&
 				static_cast<int>(m_pKrWindow->m_ptMouse.x) <= static_cast<int>(GetX() + GetWidth()) && static_cast<int>(m_pKrWindow->m_ptMouse.y) <= static_cast<int>(GetY() + GetHeight())))break;
-			m_SelectedItem = m_MouseHoverItem;
+			{
+				m_SelectedItem = m_MouseHoverItem;
+				if (m_SelectedItem != -1)CallMsgProc(KM_SELECTEDITEMCHANGE, wParam, lParam);
+			}
 			//如果鼠标按下时在滚动条上，就保存鼠标和滚送条顶部的相对位置
 			if (static_cast<int>(m_pKrWindow->m_ptMouse.x) >= static_cast<int>(GetX() + GetWidth() - m_ScrollBarRect.Width) &&
 				static_cast<int>(m_pKrWindow->m_ptMouse.y) >= static_cast<int>(GetY() + m_ScrollBarRect.Y) &&
@@ -53,8 +62,8 @@ namespace KrUI
 			{
 				//m_ScrollBarRect.Y = (GetHeight() - m_ScrollBarRect.Height)*static_cast<float>(m_Position) / (m_TotalHeight - GetHeight());
 				//解以上方程得：
-				SetPosition((m_pKrWindow->m_ptMouse.y - m_MouseDownOnScrollBarPos - GetY())*
-					(static_cast<float>(m_TotalHeight) - GetHeight()) / (GetHeight() - m_ScrollBarRect.Height));
+				SetPosition(static_cast<int>((m_pKrWindow->m_ptMouse.y - m_MouseDownOnScrollBarPos - GetY())*
+					(static_cast<float>(m_TotalHeight) - GetHeight()) / (GetHeight() - m_ScrollBarRect.Height)));
 			}
 			break;
 		case WM_MOUSEWHEEL:
@@ -147,58 +156,60 @@ namespace KrUI
 	void KrList::Update()
 	{
 		m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_BgColor), 0, 0, GetWidth(), GetHeight());
-
-		//计算需要画哪些项：
-		//m_Position = 0;
-		int current_total = 0, start_item = -1, end_item = -1, start_position = 0;
-		m_MouseHoverItem = -1;
-		for (unsigned int i = 0; i < m_ListItems.size(); i++)
+		if (m_ListItems.size() != 0)
 		{
-			//确定开始项
-			if (static_cast<int>(m_Position) >= current_total && m_Position <= (current_total + m_ListItems[i].m_Height))
+			//计算需要画哪些项：
+			//m_Position = 0;
+			int current_total = 0, start_item = -1, end_item = -1, start_position = 0;
+			m_MouseHoverItem = -1;
+			for (unsigned int i = 0; i < m_ListItems.size(); i++)
 			{
-				start_item = i;
-				start_position = current_total - m_Position;
+				//确定开始项
+				if (static_cast<int>(m_Position) >= current_total && m_Position <= (current_total + m_ListItems[i].m_Height))
+				{
+					start_item = i;
+					start_position = current_total - m_Position;
+				}
+				//确定鼠标停留项
+				if (m_pKrWindow->m_ptMouse.x >= static_cast<int>(GetX()) && m_pKrWindow->m_ptMouse.y >= static_cast<int>(GetY()) &&
+					m_pKrWindow->m_ptMouse.x <= static_cast<int>(GetX() + GetWidth()) && m_pKrWindow->m_ptMouse.y <= static_cast<int>(GetY() + GetHeight()) &&
+					static_cast<int>(m_pKrWindow->m_ptMouse.y - GetY()) >= static_cast<int>(current_total - m_Position) &&
+					static_cast<int>(m_pKrWindow->m_ptMouse.y - GetY()) <= static_cast<int>(current_total - m_Position + m_ListItems[i].m_Height) &&
+					static_cast<int>(m_pKrWindow->m_ptMouse.x - GetX()) <= static_cast<int>(GetWidth() - m_ScrollBarRect.Width))
+					m_MouseHoverItem = i;
+				//确定结束项
+				int end_position = m_Position + GetHeight();
+				if (end_position >= current_total && end_position <= static_cast<int>(current_total + m_ListItems[i].m_Height))
+				{
+					end_item = i;
+					break;//找到结束项直接退出循环
+				}
+				current_total += m_ListItems[i].m_Height;
 			}
-			//确定鼠标停留项
-			if (m_pKrWindow->m_ptMouse.x >= static_cast<int>(GetX()) && m_pKrWindow->m_ptMouse.y >= static_cast<int>(GetY()) &&
-				m_pKrWindow->m_ptMouse.x <= static_cast<int>(GetX() + GetWidth()) && m_pKrWindow->m_ptMouse.y <= static_cast<int>(GetY() + GetHeight()) &&
-				static_cast<int>(m_pKrWindow->m_ptMouse.y - GetY()) >= static_cast<int>(current_total - m_Position) &&
-				static_cast<int>(m_pKrWindow->m_ptMouse.y - GetY()) <= static_cast<int>(current_total - m_Position + m_ListItems[i].m_Height) &&
-				static_cast<int>(m_pKrWindow->m_ptMouse.x - GetX()) <= static_cast<int>(GetWidth() - m_ScrollBarRect.Width))
-				m_MouseHoverItem = i;
-			//确定结束项
-			int end_position = m_Position + GetHeight();
-			if (end_position >= current_total && end_position <= static_cast<int>(current_total + m_ListItems[i].m_Height))
+			//如果未找到最后一项即从开始位置画到末尾
+			if (end_item = -1)end_item = m_ListItems.size() - 1;
+			for (int i = start_item; i <= end_item; i++)
 			{
-				end_item = i;
-				break;//找到结束项直接退出循环
+				//如果这一项处于鼠标停留或者选中状态时，画淡蓝色背景
+				if (m_MouseHoverItem == i || m_SelectedItem == i)m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color(196, 218, 242)), 0, start_position, GetWidth() - m_ScrollBarRect.Width, m_ListItems[i].m_Height);
+				//画文字内容
+				m_pGraphics->DrawString(m_ListItems[i].m_ItemName.c_str(), -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10),
+					static_cast<Gdiplus::REAL>(start_position), static_cast<Gdiplus::REAL>(GetWidth() - m_ScrollBarRect.Width), static_cast<Gdiplus::REAL>(m_ListItems[i].m_Height)),
+					&m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
+				//画边框
+				m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor), 0, start_position, GetWidth() - m_ScrollBarRect.Width, m_ListItems[i].m_Height);
+				//下一次画的位置增加
+				start_position += m_ListItems[i].m_Height;
 			}
-			current_total += m_ListItems[i].m_Height;
-		}
-		//如果未找到最后一项即从开始位置画到末尾
-		if (end_item = -1)end_item = m_ListItems.size() - 1;
-		for (int i = start_item; i <= end_item; i++)
-		{
-			//如果这一项处于鼠标停留或者选中状态时，画淡蓝色背景
-			if (m_MouseHoverItem == i || m_SelectedItem == i)m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color(196, 218, 242)), 0, start_position, GetWidth() - m_ScrollBarRect.Width, m_ListItems[i].m_Height);
-			//画文字内容
-			m_pGraphics->DrawString(m_ListItems[i].m_ItemName.c_str(), -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10),
-				static_cast<Gdiplus::REAL>(start_position), static_cast<Gdiplus::REAL>(GetWidth() - m_ScrollBarRect.Width), static_cast<Gdiplus::REAL>(m_ListItems[i].m_Height)),
-				&m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
-			//画边框
-			m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor), 0, start_position, GetWidth() - m_ScrollBarRect.Width, m_ListItems[i].m_Height);
-			//下一次画的位置增加
-			start_position += m_ListItems[i].m_Height;
 		}
 		//画列表项和滚动条分界线
 		m_pGraphics->DrawLine(&Gdiplus::Pen(m_BorderColor, 2), Gdiplus::Point(GetWidth() - m_ScrollBarRect.Width, 0), Gdiplus::Point(GetWidth() - m_ScrollBarRect.Width, GetHeight()));
 		//根据显示位置设置滚动条的矩形
 		if (m_TotalHeight > GetHeight())
 		{
-			m_ScrollBarRect.Height = (GetHeight()*static_cast<float>(GetHeight()) / m_TotalHeight);
+			m_ScrollBarRect.Height = static_cast<int>(GetHeight()*static_cast<float>(GetHeight()) / m_TotalHeight);
 			m_ScrollBarRect.X = GetWidth() - m_ScrollBarRect.Width + 1;
-			m_ScrollBarRect.Y = (GetHeight() - m_ScrollBarRect.Height)*static_cast<float>(m_Position) / (m_TotalHeight - GetHeight());
+			m_ScrollBarRect.Y = static_cast<int>((GetHeight() - m_ScrollBarRect.Height)*static_cast<float>(m_Position) / (m_TotalHeight - GetHeight()));
 		}
 		else
 		{

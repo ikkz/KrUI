@@ -88,6 +88,7 @@ namespace KrUI
 		friend class KrLabel;
 		friend class KrEdit;
 		friend class KrList;
+
 		KrWindow();
 		static LRESULT SizeChange(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 		LPCWSTR GetWindowName();
