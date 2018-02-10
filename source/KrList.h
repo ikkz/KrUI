@@ -13,8 +13,12 @@ namespace KrUI
 	public:
 		KrList();
 		int AddItem(std::wstring wStr, int nIndex = -1, unsigned int nHeight = 35);
+		//删除所有为wStr的项
+		int RemoveItem(std::wstring wStr);
+		bool RemoveItem(int nIndex);
 		virtual void Update();
 		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+		void SetPosition(int position);
 	private:
 		struct KrListItem
 		{
@@ -27,6 +31,10 @@ namespace KrUI
 		std::vector<KrListItem> m_ListItems;
 		unsigned int m_TotalHeight;
 		unsigned int m_MouseWheelDelta;
+		Gdiplus::Rect m_ScrollBarRect;
+		unsigned int m_MouseHoverItem;
+		unsigned int m_SelectedItem;
+		int m_MouseDownOnScrollBarPos;
 	};
 }
 

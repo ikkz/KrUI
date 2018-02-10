@@ -14,7 +14,6 @@
 #include <map>
 #include <algorithm>
 #include <gdiplus.h>
-
 #pragma comment(lib,"gdiplus.lib")
 #include "KrMessageHandler.h"
 #include "KrUIBase.h"
