@@ -44,7 +44,7 @@ namespace KrUI
 		bool Initialize(HINSTANCE hInstance);
 		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height);
 		KrWindow* AddWindow(KrWindow* pKrWindow, LPCWSTR lpWindowName, int x, int y, int width, int height);
-		KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle);
+		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle);
 		KrWindow* AddWindow(KrWindow* pKrWindow, LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle);
 		LPCWSTR GetWindowClassName();
 		HINSTANCE GetHINSTANCE();
