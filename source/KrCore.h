@@ -115,6 +115,10 @@ namespace KrUI
 		bool IsCreated();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		KrUIBase* AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height);
+		KrButton* AddButton(LPCWSTR lpName, int x, int y, int width, int height);
+		KrLabel* AddLabel(LPCWSTR lpName, int x, int y, int width, int height);
+		KrEdit* AddEdit(LPCWSTR lpName, int x, int y, int width, int height);
+		KrList* AddList(LPCWSTR lpName, int x, int y, int width, int height);
 		void RemoveControl(KrUIBase* pui);
 		void SetCaptionHeight(unsigned int ch);
 		unsigned int GetCaptionHeight();

@@ -75,6 +75,23 @@ namespace KrUI
 		return m_CaptionHeight;
 	}
 
+	KrButton* KrWindow::AddButton(LPCWSTR lpName, int x, int y, int width, int height)
+	{
+		return dynamic_cast<KrButton*>(AddControl(KrButton_t, lpName, x, y, width, height));
+	}
+	KrLabel* KrWindow::AddLabel(LPCWSTR lpName, int x, int y, int width, int height)
+	{
+		return dynamic_cast<KrLabel*>(AddControl(KrLabel_t, lpName, x, y, width, height));
+	}
+	KrEdit* KrWindow::AddEdit(LPCWSTR lpName, int x, int y, int width, int height)
+	{
+		return dynamic_cast<KrEdit*>(AddControl(KrEdit_t, lpName, x, y, width, height));
+	}
+	KrList* KrWindow::AddList(LPCWSTR lpName, int x, int y, int width, int height)
+	{
+		return dynamic_cast<KrList*>(AddControl(KrList_t, lpName, x, y, width, height));
+	}
+
 	KrUIBase* KrWindow::AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height)
 	{
 		KrUIBase* pui = nullptr;
