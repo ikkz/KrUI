@@ -91,7 +91,10 @@ namespace KrUI
 	{
 		return dynamic_cast<KrList*>(AddControl(KrList_t, lpName, x, y, width, height));
 	}
-
+	KrProgressBar* KrWindow::AddProgressBar(LPCWSTR lpName, int x, int y, int width, int height)
+	{
+		return dynamic_cast<KrProgressBar*>(AddControl(KrProgressBar_t, lpName, x, y, width, height));
+	}
 	KrUIBase* KrWindow::AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height)
 	{
 		KrUIBase* pui = nullptr;

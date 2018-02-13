@@ -119,6 +119,7 @@ namespace KrUI
 		KrLabel* AddLabel(LPCWSTR lpName, int x, int y, int width, int height);
 		KrEdit* AddEdit(LPCWSTR lpName, int x, int y, int width, int height);
 		KrList* AddList(LPCWSTR lpName, int x, int y, int width, int height);
+		KrProgressBar* AddProgressBar(LPCWSTR lpName, int x, int y, int width, int height);
 		void RemoveControl(KrUIBase* pui);
 		void SetCaptionHeight(unsigned int ch);
 		unsigned int GetCaptionHeight();
