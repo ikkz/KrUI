@@ -40,3 +40,11 @@ KrList* AddList(LPCWSTR lpName, int x, int y, int width, int height);
 KrProgressBar* AddProgressBar(LPCWSTR lpName, int x, int y, int width, int height);
 //以上函数都可以根据名字知道功能，其中后几个函数是第一个函数的简化，免去了实际使用时的dynamic_cast
 ```
+- 注册消息响应函数：
+```
+typedef LRESULT(*MSGPROC) (KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
+void RegMsg(UINT msg, MSGPROC proc);
+/*第一个参数为需要接收的消息，可以使用WM_开头的未经过处理的消息，也可以使用KM_开头的经过处理的消息，比如鼠标的坐标均转换成了相对于此控件的坐标，并且新增了一些比较方便的消息
+第二个参数为消息响应函数的地址，必须按照声明的格式来编写，其中pKrMessageHandler表示的是这个消息对应的控件，处理完成return 0;即可
+*/
+```
