@@ -3,6 +3,8 @@
 ## 环境：
 - 使用vs2017
 - 生成的exe请右键属性在兼容性中禁止高DPI自动缩放
+## Demo：
+- [RememberWord](https://github.com/cildhdi/RememberWord)
 
 ## 使用方法（以vs2017为例）：
 - 在vs中新建空项目
