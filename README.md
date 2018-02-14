@@ -72,74 +72,74 @@ public:
 ```
 ### KrUIBase
 ```
-	//所有的界面元素都继承此类
-	class KrUIBase :public KrMessageHandler
-	{
-	protected:
-		std::wstring m_strName;
-		RECT m_rect;
-		bool m_bVisible;
-		//保存自己的位图
-		Gdiplus::Bitmap* m_pBmp;
-		HBITMAP m_hBmp;
-		//上述位图对应的Graphics
-		Gdiplus::Graphics* m_pGraphics;
-		KrUIType m_UIType;
-		//父窗口，本身是窗口的话就为nullptr
-		KrWindow* m_pKrWindow;
-		//画字符串的时候使用的格式
-		Gdiplus::StringFormat m_StringFormat;
-		Gdiplus::Font* m_pFont;
-		Gdiplus::Color m_FontColor;
-		Gdiplus::Color m_BorderColor;
-		Gdiplus::Color m_BgColor;
-		bool m_bMouseIn;
-		bool m_bMouseDown;
-		//鼠标在这个元素范围内时的形状
-		HCURSOR m_hCursor;
-	public:
-		KrUIBase();
-		~KrUIBase();
-		void SetType(KrUIType ut);
-		KrUIType GetType();
-		//下面这些声明为虚函数，有些子类需要重写来做一些额外的事情
-		virtual RECT* GetRect();
-		virtual void SetRect(RECT* pRect);
-		virtual unsigned int GetX();
-		virtual unsigned int GetY();
-		virtual unsigned int GetWidth();
-		virtual unsigned int GetHeight();
-		virtual void SetX(unsigned int x);
-		virtual void SetY(unsigned int y);
-		virtual void SetXY(unsigned int x, unsigned int y);
-		virtual void SetWidth(unsigned int width);
-		virtual void SetHeight(unsigned int height);
-		virtual void SetSize(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
-		virtual void Show();
-		virtual void Hide();
-		virtual bool IsVisible();
-		virtual void SetDc(HDC hdc);
-		virtual void SetParantWindow(KrWindow* pKrWindow);
-		KrWindow* GetParantWindow();
-		void SetFontColor(Gdiplus::Color color);
-		Gdiplus::Color GetFontColor();
-		Gdiplus::Color GetBgColor();
-		void SetBgColor(Gdiplus::Color c);
-		//界面更新函数，被调用时需要根据当前状态更新自己的界面
-		virtual void Update();
-		//改变元素位图的大小
-		virtual void ChangeBmpSize();
-		Gdiplus::Graphics* GetBmpGraphics();
-		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
-		virtual void SetName(std::wstring name);
-		std::wstring GetName();
-		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
-		void SetFont(const WCHAR* fontfamily, Gdiplus::REAL emSize);
-		Gdiplus::Font* GetFont();
-		//设置字符串横向纵向格式
-		void SetAlignment(Gdiplus::StringAlignment align);
-		void SetLineAlignment(Gdiplus::StringAlignment align);
-	};
+//所有的界面元素都继承此类
+class KrUIBase :public KrMessageHandler
+{
+protected:
+	std::wstring m_strName;
+	RECT m_rect;
+	bool m_bVisible;
+	//保存自己的位图
+	Gdiplus::Bitmap* m_pBmp;
+	HBITMAP m_hBmp;
+	//上述位图对应的Graphics
+	Gdiplus::Graphics* m_pGraphics;
+	KrUIType m_UIType;
+	//父窗口，本身是窗口的话就为nullptr
+	KrWindow* m_pKrWindow;
+	//画字符串的时候使用的格式
+	Gdiplus::StringFormat m_StringFormat;
+	Gdiplus::Font* m_pFont;
+	Gdiplus::Color m_FontColor;
+	Gdiplus::Color m_BorderColor;
+	Gdiplus::Color m_BgColor;
+	bool m_bMouseIn;
+	bool m_bMouseDown;
+	//鼠标在这个元素范围内时的形状
+	HCURSOR m_hCursor;
+public:
+	KrUIBase();
+	~KrUIBase();
+	void SetType(KrUIType ut);
+	KrUIType GetType();
+	//下面这些声明为虚函数，有些子类需要重写来做一些额外的事情
+	virtual RECT* GetRect();
+	virtual void SetRect(RECT* pRect);
+	virtual unsigned int GetX();
+	virtual unsigned int GetY();
+	virtual unsigned int GetWidth();
+	virtual unsigned int GetHeight();
+	virtual void SetX(unsigned int x);
+	virtual void SetY(unsigned int y);
+	virtual void SetXY(unsigned int x, unsigned int y);
+	virtual void SetWidth(unsigned int width);
+	virtual void SetHeight(unsigned int height);
+	virtual void SetSize(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
+	virtual void Show();
+	virtual void Hide();
+	virtual bool IsVisible();
+	virtual void SetDc(HDC hdc);
+	virtual void SetParantWindow(KrWindow* pKrWindow);
+	KrWindow* GetParantWindow();
+	void SetFontColor(Gdiplus::Color color);
+	Gdiplus::Color GetFontColor();
+	Gdiplus::Color GetBgColor();
+	void SetBgColor(Gdiplus::Color c);
+	//界面更新函数，被调用时需要根据当前状态更新自己的界面
+	virtual void Update();
+	//改变元素位图的大小
+	virtual void ChangeBmpSize();
+	Gdiplus::Graphics* GetBmpGraphics();
+	virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
+	virtual void SetName(std::wstring name);
+	std::wstring GetName();
+	virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+	void SetFont(const WCHAR* fontfamily, Gdiplus::REAL emSize);
+	Gdiplus::Font* GetFont();
+	//设置字符串横向纵向格式
+	void SetAlignment(Gdiplus::StringAlignment align);
+	void SetLineAlignment(Gdiplus::StringAlignment align);
+};
 ```
 ### KrUIManager
 ```
@@ -182,67 +182,67 @@ private:
 ```
 ### KrWindow
 ```
-	class KrWindow :public KrUI::KrUIBase
-	{
-	private:
-		LPCWSTR m_lpName;
-		HWND m_hwnd;
-		DWORD m_dwStyle;
-		POINT m_ptMouse;
-		//标题栏的高度，为0时没有默认的标题栏和边框
-		UINT m_CaptionHeight;
-		POINT m_ptMouseDown;
-		bool m_bMouseDown;
-		Gdiplus::Color m_CaptionColor;
-		HDC m_hDC;
-		Gdiplus::Graphics* m_pGraphicsDC;
-		//保存控件
-		std::vector<KrUIBase*> m_UIVec;
-		//标识当前窗口里哪个控件获得了焦点
-		KrUIBase* m_pFocusedCtrl;
-	public:
-		friend class KrButton;
-		friend class KrCloseButton;
-		friend class KrLabel;
-		friend class KrEdit;
-		friend class KrList;
+class KrWindow :public KrUI::KrUIBase
+{
+private:
+	LPCWSTR m_lpName;
+	HWND m_hwnd;
+	DWORD m_dwStyle;
+	POINT m_ptMouse;
+	//标题栏的高度，为0时没有默认的标题栏和边框
+	UINT m_CaptionHeight;
+	POINT m_ptMouseDown;
+	bool m_bMouseDown;
+	Gdiplus::Color m_CaptionColor;
+	HDC m_hDC;
+	Gdiplus::Graphics* m_pGraphicsDC;
+	//保存控件
+	std::vector<KrUIBase*> m_UIVec;
+	//标识当前窗口里哪个控件获得了焦点
+	KrUIBase* m_pFocusedCtrl;
+public:
+	friend class KrButton;
+	friend class KrCloseButton;
+	friend class KrLabel;
+	friend class KrEdit;
+	friend class KrList;
 
-		KrWindow();
-		static LRESULT SizeChange(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
-		LPCWSTR GetWindowName();
-		void SetWindowName(LPCWSTR lpWindowName);
-		void SetHWND(HWND hwnd);
-		HWND GetHWND();
-		void SetStyle(DWORD dwStyle);
-		DWORD GetStyle();
+	KrWindow();
+	static LRESULT SizeChange(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
+	LPCWSTR GetWindowName();
+	void SetWindowName(LPCWSTR lpWindowName);
+	void SetHWND(HWND hwnd);
+	HWND GetHWND();
+	void SetStyle(DWORD dwStyle);
+	DWORD GetStyle();
 
-		virtual void SetRect(RECT* pRect);
-		virtual void SetX(unsigned int x);
-		virtual void SetY(unsigned int y);
-		virtual void SetXY(unsigned int x, unsigned int y);
-		virtual void SetWidth(unsigned int width);
-		virtual void SetHeight(unsigned int height);
-		virtual void Show();
-		virtual void Hide();
-		virtual void Update();
-		virtual void ChangeBmpSize();
-		virtual void Draw();//自定义绘制的窗口重写此方法
-		KrUIBase* GetFocusedCtrl();
-		void SetFocusedCtrl(KrUIBase* pui);
-		HDC GetDc();
-		//窗口是否已经创建成功
-		bool IsCreated();
-		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
-		KrUIBase* AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height);
-		KrButton* AddButton(LPCWSTR lpName, int x, int y, int width, int height);
-		KrLabel* AddLabel(LPCWSTR lpName, int x, int y, int width, int height);
-		KrEdit* AddEdit(LPCWSTR lpName, int x, int y, int width, int height);
-		KrList* AddList(LPCWSTR lpName, int x, int y, int width, int height);
-		KrProgressBar* AddProgressBar(LPCWSTR lpName, int x, int y, int width, int height);
-		void RemoveControl(KrUIBase* pui);
-		void SetCaptionHeight(unsigned int ch);
-		unsigned int GetCaptionHeight();
-	};
+	virtual void SetRect(RECT* pRect);
+	virtual void SetX(unsigned int x);
+	virtual void SetY(unsigned int y);
+	virtual void SetXY(unsigned int x, unsigned int y);
+	virtual void SetWidth(unsigned int width);
+	virtual void SetHeight(unsigned int height);
+	virtual void Show();
+	virtual void Hide();
+	virtual void Update();
+	virtual void ChangeBmpSize();
+	virtual void Draw();//自定义绘制的窗口重写此方法
+	KrUIBase* GetFocusedCtrl();
+	void SetFocusedCtrl(KrUIBase* pui);
+	HDC GetDc();
+	//窗口是否已经创建成功
+	bool IsCreated();
+	LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+	KrUIBase* AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height);
+	KrButton* AddButton(LPCWSTR lpName, int x, int y, int width, int height);
+	KrLabel* AddLabel(LPCWSTR lpName, int x, int y, int width, int height);
+	KrEdit* AddEdit(LPCWSTR lpName, int x, int y, int width, int height);
+	KrList* AddList(LPCWSTR lpName, int x, int y, int width, int height);
+	KrProgressBar* AddProgressBar(LPCWSTR lpName, int x, int y, int width, int height);
+	void RemoveControl(KrUIBase* pui);
+	void SetCaptionHeight(unsigned int ch);
+	unsigned int GetCaptionHeight();
+};
 ```
 ### KrButton
 ```
