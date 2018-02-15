@@ -24,18 +24,21 @@ namespace KrUI
 		int RemoveItem(std::wstring wStr);
 		bool RemoveItem(int nIndex);
 		//Î´Ñ¡ÖÐÊ±return KrListItem{ L"",0,0 }
-		KrListItem GetSelectedItem();
+		void SetMultiSelectable(bool bMultiSelectable);
+		//KrListItem GetSelectedItem();
+		std::vector<KrListItem> GetSelectedItems();
 		virtual void Update();
 		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		void SetPosition(int position);
 	private:
+		bool m_bMultiSelectable;
 		unsigned int m_Position;
 		std::vector<KrListItem> m_ListItems;
 		unsigned int m_TotalHeight;
 		unsigned int m_MouseWheelDelta;
 		Gdiplus::Rect m_ScrollBarRect;
 		unsigned int m_MouseHoverItem;
-		unsigned int m_SelectedItem;
+		std::vector<int> m_SelectedItems;
 		int m_MouseDownOnScrollBarPos;
 	};
 }
