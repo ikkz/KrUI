@@ -207,6 +207,7 @@ namespace KrUI
 		m_BorderColor = Gdiplus::Color(24, 132, 218);
 		m_BgColor = Gdiplus::Color::White;
 		m_hCursor = LoadCursor(nullptr, IDC_ARROW);
+		m_Ps = Paint_Status::all;
 	}
 	KrUIBase::~KrUIBase()
 	{
@@ -214,6 +215,16 @@ namespace KrUI
 		delete m_pBmp;
 		DeleteObject(m_hBmp);
 	}
+
+	Paint_Status KrUIBase::GetPaintStatus()
+	{
+		return m_Ps;
+	}
+	void KrUIBase::SetPaintStatus(Paint_Status ps) 
+	{
+		m_Ps = ps;
+	}
+
 	void KrUIBase::SetParantWindow(KrWindow* pKrWindow)
 	{
 		if ((!m_pKrWindow) && (pKrWindow))
@@ -252,7 +263,7 @@ namespace KrUI
 					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(LoadCursor(nullptr, IDC_ARROW)));
 #endif
 
-				}
+			}
 				break;
 			case KM_LBTNDOWN:
 				m_bMouseDown = true;
@@ -263,7 +274,7 @@ namespace KrUI
 				{
 					m_pKrWindow->SetFocusedCtrl(this);
 				}
-			}
+		}
 			for (auto p : m_MsgProcMap)
 			{
 				if (p.first == Message)
@@ -271,8 +282,8 @@ namespace KrUI
 					p.second(this, wParam, lParam);
 				}
 			}
-		}
 	}
+}
 
 	void KrUIBase::SetType(KrUIType ut)
 	{

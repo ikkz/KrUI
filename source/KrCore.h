@@ -82,7 +82,9 @@ namespace KrUI
 		Gdiplus::Graphics* m_pGraphicsDC;
 		std::vector<KrUIBase*> m_UIVec;
 		KrUIBase* m_pFocusedCtrl;
+		std::vector<RECT*> m_PaintRects;
 	public:
+		friend class KrUIBase;
 		friend class KrButton;
 		friend class KrCloseButton;
 		friend class KrLabel;

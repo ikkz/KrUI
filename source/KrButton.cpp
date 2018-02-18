@@ -102,6 +102,18 @@ namespace KrUI
 		return KrUIBase::HandleMessage(Message, wParam, lParam);
 	}
 
+	void KrButton::CallMsgProcFinal(UINT Message, WPARAM wParam, LPARAM lParam)
+	{
+		switch (Message)
+		{
+		case KM_MOUSEENTER:
+		case KM_MOUSELEAVE:
+			this->Update();
+			SetPaintStatus(part);
+		//	m_pKrWindow->Update();
+		}
+	}
+
 	void KrButton::SetName(std::wstring name)
 	{
 		KrUIBase::SetName(name);

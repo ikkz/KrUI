@@ -45,7 +45,7 @@ namespace KrUI
 		SetWindowTextW(m_hwnd, m_lpName);
 		ChangeBmpSize();
 		RegMsg(WM_SIZE, reinterpret_cast<MSGPROC>(KrWindow::SizeChange));
-
+		SetTimer(hwnd, reinterpret_cast<unsigned int>(hwnd), TIMER_INTERVAL, NULL);
 		//Ìí¼Ó¹Ø±Õ°´Å¥
 		if (m_CaptionHeight == 0)return;
 		KrUIBase* pui = new KrCloseButton;
@@ -56,8 +56,6 @@ namespace KrUI
 		pui->SetName(L"¡Á");
 		pui->SetParantWindow(this);
 		m_UIVec.push_back(pui);
-
-
 	}
 
 	HWND KrWindow::GetHWND()
@@ -203,6 +201,9 @@ namespace KrUI
 	{
 		switch (Message)
 		{
+		case WM_TIMER:
+			if (IsCreated())this->Update();
+			break;
 		case WM_MOUSEMOVE:
 		{
 			m_ptMouse.x = GET_X_LPARAM(lParam);
@@ -312,23 +313,54 @@ namespace KrUI
 	{
 		if (m_bVisible && (m_pBmp != nullptr))
 		{
-			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_BgColor), 0, 0, m_pBmp->GetWidth(), m_pBmp->GetHeight());
-			if (m_CaptionHeight > 0)
+			m_PaintRects.clear();
+			for (auto ui : m_UIVec)
 			{
-				m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_CaptionColor), 0, 0, m_pBmp->GetWidth(), m_CaptionHeight);
-				m_pGraphics->DrawString((WCHAR*)m_lpName, -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(m_pBmp->GetWidth() - 10), static_cast<Gdiplus::REAL>(m_CaptionHeight)), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
-			}
-			this->Draw();
-			for (auto p : m_UIVec)
-			{
-				if (p != nullptr&&p->IsVisible())
+				if (GetPaintStatus() != Paint_Status::all && ui->GetPaintStatus() == Paint_Status::all)
 				{
-
-					p->Update();
+					SetPaintStatus(Paint_Status::all);
+				}
+				if (ui->GetPaintStatus() == Paint_Status::part)
+				{
+					m_PaintRects.push_back(ui->GetRect());
 				}
 			}
-			if (m_CaptionHeight > 0)m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, 1), 0, 0, GetWidth() - 1, GetHeight() - 1);
-			m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());
+			if (GetPaintStatus() == Paint_Status::all)
+			{
+				m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_BgColor), 0, 0, m_pBmp->GetWidth(), m_pBmp->GetHeight());
+				if (m_CaptionHeight > 0)
+				{
+					m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_CaptionColor), 0, 0, m_pBmp->GetWidth(), m_CaptionHeight);
+					m_pGraphics->DrawString((WCHAR*)m_lpName, -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(m_pBmp->GetWidth() - 10), static_cast<Gdiplus::REAL>(m_CaptionHeight)), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
+				}
+				this->Draw();
+			}
+
+			for (auto ui : m_UIVec)
+			{
+				if (ui != nullptr&& ui->IsVisible() && (ui->GetPaintStatus() == Paint_Status::part || GetPaintStatus() == Paint_Status::all))
+				{
+					ui->Update();
+				}
+			}
+
+			if (GetPaintStatus() == Paint_Status::all)
+			{
+				if (m_CaptionHeight > 0)m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, 1), 0, 0, GetWidth() - 1, GetHeight() - 1);
+				m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());
+			}
+			else
+			{
+				for (auto pRect : m_PaintRects)
+				{
+					m_pGraphicsDC->DrawImage(m_pBmp, pRect->left, pRect->top, 0, 0);
+				}
+			}
+			SetPaintStatus(Paint_Status::no);
+			for (auto ui : m_UIVec)
+			{
+				ui->SetPaintStatus(Paint_Status::no);
+			}
 		}
 	}
 
