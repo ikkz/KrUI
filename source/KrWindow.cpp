@@ -46,6 +46,7 @@ namespace KrUI
 		ChangeBmpSize();
 		RegMsg(WM_SIZE, reinterpret_cast<MSGPROC>(KrWindow::SizeChange));
 		SetTimer(hwnd, reinterpret_cast<unsigned int>(hwnd), TIMER_INTERVAL, NULL);
+		SetPaintStatus(Paint_Status::all);
 		//添加关闭按钮
 		if (m_CaptionHeight == 0)return;
 		KrUIBase* pui = new KrCloseButton;
@@ -178,6 +179,7 @@ namespace KrUI
 			ShowWindow(m_hwnd, SW_SHOW);
 			KrUIBase::Show();
 			UpdateWindow(m_hwnd);
+			Update();
 		}
 	}
 
@@ -187,6 +189,7 @@ namespace KrUI
 		{
 			ShowWindow(m_hwnd, SW_HIDE);
 			KrUIBase::Hide();
+			Update();
 		}
 	}
 
@@ -202,7 +205,7 @@ namespace KrUI
 		switch (Message)
 		{
 		case WM_TIMER:
-			if (IsCreated())this->Update();
+			//if (IsCreated())this->Update();
 			break;
 		case WM_MOUSEMOVE:
 		{
@@ -214,9 +217,10 @@ namespace KrUI
 			SetClassLong(m_hwnd, GCL_STYLE, GetClassLong(m_hwnd, GCL_STYLE) | CS_DROPSHADOW);
 			break;
 		case WM_LBUTTONDOWN:
-			if (GET_Y_LPARAM(lParam) < static_cast<int>(m_CaptionHeight))
+			if (GET_Y_LPARAM(lParam) < static_cast<int>(m_CaptionHeight) && GET_X_LPARAM(lParam) < GetWidth() - m_CaptionHeight)
 			{
 				SendMessage(m_hwnd, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
+				return DefWindowProc(m_hwnd, Message, wParam, lParam);
 			}
 			break;
 		case WM_LBUTTONUP:
@@ -233,16 +237,23 @@ namespace KrUI
 		case WM_MOVE:
 		case WM_SIZE:
 			GetWindowRect(m_hwnd, GetRect());
+			SetPaintStatus(Paint_Status::all);
+			Update();
 		case WM_PAINT:
 		{
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(this->GetHWND(), &ps);
+			this->SetPaintStatus(Paint_Status::all);
 			Update();
 			EndPaint(this->GetHWND(), &ps);
 		}
 		break;
 		case WM_KILLFOCUS:
 			m_pFocusedCtrl = nullptr;
+			break;
+		case WM_ACTIVATE:
+			SetPaintStatus(Paint_Status::all);
+			Update();
 			break;
 		}
 		//调用窗口消息处理函数
@@ -314,15 +325,20 @@ namespace KrUI
 		if (m_bVisible && (m_pBmp != nullptr))
 		{
 			m_PaintRects.clear();
-			for (auto ui : m_UIVec)
+			if (GetPaintStatus() != Paint_Status::all)
 			{
-				if (GetPaintStatus() != Paint_Status::all && ui->GetPaintStatus() == Paint_Status::all)
+				SetPaintStatus(Paint_Status::part);
+				for (auto ui : m_UIVec)
 				{
-					SetPaintStatus(Paint_Status::all);
-				}
-				if (ui->GetPaintStatus() == Paint_Status::part)
-				{
-					m_PaintRects.push_back(ui->GetRect());
+					if (GetPaintStatus() != Paint_Status::all && ui->GetPaintStatus() == Paint_Status::all)
+					{
+						SetPaintStatus(Paint_Status::all);
+					}
+					if (ui->GetPaintStatus() == Paint_Status::part)
+					{
+						m_PaintRects.push_back(ui->GetRect());
+						m_PaintUIs.push_back(ui);
+					}
 				}
 			}
 			if (GetPaintStatus() == Paint_Status::all)
@@ -349,17 +365,25 @@ namespace KrUI
 				if (m_CaptionHeight > 0)m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, 1), 0, 0, GetWidth() - 1, GetHeight() - 1);
 				m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());
 			}
-			else
+			else if (GetPaintStatus() == Paint_Status::part)
 			{
-				for (auto pRect : m_PaintRects)
-				{
-					m_pGraphicsDC->DrawImage(m_pBmp, pRect->left, pRect->top, 0, 0);
-				}
+				/*				m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());*/
+// 				for (auto pRect : m_PaintRects)
+// 				{
+// 					m_pGraphicsDC->DrawImage(m_pBmp, pRect->left, pRect->top, 0, 0);
+// 				}
+// 				for (auto ui : m_PaintUIs)
+// 				{
+// 					ui->Update();
+// 					m_pGraphicsDC->DrawImage(m_pBmp, ui->GetRect()->left, ui->GetRect()->top, 0, 0);
+// 				}
+				m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());
+
 			}
 			SetPaintStatus(Paint_Status::no);
 			for (auto ui : m_UIVec)
 			{
-				ui->SetPaintStatus(Paint_Status::no);
+				ui->m_Ps = Paint_Status::no;
 			}
 		}
 	}
@@ -386,13 +410,13 @@ namespace KrUI
 		KrWindow* pKw = dynamic_cast<KrWindow*>(pKrMessageHandler);
 		pKw->ChangeBmpSize();
 		lParam = 0;
-		for (auto p : pKw->m_UIVec)
-		{
-			if (p->GetType() == KrCloseButton_t)
-			{
-				dynamic_cast<KrCloseButton*>(p)->SetButtonStatus(mouse_hover);
-			}
-		}
+		// 		for (auto p : pKw->m_UIVec)
+		// 		{
+		// 			if (p->GetType() == KrCloseButton_t)
+		// 			{
+		// 				dynamic_cast<KrCloseButton*>(p)->SetButtonStatus(mouse_hover);
+		// 			}
+		// 		}
 		return 0;
 	}
 } //!KrUI

@@ -25,7 +25,6 @@ namespace KrUI
 		virtual void DrawContent();
 		virtual void Update();
 		virtual void SetName(std::wstring name);
-		void SetButtonStatus(Mouse_Status bs);
 		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		virtual void CallMsgProcFinal(UINT Message, WPARAM wParam, LPARAM lParam);
 	protected:

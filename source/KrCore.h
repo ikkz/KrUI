@@ -83,6 +83,7 @@ namespace KrUI
 		std::vector<KrUIBase*> m_UIVec;
 		KrUIBase* m_pFocusedCtrl;
 		std::vector<RECT*> m_PaintRects;
+		std::vector<KrUIBase*> m_PaintUIs;
 	public:
 		friend class KrUIBase;
 		friend class KrButton;

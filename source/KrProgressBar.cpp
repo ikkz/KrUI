@@ -24,6 +24,7 @@ namespace KrUI
 		if (Percentage > 100)Percentage = 100;
 		std::lock_guard<std::mutex> locker(m_PercentageMutex);
 		m_Percentage = Percentage;
+		SetPaintStatus(Paint_Status::part);
 	}
 
 	unsigned int KrProgressBar::GetPercentage()
@@ -36,7 +37,6 @@ namespace KrUI
 	{
 		m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_BgColor), 0, 0, GetWidth(), GetHeight());
 
-		std::lock_guard<std::mutex> locker(m_PercentageMutex);
 		m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_ForeColor), 0, 0, GetWidth()*m_Percentage / 100, GetHeight());
 
 		m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor), 0, 0, GetWidth() - 1, GetHeight() - 1);

@@ -20,6 +20,7 @@ namespace KrUI
 		unsigned int GetXByCursorPos(unsigned int CursorPos);
 		unsigned int GetStrHeight();
 		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
+		//virtual void CallMsgProcFinal(UINT Message, WPARAM wParam, LPARAM lParam);
 		virtual void ChangeBmpSize();
 		Gdiplus::SizeF GetTextBounds(std::wstring strText);
 		void StringChange();

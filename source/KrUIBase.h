@@ -39,6 +39,7 @@ namespace KrUI
 		HCURSOR m_hCursor;
 		Paint_Status m_Ps;
 	public:
+		friend class KrWindow;
 		KrUIBase();
 		~KrUIBase();
 		void SetType(KrUIType ut);

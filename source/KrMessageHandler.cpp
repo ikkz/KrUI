@@ -18,6 +18,7 @@ namespace KrUI
 				++it;
 			}
 		}
+		this->CallMsgProc(Message, wParam, lParam);
 		return 0;
 	}
 
