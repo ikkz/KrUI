@@ -52,7 +52,7 @@ namespace KrUI
 		//m_pGraphics->DrawImage(m_pKrWindow->m_pBmp, 0, 0, GetX(), GetY(), GetWidth(), GetHeight(), Gdiplus::Unit::UnitPixel);
 		//m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color::AlphaMask), 0, 0, m_pBmp->GetWidth(), m_pBmp->GetHeight());
 
-		if (m_bMouseIn && !m_bMouseDown)
+		if (m_bMouseIn && (!m_bMouseDown))
 		{
 			this->DrawMouseHoverBmp();
 			this->DrawContent();
@@ -63,6 +63,11 @@ namespace KrUI
 			this->DrawContent();
 		}
 		else if ((!m_bMouseDown) && (!m_bMouseIn))
+		{
+			this->DrawMouseLeaveBmp();
+			this->DrawContent();
+		}
+		else
 		{
 			this->DrawMouseLeaveBmp();
 			this->DrawContent();
@@ -107,15 +112,6 @@ namespace KrUI
 		}
 	}
 
-	void KrButton::SetName(std::wstring name)
-	{
-		KrUIBase::SetName(name);
-		if (m_pGraphics != nullptr)
-		{
-			this->Update();
-		}
-
-	}
 
 	//¹Ø±Õ°´Å¥£º
 	KrCloseButton::KrCloseButton()

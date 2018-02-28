@@ -215,6 +215,9 @@ namespace KrUI
 		break;
 		case WM_CREATE:
 			SetClassLong(m_hwnd, GCL_STYLE, GetClassLong(m_hwnd, GCL_STYLE) | CS_DROPSHADOW);
+			for (auto ui : m_UIVec)
+				ui->SetPaintStatus(Paint_Status::part);
+			//SetPaintStatus(Paint_Status::all);
 			break;
 		case WM_LBUTTONDOWN:
 			if (GET_Y_LPARAM(lParam) < static_cast<int>(m_CaptionHeight) && GET_X_LPARAM(lParam) < GetWidth() - m_CaptionHeight)
@@ -238,13 +241,13 @@ namespace KrUI
 		case WM_SIZE:
 			GetWindowRect(m_hwnd, GetRect());
 			SetPaintStatus(Paint_Status::all);
-			Update();
 		case WM_PAINT:
 		{
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(this->GetHWND(), &ps);
+			for (auto ui : m_UIVec)
+				ui->SetPaintStatus(Paint_Status::part);
 			this->SetPaintStatus(Paint_Status::all);
-			Update();
 			EndPaint(this->GetHWND(), &ps);
 		}
 		break;
@@ -359,27 +362,29 @@ namespace KrUI
 					ui->Update();
 				}
 			}
+			if (m_CaptionHeight > 0)m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, 1), 0, 0, GetWidth() - 1, GetHeight() - 1);
 
-			if (GetPaintStatus() == Paint_Status::all)
-			{
-				if (m_CaptionHeight > 0)m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, 1), 0, 0, GetWidth() - 1, GetHeight() - 1);
-				m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());
-			}
-			else if (GetPaintStatus() == Paint_Status::part)
-			{
-				/*				m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());*/
-// 				for (auto pRect : m_PaintRects)
-// 				{
-// 					m_pGraphicsDC->DrawImage(m_pBmp, pRect->left, pRect->top, 0, 0);
-// 				}
-// 				for (auto ui : m_PaintUIs)
-// 				{
-// 					ui->Update();
-// 					m_pGraphicsDC->DrawImage(m_pBmp, ui->GetRect()->left, ui->GetRect()->top, 0, 0);
-// 				}
-				m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());
-
-			}
+// 			if (GetPaintStatus() == Paint_Status::all)
+// 			{
+// 
+// 				m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());
+// 			}
+// 			else if (GetPaintStatus() == Paint_Status::part)
+// 			{
+// 				/*				m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());*/
+// // 				for (auto pRect : m_PaintRects)
+// // 				{
+// // 					m_pGraphicsDC->DrawImage(m_pBmp, pRect->left, pRect->top, 0, 0);
+// // 				}
+// // 				for (auto ui : m_PaintUIs)
+// // 				{
+// // 					ui->Update();
+// // 					m_pGraphicsDC->DrawImage(m_pBmp, ui->GetRect()->left, ui->GetRect()->top, 0, 0);
+// // 				}
+// 				m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());
+// 
+// 			}
+			m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());
 			SetPaintStatus(Paint_Status::no);
 			for (auto ui : m_UIVec)
 			{

@@ -128,6 +128,10 @@ namespace KrUI
 	void KrUIBase::SetName(std::wstring name)
 	{
 		m_strName = name;
+		if (m_pGraphics != nullptr)
+		{
+			SetPaintStatus(Paint_Status::part);
+		}
 	}
 	std::wstring KrUIBase::GetName()
 	{
@@ -223,7 +227,10 @@ namespace KrUI
 	{
 		m_Ps = ps;
 		if (m_pKrWindow != nullptr)
+		{
+			this->Update();
 			m_pKrWindow->Update();
+		}
 	}
 
 	void KrUIBase::SetParantWindow(KrWindow* pKrWindow)
@@ -273,14 +280,15 @@ namespace KrUI
 					m_pKrWindow->SetFocusedCtrl(this);
 				}
 		}
-			for (auto p : m_MsgProcMap)
-			{
-				if (p.first == Message)
-				{
-					p.second(this, wParam, lParam);
-				}
-			}
+// 			for (auto p : m_MsgProcMap)
+// 			{
+// 				if (p.first == Message)
+// 				{
+// 					p.second(this, wParam, lParam);
+// 				}
+// 			}
 	}
+
 		KrMessageHandler::CallMsgProc(Message, wParam, lParam);
 }
 
