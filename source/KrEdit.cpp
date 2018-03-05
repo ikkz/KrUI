@@ -137,7 +137,8 @@ namespace KrUI
 				{
 					m_bShowCursor = !m_bShowCursor;
 					m_Time = 0;
-					SetPaintStatus(Paint_Status::part);
+					//TODO
+					if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 				}
 				break;
 			default:
@@ -155,7 +156,8 @@ namespace KrUI
 			if (m_pKrWindow != nullptr)m_pKrWindow->SetFocusedCtrl(this);
 			m_SelectTextPosFirst = GetCursorPosByX(GET_X_LPARAM(lParam));
 			m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
-			SetPaintStatus(Paint_Status::part);
+			//TODO
+			if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 			break;
 		case KM_LBTNUP:
 			m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
@@ -164,7 +166,8 @@ namespace KrUI
 			if (m_bMouseDown && m_bMouseIn)
 			{
 				m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
-				SetPaintStatus(Paint_Status::part);
+				//TODO
+				if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 			}
 			break;
 		}
@@ -251,7 +254,8 @@ namespace KrUI
 			// 			}
 			m_StringLength.push_back(nWidth);
 		}
-		SetPaintStatus(Paint_Status::part);
+		//TODO
+		if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 	}
 
 	unsigned int KrEdit::GetStrHeight()

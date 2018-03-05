@@ -25,7 +25,7 @@ namespace KrUI
 		virtual void DrawContent();
 		virtual void Update();
 		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
-		virtual void CallMsgProcFinal(UINT Message, WPARAM wParam, LPARAM lParam);
+		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 	protected:
 		Gdiplus::Color m_MouseHoverColor;
 		Gdiplus::Color m_MouseDownColor;

@@ -82,8 +82,6 @@ namespace KrUI
 		Gdiplus::Graphics* m_pGraphicsDC;
 		std::vector<KrUIBase*> m_UIVec;
 		KrUIBase* m_pFocusedCtrl;
-		std::vector<RECT*> m_PaintRects;
-		std::vector<KrUIBase*> m_PaintUIs;
 	public:
 		friend class KrUIBase;
 		friend class KrButton;
@@ -110,6 +108,7 @@ namespace KrUI
 		virtual void Show();
 		virtual void Hide();
 		virtual void Update();
+		void UpdateUI(KrUIBase* pUi = nullptr);
 		virtual void ChangeBmpSize();
 		virtual void Draw();//自定义绘制的窗口重写此方法
 		KrUIBase* GetFocusedCtrl();

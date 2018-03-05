@@ -130,7 +130,8 @@ namespace KrUI
 		m_strName = name;
 		if (m_pGraphics != nullptr)
 		{
-			SetPaintStatus(Paint_Status::part);
+			//TODO
+			if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 		}
 	}
 	std::wstring KrUIBase::GetName()
@@ -210,7 +211,6 @@ namespace KrUI
 		m_BorderColor = Gdiplus::Color(24, 132, 218);
 		m_BgColor = Gdiplus::Color::White;
 		m_hCursor = LoadCursor(nullptr, IDC_ARROW);
-		m_Ps = Paint_Status::all;
 	}
 	KrUIBase::~KrUIBase()
 	{
@@ -219,19 +219,6 @@ namespace KrUI
 		DeleteObject(m_hBmp);
 	}
 
-	Paint_Status KrUIBase::GetPaintStatus()
-	{
-		return m_Ps;
-	}
-	void KrUIBase::SetPaintStatus(Paint_Status ps)
-	{
-		m_Ps = ps;
-		if (m_pKrWindow != nullptr)
-		{
-			this->Update();
-			m_pKrWindow->Update();
-		}
-	}
 
 	void KrUIBase::SetParantWindow(KrWindow* pKrWindow)
 	{

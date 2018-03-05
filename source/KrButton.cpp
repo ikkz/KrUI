@@ -49,9 +49,6 @@ namespace KrUI
 	}
 	void KrButton::Update()
 	{
-		//m_pGraphics->DrawImage(m_pKrWindow->m_pBmp, 0, 0, GetX(), GetY(), GetWidth(), GetHeight(), Gdiplus::Unit::UnitPixel);
-		//m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color::AlphaMask), 0, 0, m_pBmp->GetWidth(), m_pBmp->GetHeight());
-
 		if (m_bMouseIn && (!m_bMouseDown))
 		{
 			this->DrawMouseHoverBmp();
@@ -60,11 +57,6 @@ namespace KrUI
 		else if (m_bMouseDown&&m_bMouseIn)
 		{
 			this->DrawMouseDownBmp();
-			this->DrawContent();
-		}
-		else if ((!m_bMouseDown) && (!m_bMouseIn))
-		{
-			this->DrawMouseLeaveBmp();
 			this->DrawContent();
 		}
 		else
@@ -100,7 +92,7 @@ namespace KrUI
 		return KrUIBase::HandleMessage(Message, wParam, lParam);
 	}
 
-	void KrButton::CallMsgProcFinal(UINT Message, WPARAM wParam, LPARAM lParam)
+	void KrButton::CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		switch (Message)
 		{
@@ -108,9 +100,12 @@ namespace KrUI
 		case KM_MOUSELEAVE:
 		case KM_LBTNDOWN:
 		case KM_LBTNUP:
-			SetPaintStatus(part);
+			//TODO
+			if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 		}
+		return KrUIBase::CallMsgProc(Message, wParam, lParam);
 	}
+
 
 
 	//¹Ø±Õ°´Å¥£º

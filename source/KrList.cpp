@@ -30,7 +30,8 @@ namespace KrUI
 		{
 			m_Position = position;
 		}
-		SetPaintStatus(Paint_Status::part);
+		//TODO
+		if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 	}
 
 	void KrList::SetMultiSelectable(bool bMultiSelectable)
@@ -54,8 +55,8 @@ namespace KrUI
 		{
 		case WM_LBUTTONDOWN:
 			//如果鼠标按下时在列表内，就把当前选中的项目设置为鼠标停留在的那一项
-			if (!(static_cast<int>(m_pKrWindow->m_ptMouse.x) >= static_cast<int>(GetX()) && static_cast<int>(m_pKrWindow->m_ptMouse.y) >= static_cast<int>(GetY()) &&
-				static_cast<int>(m_pKrWindow->m_ptMouse.x) <= static_cast<int>(GetX() + GetWidth()) && static_cast<int>(m_pKrWindow->m_ptMouse.y) <= static_cast<int>(GetY() + GetHeight())))break;
+			if ((static_cast<int>(m_pKrWindow->m_ptMouse.x) >= static_cast<int>(GetX()) && static_cast<int>(m_pKrWindow->m_ptMouse.y) >= static_cast<int>(GetY()) &&
+				static_cast<int>(m_pKrWindow->m_ptMouse.x) < static_cast<int>(GetX() + GetWidth() - m_ScrollBarRect.Width) && static_cast<int>(m_pKrWindow->m_ptMouse.y) <= static_cast<int>(GetY() + GetHeight())))
 			{
 				if (m_bMultiSelectable)
 				{
@@ -67,7 +68,8 @@ namespace KrUI
 						{
 							it = m_SelectedItems.erase(it);
 							bExsited = true;
-							SetPaintStatus(Paint_Status::part);
+							//TODO
+							if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 							break;
 						}
 						else
@@ -78,14 +80,16 @@ namespace KrUI
 					if (!bExsited)
 					{
 						m_SelectedItems.push_back(m_MouseHoverItem);
-						SetPaintStatus(Paint_Status::part);
+						//TODO
+						if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 					}
 				}
 				else
 				{
 					m_SelectedItems.clear();
 					m_SelectedItems.push_back(m_MouseHoverItem);
-					SetPaintStatus(Paint_Status::part);
+					//TODO
+					if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 				}
 				CallMsgProc(KM_LISTITEMCLICK, wParam, lParam);
 			}
@@ -123,7 +127,8 @@ namespace KrUI
 			if (m_MouseDownOnScrollBarPos != -1)
 			{
 				m_MouseDownOnScrollBarPos = -1;
-				SetPaintStatus(Paint_Status::part);
+				//TODO
+				if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 			}
 			break;
 		case WM_TIMER:

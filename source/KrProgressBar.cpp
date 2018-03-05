@@ -1,5 +1,5 @@
 #include "KrProgressBar.h"
-
+#include "KrCore.h"
 namespace KrUI
 {
 	KrProgressBar::KrProgressBar()
@@ -24,7 +24,8 @@ namespace KrUI
 		if (Percentage > 100)Percentage = 100;
 		std::lock_guard<std::mutex> locker(m_PercentageMutex);
 		m_Percentage = Percentage;
-		SetPaintStatus(Paint_Status::part);
+		//TODO
+		if (m_pKrWindow != nullptr) m_pKrWindow->UpdateUI(this);
 	}
 
 	unsigned int KrProgressBar::GetPercentage()

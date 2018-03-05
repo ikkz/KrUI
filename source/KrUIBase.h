@@ -12,12 +12,6 @@ namespace KrUI
 	class KrWindow;
 	enum KrUIType { KrWindow_t, KrButton_t, KrCloseButton_t, KrLabel_t, KrEdit_t, KrProgressBar_t, KrList_t };
 	enum Mouse_Status { mouse_down, mouse_leave, mouse_hover };
-	enum Paint_Status
-	{
-		no,/*自己没有变化*/
-		all,/*重绘整个窗口*/
-		part/*仅仅重绘自己*/
-	};
 	class KrUIBase :public KrMessageHandler
 	{
 	protected:
@@ -37,15 +31,12 @@ namespace KrUI
 		bool m_bMouseIn;
 		bool m_bMouseDown;
 		HCURSOR m_hCursor;
-		Paint_Status m_Ps;
 	public:
 		friend class KrWindow;
 		KrUIBase();
 		~KrUIBase();
 		void SetType(KrUIType ut);
 		KrUIType GetType();
-		Paint_Status GetPaintStatus();
-		void SetPaintStatus(Paint_Status ps);
 		virtual RECT* GetRect();
 		virtual void SetRect(RECT* pRect);
 		virtual unsigned int GetX();

@@ -30,9 +30,7 @@ namespace KrUI
 			if (it->second == proc) it->second = NULL;
 		}
 	}
-	void KrMessageHandler::CallMsgProcFinal(UINT Message, WPARAM wParam, LPARAM lParam)
-	{
-	}
+
 	void KrMessageHandler::CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 
@@ -43,6 +41,5 @@ namespace KrUI
 				p.second(this, wParam, lParam);
 			}
 		}
-		this->CallMsgProcFinal(Message, wParam, lParam);
 	}
 } // namespace KrUI
