@@ -1,7 +1,7 @@
 #pragma once
 #ifndef _KR_LIST_H_
 #define _KR_LIST_H_
-#include "KrCore.h"
+//#include "KrCore.h"
 #include "KrUIBase.h"
 #include <string>
 #include <vector>
@@ -23,14 +23,16 @@ namespace KrUI
 		//删除所有为wStr的项
 		int RemoveItem(std::wstring wStr);
 		bool RemoveItem(int nIndex);
+		virtual void DrawItem(unsigned int item_index, int start_position);
 		//未选中时return KrListItem{ L"",0,0 }
 		void SetMultiSelectable(bool bMultiSelectable);
 		//KrListItem GetSelectedItem();
 		std::vector<KrListItem> GetSelectedItems();
 		virtual void Update();
+		virtual void ItemChange();
 		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		void SetPosition(int position);
-	private:
+	protected:
 		bool m_bMultiSelectable;
 		unsigned int m_Position;
 		std::vector<KrListItem> m_ListItems;

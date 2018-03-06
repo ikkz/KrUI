@@ -6,7 +6,6 @@
 
 namespace KrUI
 {
-
 	class KrLabel :public KrButton
 	{
 	public:

@@ -1,7 +1,5 @@
 #include "KrCore.h"
-#include "KrButton.h"
-#include "KrProgressBar.h"
-#include "KrList.h"
+
 namespace KrUI
 {
 	KrWindow::KrWindow()
@@ -94,6 +92,14 @@ namespace KrUI
 	{
 		return dynamic_cast<KrProgressBar*>(AddControl(KrProgressBar_t, lpName, x, y, width, height));
 	}
+	KrRadio* KrWindow::AddRadio(LPCWSTR lpName, int x, int y, int width, int height)
+	{
+		return dynamic_cast<KrRadio*>(AddControl(KrRadio_t, lpName, x, y, width, height));
+	}
+	KrCheckBox* KrWindow::AddCheckBox(LPCWSTR lpName, int x, int y, int width, int height)
+	{
+		return dynamic_cast<KrCheckBox*>(AddControl(KrCheckBox_t, lpName, x, y, width, height));
+	}
 	KrUIBase* KrWindow::AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height)
 	{
 		KrUIBase* pui = nullptr;
@@ -114,6 +120,12 @@ namespace KrUI
 			break;
 		case KrList_t:
 			pui = new KrList;
+			break;
+		case KrRadio_t:
+			pui = new KrRadio(m_BgColor);
+			break;
+		case KrCheckBox_t:
+			pui = new KrCheckBox(m_BgColor);
 			break;
 		}
 		if (pui == nullptr)return nullptr;
@@ -219,7 +231,7 @@ namespace KrUI
 			UpdateUI();
 			break;
 		case WM_LBUTTONDOWN:
-			if (GET_Y_LPARAM(lParam) < static_cast<int>(m_CaptionHeight) && GET_X_LPARAM(lParam) < GetWidth() - m_CaptionHeight)
+			if (GET_Y_LPARAM(lParam) < static_cast<int>(m_CaptionHeight) && GET_X_LPARAM(lParam) < static_cast<int>(GetWidth() - m_CaptionHeight))
 			{
 				SendMessage(m_hwnd, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
 				return DefWindowProc(m_hwnd, Message, wParam, lParam);
@@ -237,7 +249,7 @@ namespace KrUI
 			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
 			break;
 		case WM_SIZE:
-			UpdateUI();
+			Update();
 		case WM_MOVE:
 			GetWindowRect(m_hwnd, GetRect());
 			//TODO
