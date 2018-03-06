@@ -23,6 +23,8 @@
 #include "KrEdit.h"
 #include "KrProgressBar.h"
 #include "KrList.h"
+#include "KrRadio.h"
+#include "KrCheckBox.h"
 #include "Tools/KrTools.h"
 
 namespace KrUI
@@ -31,7 +33,6 @@ namespace KrUI
 	class KrUIBase;
 	typedef LRESULT(*MSGPROC) (KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 	class KrWindow;
-
 	static Gdiplus::GdiplusStartupInput m_gdiplusStartupInput;
 	static ULONG_PTR m_pGdiToken;
 
@@ -83,11 +84,13 @@ namespace KrUI
 		std::vector<KrUIBase*> m_UIVec;
 		KrUIBase* m_pFocusedCtrl;
 	public:
+		friend class KrUIBase;
 		friend class KrButton;
 		friend class KrCloseButton;
 		friend class KrLabel;
 		friend class KrEdit;
 		friend class KrList;
+		friend class KrRadio;
 
 		KrWindow();
 		static LRESULT SizeChange(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
@@ -107,6 +110,7 @@ namespace KrUI
 		virtual void Show();
 		virtual void Hide();
 		virtual void Update();
+		void UpdateUI(KrUIBase* pUi = nullptr);
 		virtual void ChangeBmpSize();
 		virtual void Draw();//自定义绘制的窗口重写此方法
 		KrUIBase* GetFocusedCtrl();
@@ -119,6 +123,8 @@ namespace KrUI
 		KrLabel* AddLabel(LPCWSTR lpName, int x, int y, int width, int height);
 		KrEdit* AddEdit(LPCWSTR lpName, int x, int y, int width, int height);
 		KrList* AddList(LPCWSTR lpName, int x, int y, int width, int height);
+		KrRadio* AddRadio(LPCWSTR lpName, int x, int y, int width, int height);
+		KrCheckBox* AddCheckBox(LPCWSTR lpName, int x, int y, int width, int height);
 		KrProgressBar* AddProgressBar(LPCWSTR lpName, int x, int y, int width, int height);
 		void RemoveControl(KrUIBase* pui);
 		void SetCaptionHeight(unsigned int ch);

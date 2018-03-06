@@ -24,9 +24,8 @@ namespace KrUI
 		virtual void DrawMouseLeaveBmp();
 		virtual void DrawContent();
 		virtual void Update();
-		virtual void SetName(std::wstring name);
-		void SetButtonStatus(Mouse_Status bs);
 		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
+		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 	protected:
 		Gdiplus::Color m_MouseHoverColor;
 		Gdiplus::Color m_MouseDownColor;

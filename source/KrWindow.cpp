@@ -1,7 +1,5 @@
 #include "KrCore.h"
-#include "KrButton.h"
-#include "KrProgressBar.h"
-#include "KrList.h"
+
 namespace KrUI
 {
 	KrWindow::KrWindow()
@@ -45,7 +43,8 @@ namespace KrUI
 		SetWindowTextW(m_hwnd, m_lpName);
 		ChangeBmpSize();
 		RegMsg(WM_SIZE, reinterpret_cast<MSGPROC>(KrWindow::SizeChange));
-
+		SetTimer(hwnd, reinterpret_cast<unsigned int>(hwnd), TIMER_INTERVAL, NULL);
+		//TODO
 		//添加关闭按钮
 		if (m_CaptionHeight == 0)return;
 		KrUIBase* pui = new KrCloseButton;
@@ -56,8 +55,6 @@ namespace KrUI
 		pui->SetName(L"×");
 		pui->SetParantWindow(this);
 		m_UIVec.push_back(pui);
-
-
 	}
 
 	HWND KrWindow::GetHWND()
@@ -95,6 +92,14 @@ namespace KrUI
 	{
 		return dynamic_cast<KrProgressBar*>(AddControl(KrProgressBar_t, lpName, x, y, width, height));
 	}
+	KrRadio* KrWindow::AddRadio(LPCWSTR lpName, int x, int y, int width, int height)
+	{
+		return dynamic_cast<KrRadio*>(AddControl(KrRadio_t, lpName, x, y, width, height));
+	}
+	KrCheckBox* KrWindow::AddCheckBox(LPCWSTR lpName, int x, int y, int width, int height)
+	{
+		return dynamic_cast<KrCheckBox*>(AddControl(KrCheckBox_t, lpName, x, y, width, height));
+	}
 	KrUIBase* KrWindow::AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height)
 	{
 		KrUIBase* pui = nullptr;
@@ -115,6 +120,12 @@ namespace KrUI
 			break;
 		case KrList_t:
 			pui = new KrList;
+			break;
+		case KrRadio_t:
+			pui = new KrRadio(m_BgColor);
+			break;
+		case KrCheckBox_t:
+			pui = new KrCheckBox(m_BgColor);
 			break;
 		}
 		if (pui == nullptr)return nullptr;
@@ -180,6 +191,7 @@ namespace KrUI
 			ShowWindow(m_hwnd, SW_SHOW);
 			KrUIBase::Show();
 			UpdateWindow(m_hwnd);
+			Update();
 		}
 	}
 
@@ -189,6 +201,7 @@ namespace KrUI
 		{
 			ShowWindow(m_hwnd, SW_HIDE);
 			KrUIBase::Hide();
+			Update();
 		}
 	}
 
@@ -203,6 +216,9 @@ namespace KrUI
 	{
 		switch (Message)
 		{
+		case WM_TIMER:
+			//if (IsCreated())this->Update();
+			break;
 		case WM_MOUSEMOVE:
 		{
 			m_ptMouse.x = GET_X_LPARAM(lParam);
@@ -211,11 +227,14 @@ namespace KrUI
 		break;
 		case WM_CREATE:
 			SetClassLong(m_hwnd, GCL_STYLE, GetClassLong(m_hwnd, GCL_STYLE) | CS_DROPSHADOW);
+			//TODO
+			UpdateUI();
 			break;
 		case WM_LBUTTONDOWN:
-			if (GET_Y_LPARAM(lParam) < static_cast<int>(m_CaptionHeight))
+			if (GET_Y_LPARAM(lParam) < static_cast<int>(m_CaptionHeight) && GET_X_LPARAM(lParam) < static_cast<int>(GetWidth() - m_CaptionHeight))
 			{
 				SendMessage(m_hwnd, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
+				return DefWindowProc(m_hwnd, Message, wParam, lParam);
 			}
 			break;
 		case WM_LBUTTONUP:
@@ -229,19 +248,27 @@ namespace KrUI
 			//本窗口被销毁时，检查程序是否存在窗口
 			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
 			break;
-		case WM_MOVE:
 		case WM_SIZE:
+			Update();
+		case WM_MOVE:
 			GetWindowRect(m_hwnd, GetRect());
+			//TODO
+			break;
 		case WM_PAINT:
 		{
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(this->GetHWND(), &ps);
-			Update();
+			//TODO
+			UpdateUI();
 			EndPaint(this->GetHWND(), &ps);
 		}
 		break;
 		case WM_KILLFOCUS:
 			m_pFocusedCtrl = nullptr;
+			break;
+		case WM_ACTIVATE:
+			//TODO
+			UpdateUI();
 			break;
 		}
 		//调用窗口消息处理函数
@@ -280,6 +307,7 @@ namespace KrUI
 		m_pGraphicsDC = new Gdiplus::Graphics(m_hDC);
 
 		m_pGraphics = new Gdiplus::Graphics(m_pBmp);
+		UpdateUI();
 		//m_pGraphicsDC->Clear(Color(255, 255, 255));
 	}
 
@@ -307,6 +335,24 @@ namespace KrUI
 	// 		free(pImageCodecInfo);
 	// 		return -1; // Failure
 	// 	}
+
+	void KrWindow::UpdateUI(KrUIBase* pUi/* =nullptr*/)
+	{
+		if (pUi == nullptr)
+		{
+			Update();
+			return;
+		}
+		else
+		{
+			if (pUi->IsVisible())
+			{
+				pUi->Update();
+				if (m_CaptionHeight > 0)m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, 1), 0, 0, GetWidth() - 1, GetHeight() - 1);
+				m_pGraphicsDC->DrawImage(m_pBmp, static_cast<int>(pUi->GetX()), pUi->GetY(), pUi->GetX(), pUi->GetY(), GetWidth(), GetHeight(), Gdiplus::Unit::UnitPixel);
+			}
+		}
+	}
 
 	void KrWindow::Update()
 	{
@@ -354,13 +400,13 @@ namespace KrUI
 		KrWindow* pKw = dynamic_cast<KrWindow*>(pKrMessageHandler);
 		pKw->ChangeBmpSize();
 		lParam = 0;
-		for (auto p : pKw->m_UIVec)
-		{
-			if (p->GetType() == KrCloseButton_t)
-			{
-				dynamic_cast<KrCloseButton*>(p)->SetButtonStatus(mouse_hover);
-			}
-		}
+		// 		for (auto p : pKw->m_UIVec)
+		// 		{
+		// 			if (p->GetType() == KrCloseButton_t)
+		// 			{
+		// 				dynamic_cast<KrCloseButton*>(p)->SetButtonStatus(mouse_hover);
+		// 			}
+		// 		}
 		return 0;
 	}
 } //!KrUI

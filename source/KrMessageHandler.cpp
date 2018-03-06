@@ -18,6 +18,7 @@ namespace KrUI
 				++it;
 			}
 		}
+		this->CallMsgProc(Message, wParam, lParam);
 		return 0;
 	}
 
@@ -29,8 +30,10 @@ namespace KrUI
 			if (it->second == proc) it->second = NULL;
 		}
 	}
+
 	void KrMessageHandler::CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
+
 		for (auto p : m_MsgProcMap)
 		{
 			if (p.first == Message)

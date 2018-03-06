@@ -1,5 +1,5 @@
 #include "KrList.h"
-
+#include "KrCore.h"
 namespace KrUI
 {
 	KrList::KrList()
@@ -21,14 +21,17 @@ namespace KrUI
 		if (position < 0)
 		{
 			m_Position = 0;
-			return;
 		}
 		else if (position > static_cast<int>(m_TotalHeight - GetHeight()))
 		{
 			m_Position = m_TotalHeight - GetHeight();
-			return;
 		}
-		m_Position = position;
+		else
+		{
+			m_Position = position;
+		}
+		//TODO
+		if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 	}
 
 	void KrList::SetMultiSelectable(bool bMultiSelectable)
@@ -52,8 +55,8 @@ namespace KrUI
 		{
 		case WM_LBUTTONDOWN:
 			//如果鼠标按下时在列表内，就把当前选中的项目设置为鼠标停留在的那一项
-			if (!(static_cast<int>(m_pKrWindow->m_ptMouse.x) >= static_cast<int>(GetX()) && static_cast<int>(m_pKrWindow->m_ptMouse.y) >= static_cast<int>(GetY()) &&
-				static_cast<int>(m_pKrWindow->m_ptMouse.x) <= static_cast<int>(GetX() + GetWidth()) && static_cast<int>(m_pKrWindow->m_ptMouse.y) <= static_cast<int>(GetY() + GetHeight())))break;
+			if ((static_cast<int>(m_pKrWindow->m_ptMouse.x) >= static_cast<int>(GetX()) && static_cast<int>(m_pKrWindow->m_ptMouse.y) >= static_cast<int>(GetY()) &&
+				static_cast<int>(m_pKrWindow->m_ptMouse.x) < static_cast<int>(GetX() + GetWidth() - m_ScrollBarRect.Width) && static_cast<int>(m_pKrWindow->m_ptMouse.y) <= static_cast<int>(GetY() + GetHeight())))
 			{
 				if (m_bMultiSelectable)
 				{
@@ -65,6 +68,8 @@ namespace KrUI
 						{
 							it = m_SelectedItems.erase(it);
 							bExsited = true;
+							//TODO
+							if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 							break;
 						}
 						else
@@ -72,12 +77,19 @@ namespace KrUI
 							++it;
 						}
 					}
-					if (!bExsited) m_SelectedItems.push_back(m_MouseHoverItem);
+					if (!bExsited)
+					{
+						m_SelectedItems.push_back(m_MouseHoverItem);
+						//TODO
+						if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
+					}
 				}
 				else
 				{
 					m_SelectedItems.clear();
 					m_SelectedItems.push_back(m_MouseHoverItem);
+					//TODO
+					if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 				}
 				CallMsgProc(KM_LISTITEMCLICK, wParam, lParam);
 			}
@@ -112,7 +124,38 @@ namespace KrUI
 			}
 			break;
 		case WM_LBUTTONUP:
-			m_MouseDownOnScrollBarPos = -1;
+			if (m_MouseDownOnScrollBarPos != -1)
+			{
+				m_MouseDownOnScrollBarPos = -1;
+				//TODO
+				if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
+			}
+			break;
+		case WM_TIMER:
+			int current_total = 0, start_position = 0;
+			m_MouseHoverItem = -1;
+			for (unsigned int i = 0; i < m_ListItems.size(); i++)
+			{
+				//确定开始项
+				if (static_cast<int>(m_Position) >= current_total && m_Position <= (current_total + m_ListItems[i].m_Height))
+				{
+					start_position = current_total - m_Position;
+				}
+				//确定鼠标停留项
+				if (m_pKrWindow->m_ptMouse.x >= static_cast<int>(GetX()) && m_pKrWindow->m_ptMouse.y >= static_cast<int>(GetY()) &&
+					m_pKrWindow->m_ptMouse.x <= static_cast<int>(GetX() + GetWidth()) && m_pKrWindow->m_ptMouse.y <= static_cast<int>(GetY() + GetHeight()) &&
+					static_cast<int>(m_pKrWindow->m_ptMouse.y - GetY()) >= static_cast<int>(current_total - m_Position) &&
+					static_cast<int>(m_pKrWindow->m_ptMouse.y - GetY()) <= static_cast<int>(current_total - m_Position + m_ListItems[i].m_Height) &&
+					static_cast<int>(m_pKrWindow->m_ptMouse.x - GetX()) <= static_cast<int>(GetWidth() - m_ScrollBarRect.Width))
+					m_MouseHoverItem = i;
+				//确定结束项
+				int end_position = m_Position + GetHeight();
+				if (end_position >= current_total && end_position <= static_cast<int>(current_total + m_ListItems[i].m_Height))
+				{
+					break;//找到结束项直接退出循环
+				}
+				current_total += m_ListItems[i].m_Height;
+			}
 			break;
 		}
 		return KrUIBase::HandleMessage(Message, wParam, lParam);
@@ -132,6 +175,7 @@ namespace KrUI
 			}
 			m_ListItems.push_back(KrListItem(wStr, nIndex, nHeight));
 			m_TotalHeight += nHeight;
+			this->ItemChange();
 			return nIndex;
 		}
 
@@ -141,6 +185,7 @@ namespace KrUI
 		}
 		m_ListItems.push_back(KrListItem(wStr, nIndex, nHeight));
 		m_TotalHeight += nHeight;
+		this->ItemChange();
 		return nIndex;
 	}
 
@@ -163,6 +208,7 @@ namespace KrUI
 			}
 		}
 		m_SelectedItems.clear();
+		this->ItemChange();
 		return ret;
 	}
 
@@ -176,6 +222,7 @@ namespace KrUI
 				m_TotalHeight -= it->m_Height;
 				it = m_ListItems.erase(it);
 				if (m_Position > m_TotalHeight - GetHeight())SetPosition(m_TotalHeight - GetHeight());
+				this->ItemChange();
 				return true;
 			}
 			else
@@ -184,6 +231,25 @@ namespace KrUI
 			}
 		}
 		return false;
+	}
+	void KrList::ItemChange()
+	{
+		if (m_pKrWindow != nullptr)m_pKrWindow->Update();
+	}
+
+	void KrList::DrawItem(unsigned int item_index, int start_position)
+	{
+		//如果这一项处于鼠标停留或者选中状态时，画淡蓝色背景
+		for (auto si : m_SelectedItems)
+		{
+			if (m_MouseHoverItem == item_index || si == item_index)m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color(196, 218, 242)), 0, start_position, GetWidth() - m_ScrollBarRect.Width, m_ListItems[item_index].m_Height);
+		}
+		//画文字内容
+		m_pGraphics->DrawString(m_ListItems[item_index].m_ItemName.c_str(), -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10),
+			static_cast<Gdiplus::REAL>(start_position), static_cast<Gdiplus::REAL>(GetWidth() - m_ScrollBarRect.Width), static_cast<Gdiplus::REAL>(m_ListItems[item_index].m_Height)),
+			&m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
+		//画边框
+		m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor), 0, start_position, GetWidth() - m_ScrollBarRect.Width, m_ListItems[item_index].m_Height);
 	}
 
 	void KrList::Update()
@@ -204,12 +270,12 @@ namespace KrUI
 					start_position = current_total - m_Position;
 				}
 				//确定鼠标停留项
-				if (m_pKrWindow->m_ptMouse.x >= static_cast<int>(GetX()) && m_pKrWindow->m_ptMouse.y >= static_cast<int>(GetY()) &&
-					m_pKrWindow->m_ptMouse.x <= static_cast<int>(GetX() + GetWidth()) && m_pKrWindow->m_ptMouse.y <= static_cast<int>(GetY() + GetHeight()) &&
-					static_cast<int>(m_pKrWindow->m_ptMouse.y - GetY()) >= static_cast<int>(current_total - m_Position) &&
-					static_cast<int>(m_pKrWindow->m_ptMouse.y - GetY()) <= static_cast<int>(current_total - m_Position + m_ListItems[i].m_Height) &&
-					static_cast<int>(m_pKrWindow->m_ptMouse.x - GetX()) <= static_cast<int>(GetWidth() - m_ScrollBarRect.Width))
-					m_MouseHoverItem = i;
+// 				if (m_pKrWindow->m_ptMouse.x >= static_cast<int>(GetX()) && m_pKrWindow->m_ptMouse.y >= static_cast<int>(GetY()) &&
+// 					m_pKrWindow->m_ptMouse.x <= static_cast<int>(GetX() + GetWidth()) && m_pKrWindow->m_ptMouse.y <= static_cast<int>(GetY() + GetHeight()) &&
+// 					static_cast<int>(m_pKrWindow->m_ptMouse.y - GetY()) >= static_cast<int>(current_total - m_Position) &&
+// 					static_cast<int>(m_pKrWindow->m_ptMouse.y - GetY()) <= static_cast<int>(current_total - m_Position + m_ListItems[i].m_Height) &&
+// 					static_cast<int>(m_pKrWindow->m_ptMouse.x - GetX()) <= static_cast<int>(GetWidth() - m_ScrollBarRect.Width))
+// 					m_MouseHoverItem = i;
 				//确定结束项
 				int end_position = m_Position + GetHeight();
 				if (end_position >= current_total && end_position <= static_cast<int>(current_total + m_ListItems[i].m_Height))
@@ -223,23 +289,14 @@ namespace KrUI
 			if (end_item = -1)end_item = m_ListItems.size() - 1;
 			for (int i = start_item; i <= end_item; i++)
 			{
-				//如果这一项处于鼠标停留或者选中状态时，画淡蓝色背景
-				for (auto si : m_SelectedItems)
-				{
-					if (m_MouseHoverItem == i || si == i)m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color(196, 218, 242)), 0, start_position, GetWidth() - m_ScrollBarRect.Width, m_ListItems[i].m_Height);
-				}
-				//画文字内容
-				m_pGraphics->DrawString(m_ListItems[i].m_ItemName.c_str(), -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10),
-					static_cast<Gdiplus::REAL>(start_position), static_cast<Gdiplus::REAL>(GetWidth() - m_ScrollBarRect.Width), static_cast<Gdiplus::REAL>(m_ListItems[i].m_Height)),
-					&m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
-				//画边框
-				m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor), 0, start_position, GetWidth() - m_ScrollBarRect.Width, m_ListItems[i].m_Height);
+				this->DrawItem(i, start_position);
+
 				//下一次画的位置增加
 				start_position += m_ListItems[i].m_Height;
 			}
 		}
 		//画列表项和滚动条分界线
-		m_pGraphics->DrawLine(&Gdiplus::Pen(m_BorderColor, 2), Gdiplus::Point(GetWidth() - m_ScrollBarRect.Width, 0), Gdiplus::Point(GetWidth() - m_ScrollBarRect.Width, GetHeight()));
+		m_pGraphics->DrawLine(&Gdiplus::Pen(m_BorderColor, 1), Gdiplus::Point(GetWidth() - m_ScrollBarRect.Width, 0), Gdiplus::Point(GetWidth() - m_ScrollBarRect.Width, GetHeight()));
 		//根据显示位置设置滚动条的矩形
 		if (m_TotalHeight > GetHeight())
 		{
@@ -255,11 +312,8 @@ namespace KrUI
 		}
 		//画滚动条
 		m_pGraphics->FillRectangle(
-			//鼠标停留在滚动条上或者正处于按下状态时，画深灰色，否则画浅灰色
-			((static_cast<int>(m_pKrWindow->m_ptMouse.x) >= static_cast<int>(GetX() + GetWidth() - m_ScrollBarRect.Width) &&
-				static_cast<int>(m_pKrWindow->m_ptMouse.y) >= static_cast<int>(GetY() + m_ScrollBarRect.Y) &&
-				static_cast<int>(m_pKrWindow->m_ptMouse.x) <= static_cast<int>(GetX() + GetWidth()) &&
-				static_cast<int>(m_pKrWindow->m_ptMouse.y) <= static_cast<int>(GetY() + m_ScrollBarRect.GetBottom())) || m_MouseDownOnScrollBarPos != -1) ?
+			//正处于按下状态时，画深灰色，否则画浅灰色
+			(m_MouseDownOnScrollBarPos != -1) ?
 			&Gdiplus::SolidBrush(Gdiplus::Color(150, 150, 150)) :
 			&Gdiplus::SolidBrush(Gdiplus::Color(200, 200, 200)), m_ScrollBarRect);
 		//画列表边框

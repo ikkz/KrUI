@@ -10,7 +10,7 @@
 namespace KrUI
 {
 	class KrWindow;
-	enum KrUIType { KrWindow_t, KrButton_t, KrCloseButton_t, KrLabel_t, KrEdit_t, KrProgressBar_t, KrList_t };
+	enum KrUIType { KrWindow_t, KrButton_t, KrCloseButton_t, KrLabel_t, KrEdit_t, KrProgressBar_t, KrList_t, KrRadio_t, KrCheckBox_t };
 	enum Mouse_Status { mouse_down, mouse_leave, mouse_hover };
 	class KrUIBase :public KrMessageHandler
 	{
@@ -32,6 +32,7 @@ namespace KrUI
 		bool m_bMouseDown;
 		HCURSOR m_hCursor;
 	public:
+		friend class KrWindow;
 		KrUIBase();
 		~KrUIBase();
 		void SetType(KrUIType ut);

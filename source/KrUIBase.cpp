@@ -128,6 +128,11 @@ namespace KrUI
 	void KrUIBase::SetName(std::wstring name)
 	{
 		m_strName = name;
+		if (m_pGraphics != nullptr)
+		{
+			//TODO
+			if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
+		}
 	}
 	std::wstring KrUIBase::GetName()
 	{
@@ -146,45 +151,44 @@ namespace KrUI
 			ptMouse.x = GET_X_LPARAM(lParam);
 			ptMouse.y = GET_Y_LPARAM(lParam);
 			bool bMouseIn = PtInRect(&m_rect, ptMouse) ? true : false;
-			if (m_bMouseIn == false && bMouseIn == TRUE)
+			if (m_bMouseIn == false && bMouseIn == true)
 			{
 				//SendMessage(m_pKrWindow->GetHWND(), KM_MOUDEENTER, NULL, NULL);
+				m_bMouseIn = bMouseIn;
 				this->CallMsgProc(KM_MOUSEENTER, wParam, new_lparam);
 			}
 			else if (m_bMouseIn == true && bMouseIn == false)
 			{
+				m_bMouseIn = bMouseIn;
 				this->CallMsgProc(KM_MOUSELEAVE, wParam, new_lparam);
 			}
-			m_bMouseIn = bMouseIn;
-
 			this->CallMsgProc(KM_MOUSEMOVE, wParam, new_lparam);
 
 			break;
 		}
 		case WM_LBUTTONDOWN:
 		{
+			m_bMouseDown = true;
 			POINT ptMouse;
 			ptMouse.x = GET_X_LPARAM(lParam);
 			ptMouse.y = GET_Y_LPARAM(lParam);
-			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
-			if (bMouseIn)
+			//BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
+			if (m_bMouseIn)
 			{
 				this->CallMsgProc(KM_LBTNDOWN, wParam, new_lparam);
-				m_bMouseDown = true;
 			}
 			break;
 		}
 		case WM_LBUTTONUP:
 		{
+			m_bMouseDown = false;
 			POINT ptMouse;
 			ptMouse.x = GET_X_LPARAM(lParam);
 			ptMouse.y = GET_Y_LPARAM(lParam);
-			BOOL bMouseIn = PtInRect(&m_rect, ptMouse);
-			if (bMouseIn)
+			if (m_bMouseIn)
 			{
 				this->CallMsgProc(KM_LBTNUP, wParam, new_lparam);
 			}
-			m_bMouseDown = false;
 			break;
 		}
 		default:
@@ -214,6 +218,8 @@ namespace KrUI
 		delete m_pBmp;
 		DeleteObject(m_hBmp);
 	}
+
+
 	void KrUIBase::SetParantWindow(KrWindow* pKrWindow)
 	{
 		if ((!m_pKrWindow) && (pKrWindow))
@@ -252,10 +258,7 @@ namespace KrUI
 					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(LoadCursor(nullptr, IDC_ARROW)));
 #endif
 
-				}
-				break;
-			case KM_LBTNDOWN:
-				m_bMouseDown = true;
+			}
 				break;
 			case KM_LBTNUP:
 				m_bMouseDown = false;
@@ -263,16 +266,18 @@ namespace KrUI
 				{
 					m_pKrWindow->SetFocusedCtrl(this);
 				}
-			}
-			for (auto p : m_MsgProcMap)
-			{
-				if (p.first == Message)
-				{
-					p.second(this, wParam, lParam);
-				}
-			}
 		}
+// 			for (auto p : m_MsgProcMap)
+// 			{
+// 				if (p.first == Message)
+// 				{
+// 					p.second(this, wParam, lParam);
+// 				}
+// 			}
 	}
+
+		KrMessageHandler::CallMsgProc(Message, wParam, lParam);
+}
 
 	void KrUIBase::SetType(KrUIType ut)
 	{

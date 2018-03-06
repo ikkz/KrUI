@@ -49,25 +49,19 @@ namespace KrUI
 	}
 	void KrButton::Update()
 	{
-		//m_pGraphics->DrawImage(m_pKrWindow->m_pBmp, 0, 0, GetX(), GetY(), GetWidth(), GetHeight(), Gdiplus::Unit::UnitPixel);
-		//m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color::AlphaMask), 0, 0, m_pBmp->GetWidth(), m_pBmp->GetHeight());
-
-		if ((m_bMouseIn && !m_bMouseDown) && m_ButtonStatus != mouse_hover)
+		if (m_bMouseIn && (!m_bMouseDown))
 		{
 			this->DrawMouseHoverBmp();
-			m_ButtonStatus = mouse_hover;
 			this->DrawContent();
 		}
-		else if (m_bMouseDown && (m_ButtonStatus != mouse_down))
+		else if (m_bMouseDown&&m_bMouseIn)
 		{
 			this->DrawMouseDownBmp();
-			m_ButtonStatus = mouse_down;
 			this->DrawContent();
 		}
-		else if (((!m_bMouseDown) && (!m_bMouseIn)) && m_ButtonStatus != mouse_leave)
+		else
 		{
 			this->DrawMouseLeaveBmp();
-			m_ButtonStatus = mouse_leave;
 			this->DrawContent();
 		}
 		KrUIBase::Update();
@@ -93,40 +87,26 @@ namespace KrUI
 	{
 	}
 
-	void KrButton::SetButtonStatus(Mouse_Status bs)
-	{
-		m_ButtonStatus = bs;
-	}
 	LRESULT KrButton::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		return KrUIBase::HandleMessage(Message, wParam, lParam);
 	}
 
-	void KrButton::SetName(std::wstring name)
+	void KrButton::CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-		KrUIBase::SetName(name);
-		if (m_pGraphics != nullptr)
+		switch (Message)
 		{
-			switch (m_ButtonStatus)
-			{
-			case KrUI::mouse_down:
-				this->DrawMouseDownBmp();
-				this->DrawContent();
-				break;
-			case KrUI::mouse_leave:
-				this->DrawMouseLeaveBmp();
-				this->DrawContent();
-				break;
-			case KrUI::mouse_hover:
-				this->DrawMouseHoverBmp();
-				this->DrawContent();
-				break;
-			default:
-				break;
-			}
+		case KM_MOUSEENTER:
+		case KM_MOUSELEAVE:
+		case KM_LBTNDOWN:
+		case KM_LBTNUP:
+			//TODO
+			if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 		}
-
+		return KrUIBase::CallMsgProc(Message, wParam, lParam);
 	}
+
+
 
 	//¹Ø±Õ°´Å¥£º
 	KrCloseButton::KrCloseButton()

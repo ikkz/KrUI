@@ -130,7 +130,16 @@ namespace KrUI
 						break;
 					}
 				}
-
+				break;
+			case WM_TIMER:
+				m_Time += TIMER_INTERVAL;
+				if (m_Time >= 500)
+				{
+					m_bShowCursor = !m_bShowCursor;
+					m_Time = 0;
+					//TODO
+					if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
+				}
 				break;
 			default:
 				break;
@@ -139,18 +148,39 @@ namespace KrUI
 		return KrUIBase::HandleMessage(Message, wParam, lParam);
 	}
 
+	void KrEdit::CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam)
+	{
+		switch (Message)
+		{
+		case KM_LBTNDOWN:
+			if (m_pKrWindow != nullptr)m_pKrWindow->SetFocusedCtrl(this);
+			m_SelectTextPosFirst = GetCursorPosByX(GET_X_LPARAM(lParam));
+			m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
+			//TODO
+			if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
+			break;
+		case KM_LBTNUP:
+			m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
+			break;
+		case KM_MOUSEMOVE:
+			if (m_bMouseDown && m_bMouseIn)
+			{
+				m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
+				//TODO
+				if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
+			}
+			break;
+		}
+		KrUIBase::CallMsgProc(Message, wParam, lParam);
+	}
+
 	void KrEdit::Update()
 	{
-		m_Time += TIMER_INTERVAL;
-		if (m_Time >= 500)
-		{
-			m_bShowCursor = !m_bShowCursor;
-			m_Time = 0;
-		}
+
 		//画背景:
 		m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_BgColor), 0, 0, GetWidth(), GetHeight());
 		//画选中背景
-		if (m_SelectTextPosFirst != m_SelectTextPosSecond&&m_pKrWindow->GetFocusedCtrl() == this)
+		if (m_SelectTextPosFirst != m_SelectTextPosSecond && m_pKrWindow->GetFocusedCtrl() == this)
 		{
 			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color(200, 200, 200)),
 				GetXByCursorPos(m_SelectTextPosFirst < m_SelectTextPosSecond ? m_SelectTextPosFirst : m_SelectTextPosSecond),
@@ -163,27 +193,15 @@ namespace KrUI
 		//画光标
 		if (m_bShowCursor && m_pKrWindow->GetFocusedCtrl() == this && m_SelectTextPosFirst == m_SelectTextPosSecond)
 		{
-			m_pGraphics->DrawLine(&Gdiplus::Pen(Gdiplus::Color::Black), GetXByCursorPos(m_SelectTextPosFirst) ,
-				static_cast<int>((GetHeight() - GetStrHeight()) / 2), GetXByCursorPos(m_SelectTextPosFirst) ,
+			m_pGraphics->DrawLine(&Gdiplus::Pen(Gdiplus::Color::Black), GetXByCursorPos(m_SelectTextPosFirst),
+				static_cast<int>((GetHeight() - GetStrHeight()) / 2), GetXByCursorPos(m_SelectTextPosFirst),
 				static_cast<int>((GetHeight() + GetStrHeight()) / 2));
 		}
 		//画文字内容:
 		m_pGraphics->DrawString(m_strText.c_str(), -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(m_Margin), static_cast<Gdiplus::REAL>((GetHeight() - GetStrHeight()) / 2),
 			static_cast<Gdiplus::REAL>(GetWidth() - m_Margin), static_cast<Gdiplus::REAL>(GetHeight())), Gdiplus::StringFormat::GenericTypographic()/*&m_StringFormat*/, &Gdiplus::SolidBrush(m_FontColor));
-		//画边框:
-		if ((m_bMouseIn && !m_bMouseDown) && m_MouseStatus != mouse_hover)
-		{
-			m_MouseStatus = mouse_hover;
-		}
-		else if (((!m_bMouseDown) && (!m_bMouseIn)) && m_MouseStatus != mouse_leave)
-		{
-			m_MouseStatus = mouse_leave;
-		}
-		else if (m_bMouseDown && (m_MouseStatus != mouse_down))
-		{
-			m_MouseStatus = mouse_down;
-		}																		// Color(21,131,221)是鼠标移动到文本框上时边框的颜色
-		m_pGraphics->DrawRectangle(&Gdiplus::Pen((m_MouseStatus == mouse_leave ? m_BorderColor : Gdiplus::Color(21, 131, 221))),
+		//画边框:														// Color(21,131,221)是鼠标移动到文本框上时边框的颜色
+		m_pGraphics->DrawRectangle(&Gdiplus::Pen((m_bMouseIn ? Gdiplus::Color(21, 131, 221) : m_BorderColor)),
 			0, 0, GetWidth() - 1, GetHeight() - 1);
 		//画到窗口Mmp上
 		KrUIBase::Update();
@@ -214,7 +232,7 @@ namespace KrUI
 	{
 		if (CursorPos <= 0) return m_Margin;
 		if (CursorPos > m_strText.size()) CursorPos = m_strText.size();
-		return m_Margin + m_StringLength[CursorPos] +2;
+		return m_Margin + m_StringLength[CursorPos] + 2;
 	}
 	/*
 	if (strText[strText.size() - 1] == L' ')
@@ -236,6 +254,8 @@ namespace KrUI
 			// 			}
 			m_StringLength.push_back(nWidth);
 		}
+		//TODO
+		if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 	}
 
 	unsigned int KrEdit::GetStrHeight()
@@ -244,26 +264,15 @@ namespace KrUI
 		m_pGraphics->MeasureString(L"KrEdit", -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(5), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(GetWidth()), static_cast<Gdiplus::REAL>(GetHeight())), Gdiplus::StringFormat::GenericTypographic(), &strRc);
 		return  static_cast<unsigned int>(strRc.Height);
 	}
+	// 
+	// 	void KrEdit::CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam)
+	// 	{
+	// 		//int x = GET_X_LPARAM(lParam) - m_rect.left;
+	// 
+	// 		KrUIBase::CallMsgProc(Message, wParam, lParam);
+	// 	}
 
-	void KrEdit::CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam)
-	{
-		//int x = GET_X_LPARAM(lParam) - m_rect.left;
-		switch (Message)
-		{
-		case KM_LBTNDOWN:
-			if (m_pKrWindow != nullptr)m_pKrWindow->SetFocusedCtrl(this);
-			m_SelectTextPosFirst = GetCursorPosByX(GET_X_LPARAM(lParam));
-			m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
-			break;
-		case KM_LBTNUP:
-			m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
-			break;
-		case KM_MOUSEMOVE:
-			if (m_MouseStatus == mouse_down&&m_bMouseIn) m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
-			break;
-		}
-		KrUIBase::CallMsgProc(Message, wParam, lParam);
-	}
+
 
 	KrEdit::KrEdit()
 	{
