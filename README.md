@@ -1,5 +1,5 @@
 # KrUI
-
+![ui](http://img04.sogoucdn.com/app/a/100520146/c0bcbe59a184833f0370b3e3431faaef)
 ## 环境：
 - 使用vs2017
 - 生成的exe请右键属性在兼容性中禁止高DPI自动缩放
