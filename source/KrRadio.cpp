@@ -12,7 +12,7 @@ namespace KrUI
 	{
 		if (m_pGraphics != nullptr)m_pGraphics->SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeHighQuality);
 		int item_height = m_ListItems[item_index].m_Height;
-		m_pGraphics->DrawEllipse(&Gdiplus::Pen(&Gdiplus::SolidBrush(Gdiplus::Color::Blue)),
+		m_pGraphics->DrawEllipse(&Gdiplus::Pen(&Gdiplus::SolidBrush(Gdiplus::Color(0, 120, 215))),
 			Gdiplus::Rect(static_cast<int>((1 - PROPORTION)*item_height / 2), static_cast<int>(start_position + (1 - PROPORTION)*item_height / 2), static_cast<int>(PROPORTION*item_height), static_cast<int>(PROPORTION*item_height)));
 		//如果这一项处于选中状态时
 		for (auto si : m_SelectedItems)
