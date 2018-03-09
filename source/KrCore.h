@@ -119,7 +119,7 @@ namespace KrUI
 		bool IsCreated();
 		LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		KrUIBase* AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height);
-		KrButton* AddButton(LPCWSTR lpName, int x, int y, int width, int height);
+		KrButton* AddButton(LPCWSTR lpName, int x, int y, int width = 100, int height = 35);
 		KrLabel* AddLabel(LPCWSTR lpName, int x, int y, int width, int height);
 		KrEdit* AddEdit(LPCWSTR lpName, int x, int y, int width, int height);
 		KrList* AddList(LPCWSTR lpName, int x, int y, int width, int height);

@@ -30,6 +30,7 @@ namespace KrUI
 		std::vector<KrListItem> GetSelectedItems();
 		virtual void Update();
 		virtual void ItemChange();
+		void SelectAllItems(bool b);
 		virtual LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		void SetPosition(int position);
 	protected:

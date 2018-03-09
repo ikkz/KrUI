@@ -44,7 +44,8 @@ namespace KrUI
 		std::vector<KrListItem> kls;
 		for (auto si : m_SelectedItems)
 		{
-			kls.push_back(m_ListItems[si]);
+			if (si < m_ListItems.size()) kls.push_back(m_ListItems[si]);
+
 		}
 		return kls;
 	}
@@ -197,6 +198,18 @@ namespace KrUI
 		{
 			if (it->m_ItemName == wStr)
 			{
+				auto lsi = m_SelectedItems.begin();
+				while (lsi != m_SelectedItems.end())
+				{
+					if (*lsi < m_ListItems.size() && m_ListItems[*lsi].m_Index == it->m_Index)
+					{
+						lsi = m_SelectedItems.erase(lsi);
+					}
+					else
+					{
+						++lsi;
+					}
+				}
 				m_TotalHeight -= it->m_Height;
 				it = m_ListItems.erase(it);
 				if (m_Position > m_TotalHeight - GetHeight())SetPosition(m_TotalHeight - GetHeight());
@@ -212,6 +225,19 @@ namespace KrUI
 		return ret;
 	}
 
+	void KrList::SelectAllItems(bool b)
+	{
+		m_SelectedItems.clear();
+		if (b&&m_bMultiSelectable)
+		{
+			for (int i = 0; i != m_ListItems.size(); i++)
+			{
+				m_SelectedItems.push_back(i);
+			}
+		}
+		m_pKrWindow->UpdateUI(this);
+	}
+
 	bool KrList::RemoveItem(int nIndex)
 	{
 		auto it = m_ListItems.begin();
@@ -219,9 +245,23 @@ namespace KrUI
 		{
 			if (it->m_Index == nIndex)
 			{
+				//从选择的项中删除该项
+				auto lsi = m_SelectedItems.begin();
+				while (lsi != m_SelectedItems.end())
+				{
+					if (*lsi < m_ListItems.size() && m_ListItems[*lsi].m_Index == nIndex)
+					{
+						lsi = m_SelectedItems.erase(lsi);
+					}
+					else
+					{
+						++lsi;
+					}
+				}
+				//从列表项中删除
 				m_TotalHeight -= it->m_Height;
-				it = m_ListItems.erase(it);
 				if (m_Position > m_TotalHeight - GetHeight())SetPosition(m_TotalHeight - GetHeight());
+				it = m_ListItems.erase(it);
 				this->ItemChange();
 				return true;
 			}
@@ -234,7 +274,7 @@ namespace KrUI
 	}
 	void KrList::ItemChange()
 	{
-		if (m_pKrWindow != nullptr)m_pKrWindow->Update();
+		if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI();
 	}
 
 	void KrList::DrawItem(unsigned int item_index, int start_position)
@@ -242,7 +282,7 @@ namespace KrUI
 		//如果这一项处于鼠标停留或者选中状态时，画淡蓝色背景
 		for (auto si : m_SelectedItems)
 		{
-			if (m_MouseHoverItem == item_index || si == item_index)m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color(196, 218, 242)), 0, start_position, GetWidth() - m_ScrollBarRect.Width, m_ListItems[item_index].m_Height);
+			if (si == item_index)m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color(196, 218, 242)), 0, start_position, GetWidth() - m_ScrollBarRect.Width, m_ListItems[item_index].m_Height);
 		}
 		//画文字内容
 		m_pGraphics->DrawString(m_ListItems[item_index].m_ItemName.c_str(), -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10),

@@ -130,8 +130,8 @@ namespace KrUI
 		}
 		if (pui == nullptr)return nullptr;
 		pui->SetType(t);
-		pui->SetName(lpName);
 		pui->SetParantWindow(this);
+		pui->SetName(lpName);
 		pui->SetSize(x, y, width, height);
 		m_UIVec.push_back(pui);
 		return pui;
@@ -265,6 +265,8 @@ namespace KrUI
 		break;
 		case WM_KILLFOCUS:
 			m_pFocusedCtrl = nullptr;
+			m_ptMouse = { 0,0 };
+			UpdateUI();
 			break;
 		case WM_ACTIVATE:
 			//TODO
