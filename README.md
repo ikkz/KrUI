@@ -1,5 +1,8 @@
 # KrUI
 ![ui](http://img04.sogoucdn.com/app/a/100520146/c0bcbe59a184833f0370b3e3431faaef)
+- 采用DirectUI思想，所有控件均无句柄
+- 使用GDI+绘制
+- 实现了窗口和控件的双缓冲绘制
 ## 环境：
 - 使用vs2017
 - 生成的exe请右键属性在兼容性中禁止高DPI自动缩放
@@ -33,14 +36,15 @@ KrWindow* AddWindow(KrWindow* pKrWindow, LPCWSTR lpWindowName, int x, int y, int
 ```
 - 添加控件，提供以下函数：
 ```
-enum KrUIType { KrWindow_t, KrButton_t, KrCloseButton_t, KrLabel_t, KrEdit_t, KrProgressBar_t, KrList_t };
 KrUIBase* AddControl(KrUIType t, LPCWSTR lpName, int x, int y, int width, int height);
 KrButton* AddButton(LPCWSTR lpName, int x, int y, int width, int height);
 KrLabel* AddLabel(LPCWSTR lpName, int x, int y, int width, int height);
 KrEdit* AddEdit(LPCWSTR lpName, int x, int y, int width, int height);
 KrList* AddList(LPCWSTR lpName, int x, int y, int width, int height);
 KrProgressBar* AddProgressBar(LPCWSTR lpName, int x, int y, int width, int height);
-//以上函数都可以根据名字知道功能，其中后几个函数是第一个函数的简化，免去了实际使用时的dynamic_cast
+KrRadio* AddRadio(LPCWSTR lpName, int x, int y, int width, int height);
+KrCheckBox* AddCheckBox(LPCWSTR lpName, int x, int y, int width, int height);
+//后几个函数是第一个函数的简化，免去了实际使用时的dynamic_cast
 ```
 - 注册消息响应函数：
 ```
