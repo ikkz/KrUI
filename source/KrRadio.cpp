@@ -15,15 +15,11 @@ namespace KrUI
 		m_pGraphics->DrawEllipse(&Gdiplus::Pen(&Gdiplus::SolidBrush(Gdiplus::Color::Blue)),
 			Gdiplus::Rect(static_cast<int>((1 - PROPORTION)*item_height / 2), static_cast<int>(start_position + (1 - PROPORTION)*item_height / 2), static_cast<int>(PROPORTION*item_height), static_cast<int>(PROPORTION*item_height)));
 		//如果这一项处于选中状态时
-		for (auto si : m_SelectedItems)
-		{
-			if (si == item_index)
-			{
-				m_pGraphics->FillEllipse(&Gdiplus::SolidBrush(Gdiplus::Color(0, 120, 215)),
-					Gdiplus::RectF(static_cast<Gdiplus::REAL>((1 - (PROPORTION - 0.25))*item_height / 2 - 1), static_cast<Gdiplus::REAL>(start_position + (1 - (PROPORTION - 0.25))*item_height / 2 - 1), static_cast<Gdiplus::REAL>((PROPORTION - 0.25)*item_height), static_cast<Gdiplus::REAL>((PROPORTION - 0.25)*item_height)));
-				break;
-			}
-		}
+		if (m_ListItems[item_index].m_bSelected)
+			m_pGraphics->FillEllipse(&Gdiplus::SolidBrush(Gdiplus::Color(0, 120, 215)),
+				Gdiplus::RectF(static_cast<Gdiplus::REAL>((1 - (PROPORTION - 0.25))*item_height / 2 - 1), static_cast<Gdiplus::REAL>(start_position + (1 - (PROPORTION - 0.25))*item_height / 2 - 1), static_cast<Gdiplus::REAL>((PROPORTION - 0.25)*item_height), static_cast<Gdiplus::REAL>((PROPORTION - 0.25)*item_height)));
+
+
 		//画文字内容
 		m_pGraphics->DrawString(m_ListItems[item_index].m_ItemName.c_str(), -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(m_ListItems[item_index].m_Height),
 			static_cast<Gdiplus::REAL>(start_position), static_cast<Gdiplus::REAL>(GetWidth() - m_ScrollBarRect.Width), static_cast<Gdiplus::REAL>(m_ListItems[item_index].m_Height)),

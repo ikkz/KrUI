@@ -37,15 +37,17 @@ namespace KrUI
 	void KrList::SetMultiSelectable(bool bMultiSelectable)
 	{
 		m_bMultiSelectable = bMultiSelectable;
-		m_SelectedItems.clear();
+		//m_SelectedItems.clear();
 	}
 	std::vector<KrListItem> KrList::GetSelectedItems()
 	{
 		std::vector<KrListItem> kls;
-		for (auto si : m_SelectedItems)
+		for (auto& li : m_ListItems)
 		{
-			if (si < m_ListItems.size()) kls.push_back(m_ListItems[si]);
-
+			if (li.m_bSelected)
+			{
+				kls.push_back(li);
+			}
 		}
 		return kls;
 	}
@@ -61,37 +63,20 @@ namespace KrUI
 			{
 				if (m_bMultiSelectable)
 				{
-					bool bExsited = false;
-					auto it = m_SelectedItems.begin();
-					while (it != m_SelectedItems.end())
+					if (m_MouseHoverItem != -1)
 					{
-						if (*it == m_MouseHoverItem)
-						{
-							it = m_SelectedItems.erase(it);
-							bExsited = true;
-							//TODO
-							if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
-							break;
-						}
-						else
-						{
-							++it;
-						}
-					}
-					if (!bExsited)
-					{
-						m_SelectedItems.push_back(m_MouseHoverItem);
-						//TODO
-						if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
+						m_ListItems[m_MouseHoverItem].m_bSelected = !m_ListItems[m_MouseHoverItem].m_bSelected;
 					}
 				}
 				else
 				{
-					m_SelectedItems.clear();
-					m_SelectedItems.push_back(m_MouseHoverItem);
-					//TODO
-					if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
+					for (auto& li : m_ListItems)
+					{
+						li.m_bSelected = false;
+					}
+					m_ListItems[m_MouseHoverItem].m_bSelected = true;
 				}
+				if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 				CallMsgProc(KM_LISTITEMCLICK, wParam, lParam);
 			}
 			//如果鼠标按下时在滚动条上，就保存鼠标和滚送条顶部的相对位置
@@ -198,18 +183,6 @@ namespace KrUI
 		{
 			if (it->m_ItemName == wStr)
 			{
-				auto lsi = m_SelectedItems.begin();
-				while (lsi != m_SelectedItems.end())
-				{
-					if (*lsi < m_ListItems.size() && m_ListItems[*lsi].m_Index == it->m_Index)
-					{
-						lsi = m_SelectedItems.erase(lsi);
-					}
-					else
-					{
-						++lsi;
-					}
-				}
 				m_TotalHeight -= it->m_Height;
 				it = m_ListItems.erase(it);
 				if (m_Position > m_TotalHeight - GetHeight())SetPosition(m_TotalHeight - GetHeight());
@@ -220,19 +193,24 @@ namespace KrUI
 				++it;
 			}
 		}
-		m_SelectedItems.clear();
 		this->ItemChange();
 		return ret;
 	}
 
 	void KrList::SelectAllItems(bool b)
 	{
-		m_SelectedItems.clear();
 		if (b&&m_bMultiSelectable)
 		{
-			for (int i = 0; i != m_ListItems.size(); i++)
+			for (auto& li : m_ListItems)
 			{
-				m_SelectedItems.push_back(i);
+				li.m_bSelected = true;
+			}
+		}
+		else if (!b)
+		{
+			for (auto& li : m_ListItems)
+			{
+				li.m_bSelected = false;
 			}
 		}
 		m_pKrWindow->UpdateUI(this);
@@ -245,19 +223,6 @@ namespace KrUI
 		{
 			if (it->m_Index == nIndex)
 			{
-				//从选择的项中删除该项
-				auto lsi = m_SelectedItems.begin();
-				while (lsi != m_SelectedItems.end())
-				{
-					if (*lsi < m_ListItems.size() && m_ListItems[*lsi].m_Index == nIndex)
-					{
-						lsi = m_SelectedItems.erase(lsi);
-					}
-					else
-					{
-						++lsi;
-					}
-				}
 				//从列表项中删除
 				m_TotalHeight -= it->m_Height;
 				if (m_Position > m_TotalHeight - GetHeight())SetPosition(m_TotalHeight - GetHeight());
@@ -280,10 +245,8 @@ namespace KrUI
 	void KrList::DrawItem(unsigned int item_index, int start_position)
 	{
 		//如果这一项处于鼠标停留或者选中状态时，画淡蓝色背景
-		for (auto si : m_SelectedItems)
-		{
-			if (si == item_index)m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color(196, 218, 242)), 0, start_position, GetWidth() - m_ScrollBarRect.Width, m_ListItems[item_index].m_Height);
-		}
+
+		if (m_ListItems[item_index].m_bSelected)m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(Gdiplus::Color(196, 218, 242)), 0, start_position, GetWidth() - m_ScrollBarRect.Width, m_ListItems[item_index].m_Height);
 		//画文字内容
 		m_pGraphics->DrawString(m_ListItems[item_index].m_ItemName.c_str(), -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10),
 			static_cast<Gdiplus::REAL>(start_position), static_cast<Gdiplus::REAL>(GetWidth() - m_ScrollBarRect.Width), static_cast<Gdiplus::REAL>(m_ListItems[item_index].m_Height)),

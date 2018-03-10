@@ -12,7 +12,8 @@ namespace KrUI
 		unsigned int m_Index;
 		std::wstring m_ItemName;
 		unsigned int m_Height;
-		KrListItem(std::wstring wStr, unsigned int Index, unsigned int Height) : m_ItemName(wStr), m_Index(Index), m_Height(Height) {}
+		bool m_bSelected;
+		KrListItem(std::wstring wStr, unsigned int Index, unsigned int Height) : m_ItemName(wStr), m_Index(Index), m_Height(Height), m_bSelected(false) {}
 	};
 
 	class KrList : public KrUIBase
@@ -41,7 +42,6 @@ namespace KrUI
 		unsigned int m_MouseWheelDelta;
 		Gdiplus::Rect m_ScrollBarRect;
 		unsigned int m_MouseHoverItem;
-		std::vector<int> m_SelectedItems;
 		int m_MouseDownOnScrollBarPos;
 	};
 }
