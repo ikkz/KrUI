@@ -15,6 +15,7 @@ namespace KrUI
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentNear);
 		m_pFocusedCtrl = nullptr;
 		m_pKrWindow = nullptr;
+		m_BorderColor = Gdiplus::Color(160,160,160);
 	}
 	KrUIBase* KrWindow::GetFocusedCtrl()
 	{
@@ -313,31 +314,6 @@ namespace KrUI
 		//m_pGraphicsDC->Clear(Color(255, 255, 255));
 	}
 
-	// 	int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
-	// 	{
-	// 		UINT num = 0; // number of image encoders
-	// 		UINT size = 0; // size of the image encoder array in bytes
-	// 		Gdiplus::ImageCodecInfo* pImageCodecInfo = NULL;
-	// 		Gdiplus::GetImageEncodersSize(&num, &size);
-	// 		if (size == 0)
-	// 			return -1; // Failure
-	// 		pImageCodecInfo = (Gdiplus::ImageCodecInfo*)(malloc(size));
-	// 		if (pImageCodecInfo == NULL)
-	// 			return -1; // Failure
-	// 		GetImageEncoders(num, size, pImageCodecInfo);
-	// 		for (UINT j = 0; j < num; ++j)
-	// 		{
-	// 			if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
-	// 			{
-	// 				*pClsid = pImageCodecInfo[j].Clsid;
-	// 				free(pImageCodecInfo);
-	// 				return j; // Success- 87 -
-	// 			}
-	// 		}
-	// 		free(pImageCodecInfo);
-	// 		return -1; // Failure
-	// 	}
-
 	void KrWindow::UpdateUI(KrUIBase* pUi/* =nullptr*/)
 	{
 		if (pUi == nullptr)
@@ -401,14 +377,6 @@ namespace KrUI
 	{
 		KrWindow* pKw = dynamic_cast<KrWindow*>(pKrMessageHandler);
 		pKw->ChangeBmpSize();
-		lParam = 0;
-		// 		for (auto p : pKw->m_UIVec)
-		// 		{
-		// 			if (p->GetType() == KrCloseButton_t)
-		// 			{
-		// 				dynamic_cast<KrCloseButton*>(p)->SetButtonStatus(mouse_hover);
-		// 			}
-		// 		}
 		return 0;
 	}
 } //!KrUI

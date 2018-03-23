@@ -63,6 +63,30 @@ namespace KrUI
 			{
 				if (m_bMultiSelectable)
 				{
+					// 					bool bExsited = false;
+					// 					auto it = m_SelectedItems.begin();
+					// 					while (it != m_SelectedItems.end())
+					// 					{
+					// 						if (*it == m_MouseHoverItem)
+					// 						{
+					// 							it = m_SelectedItems.erase(it);
+					// 							bExsited = true;
+					// 							//TODO
+					// 							if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
+					// 							break;
+					// 						}
+					// 						else
+					// 						{
+					// 							++it;
+					// 						}
+					// 					}
+					// 
+					// 					if (!bExsited)
+					// 					{
+					// 						m_SelectedItems.push_back(m_MouseHoverItem);
+					// 						//TODO
+					// 						if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
+					// 					}
 					if (m_MouseHoverItem != -1)
 					{
 						m_ListItems[m_MouseHoverItem].m_bSelected = !m_ListItems[m_MouseHoverItem].m_bSelected;
@@ -70,6 +94,8 @@ namespace KrUI
 				}
 				else
 				{
+					// 					m_SelectedItems.clear();
+					// 					m_SelectedItems.push_back(m_MouseHoverItem);
 					for (auto& li : m_ListItems)
 					{
 						li.m_bSelected = false;
