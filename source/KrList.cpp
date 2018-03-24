@@ -100,7 +100,7 @@ namespace KrUI
 					{
 						li.m_bSelected = false;
 					}
-					m_ListItems[m_MouseHoverItem].m_bSelected = true;
+					if (m_MouseHoverItem < m_ListItems.size())m_ListItems[m_MouseHoverItem].m_bSelected = true;
 				}
 				if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 				CallMsgProc(KM_LISTITEMCLICK, wParam, lParam);
