@@ -11,12 +11,8 @@
 targetver.h
 stdafx.h
 stdafx.cpp
-KrWindow.cpp
-KrCore.h
-KrMessageHandler.cpp
 KrUI.cpp
 KrUI.h
-KrUIManager.cpp
 *.res
 KrUI.ico
 KrUI.rc
@@ -36,3 +32,8 @@ Debug/vc.nativecodeanalysis.all.xml
 KrUI1.rc
 resource.h
 source.zip
+source/KrCheckBox.cpp
+source/KrCheckBox.cpp
+source/KrCheckBox.cpp
+source/KrCore.h
+source/KrList.cpp
