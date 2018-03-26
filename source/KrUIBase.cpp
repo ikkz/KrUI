@@ -93,14 +93,14 @@ namespace KrUI
 	void KrUIBase::ChangeBmpSize()
 	{
 		if (m_pKrWindow == nullptr)return;
-		if (m_hBmp != NULL)
+		if (m_hBmp != nullptr)
 		{
 			DeleteObject(m_hBmp);
 		}
 		m_hBmp = CreateCompatibleBitmap(m_pKrWindow->GetDc(), GetWidth(), GetHeight());
 		delete m_pGraphics;
 		delete m_pBmp;
-		m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
+		m_pBmp = new Gdiplus::Bitmap(m_hBmp, nullptr);
 		m_pGraphics = new Gdiplus::Graphics(m_pBmp);
 		//m_pGraphics->SetTextRenderingHint(Gdiplus::TextRenderingHint::TextRenderingHintAntiAlias);
 		//this->Update();
@@ -202,7 +202,7 @@ namespace KrUI
 		m_pBmp = nullptr;
 		m_pGraphics = nullptr;
 		m_pKrWindow = nullptr;
-		m_hBmp = NULL;
+		m_hBmp = nullptr;
 		m_bVisible = true;
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentCenter);
 		m_StringFormat.SetLineAlignment(Gdiplus::StringAlignmentCenter);
@@ -226,7 +226,7 @@ namespace KrUI
 		{
 			m_pKrWindow = pKrWindow;
 			m_hBmp = CreateCompatibleBitmap(m_pKrWindow->GetDc(), GetWidth(), GetHeight());
-			m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
+			m_pBmp = new Gdiplus::Bitmap(m_hBmp, nullptr);
 			m_pGraphics = new Gdiplus::Graphics(m_pBmp);
 			//m_pGraphics->SetTextRenderingHint(Gdiplus::TextRenderingHint::TextRenderingHintAntiAlias);
 		}

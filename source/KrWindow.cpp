@@ -8,7 +8,7 @@ namespace KrUI
 		m_UIType = KrUIType::KrWindow_t;
 		m_bMouseDown = false;
 		m_pGraphicsDC = nullptr;
-		m_hDC = NULL;
+		m_hDC = nullptr;
 		m_CaptionColor = Gdiplus::Color(9, 163, 220);
 		m_BgColor = Gdiplus::Color(240, 240, 240);
 		m_CaptionHeight = 38;
@@ -295,14 +295,14 @@ namespace KrUI
 
 	void KrWindow::ChangeBmpSize()
 	{
-		if (m_hBmp != NULL)
+		if (m_hBmp != nullptr)
 		{
 			DeleteObject(m_hBmp);
 		}
 		m_hBmp = CreateCompatibleBitmap(m_hDC, GetWidth(), GetHeight());
 		delete m_pGraphics;
 		delete m_pBmp;
-		m_pBmp = new Gdiplus::Bitmap(m_hBmp, NULL);
+		m_pBmp = new Gdiplus::Bitmap(m_hBmp, nullptr);
 		//DeleteObject(m_hDC);
 		//m_pGraphicsDC = new Graphics(::GetDC(m_hwnd));
 

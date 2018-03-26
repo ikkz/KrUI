@@ -3,7 +3,7 @@
 namespace KrUI
 {
 
-	KrUIManager* KrUIManager::m_pKrUIManager = NULL;
+	KrUIManager* KrUIManager::m_pKrUIManager = nullptr;
 
 	//把消息传递给UIManager统一处理分发
 	LRESULT CALLBACK KrUIManager::WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
@@ -14,7 +14,7 @@ namespace KrUI
 	KrUIManager* KrUIManager::GetpKrUIManager()
 	{
 
-		if (m_pKrUIManager == NULL)
+		if (m_pKrUIManager == nullptr)
 			m_pKrUIManager = new KrUIManager();
 		return m_pKrUIManager;
 	}
@@ -48,7 +48,7 @@ namespace KrUI
 		wcex.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
 
 		//SetTimer(NULL, TIMER_ID, TIMER_INTERVAL, TimerProc);
-		Gdiplus::GdiplusStartup(&m_pGdiToken, &m_gdiplusStartupInput, NULL);
+		Gdiplus::GdiplusStartup(&m_pGdiToken, &m_gdiplusStartupInput, nullptr);
 
 		if (!RegisterClassEx(&wcex))
 			return false;
@@ -132,7 +132,7 @@ namespace KrUI
 			if ((*it)->GetHWND() == hwnd)
 				return (*it);
 		}
-		return NULL;
+		return nullptr;
 	}
 
 

@@ -11,7 +11,7 @@ namespace KrUI
 		auto it = m_MsgProcMap.begin();
 		while (it!=m_MsgProcMap.end())
 		{
-			if (it->second == NULL)
+			if (it->second == nullptr)
 			{
 				it = m_MsgProcMap.erase(it);
 			}else{
@@ -27,7 +27,7 @@ namespace KrUI
 		//暂时将proc置为NULL，防止两层遍历导致的迭代器失效
 		for (auto it=m_MsgProcMap.begin();it!=m_MsgProcMap.end();++it)
 		{
-			if (it->second == proc) it->second = NULL;
+			if (it->second == proc) it->second = nullptr;
 		}
 	}
 
