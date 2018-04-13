@@ -1,3 +1,10 @@
+/*********************************************************
+Author:MilesYang
+Mail:1961464399@qq.com
+CurrentTime:2018-4-13
+FileName:KrEdit.cpp
+*********************************************************/
+
 #include "KrEdit.h"
 
 namespace KrUI
@@ -156,7 +163,8 @@ namespace KrUI
 			if (m_pKrWindow != nullptr)m_pKrWindow->SetFocusedCtrl(this);
 			m_SelectTextPosFirst = GetCursorPosByX(GET_X_LPARAM(lParam));
 			m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
-			//TODO
+			m_Time = 0;
+			m_bShowCursor = true;
 			if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 			break;
 		case KM_LBTNUP:

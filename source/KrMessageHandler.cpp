@@ -1,9 +1,21 @@
+/*********************************************************
+Author:MilesYang
+Mail:1961464399@qq.com
+CurrentTime:2018-4-13
+FileName:KrMessageHandler.cpp
+*********************************************************/
+
 #include "KrMessageHandler.h"
 namespace KrUI
 {
-	void KrMessageHandler::RegMsg(UINT msg, MSGPROC proc)
+	bool operator==(MSGFUNC& lhs, MSGFUNC& rhs)
 	{
-		m_MsgProcMap.insert(std::multimap<UINT, MSGPROC>::value_type(msg, proc));
+		return lhs.target<LRESULT(KrMessageHandler*, WPARAM, LPARAM)>() == rhs.target<LRESULT(KrMessageHandler*, WPARAM, LPARAM)>();
+	}
+
+	void KrMessageHandler::RegMsg(UINT msg, MSGFUNC proc)
+	{
+		m_MsgProcMap.insert(std::multimap<UINT, MSGFUNC>::value_type(msg, proc));
 	}
 
 	LRESULT KrMessageHandler::HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam)
@@ -22,7 +34,7 @@ namespace KrUI
 		return 0;
 	}
 
-	void KrMessageHandler::RemoveMsgProc(MSGPROC proc)
+	void KrMessageHandler::RemoveMsgProc(MSGFUNC proc)
 	{
 		//暂时将proc置为NULL，防止两层遍历导致的迭代器失效
 		for (auto it=m_MsgProcMap.begin();it!=m_MsgProcMap.end();++it)

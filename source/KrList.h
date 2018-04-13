@@ -1,3 +1,10 @@
+/*********************************************************
+Author:MilesYang
+Mail:1961464399@qq.com
+CurrentTime:2018-4-13
+FileName:KrList.h
+*********************************************************/
+
 #pragma once
 #ifndef _KR_LIST_H_
 #define _KR_LIST_H_

@@ -1,3 +1,10 @@
+/*********************************************************
+Author:MilesYang
+Mail:1961464399@qq.com
+CurrentTime:2018-4-13
+FileName:KrRadio.h
+*********************************************************/
+
 #ifndef _KR_RADIO_H_
 #define _KR_RADIO_H_
 #pragma once

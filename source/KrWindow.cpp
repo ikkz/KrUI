@@ -1,3 +1,10 @@
+/*********************************************************
+Author:MilesYang
+Mail:1961464399@qq.com
+CurrentTime:2018-4-13
+FileName:KrWindow.cpp
+*********************************************************/
+
 #include "KrCore.h"
 
 namespace KrUI
@@ -43,7 +50,7 @@ namespace KrUI
 		m_pGraphicsDC = new Gdiplus::Graphics(m_hDC);
 		SetWindowTextW(m_hwnd, m_lpName);
 		ChangeBmpSize();
-		RegMsg(WM_SIZE, reinterpret_cast<MSGPROC>(KrWindow::SizeChange));
+		RegMsg(WM_SIZE, KrWindow::SizeChange);
 		SetTimer(hwnd, reinterpret_cast<unsigned int>(hwnd), TIMER_INTERVAL, NULL);
 		//TODO
 		//Ìí¼Ó¹Ø±Õ°´Å¥

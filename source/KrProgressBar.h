@@ -1,3 +1,10 @@
+/*********************************************************
+Author:MilesYang
+Mail:1961464399@qq.com
+CurrentTime:2018-4-13
+FileName:KrProgressBar.h
+*********************************************************/
+
 #ifndef _KR_PROGRESSBAR_H
 #define _KR_PROGRESSBAR_H
 #pragma once

@@ -1,3 +1,10 @@
+/*********************************************************
+Author:MilesYang
+Mail:1961464399@qq.com
+CurrentTime:2018-4-13
+FileName:KrCore.h
+*********************************************************/
+
 #ifndef _KR_CORE_H
 #define _KR_CORE_H
 #pragma once
@@ -31,7 +38,6 @@ namespace KrUI
 {
 	class KrMessageHandler;
 	class KrUIBase;
-	typedef LRESULT(*MSGPROC) (KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 	class KrWindow;
 	static Gdiplus::GdiplusStartupInput m_gdiplusStartupInput;
 	static ULONG_PTR m_pGdiToken;

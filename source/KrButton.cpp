@@ -1,3 +1,10 @@
+/*********************************************************
+Author:MilesYang
+Mail:1961464399@qq.com
+CurrentTime:2018-4-13
+FileName:KrButton.cpp
+*********************************************************/
+
 #include "KrButton.h"
 #include "KrCore.h"
 #include "KrDefine.h"
@@ -11,8 +18,6 @@ namespace KrUI
 		m_MouseHoverColor = Gdiplus::Color(60, 195, 245);
 		m_MouseLeaveColor = Gdiplus::Color(9, 163, 220);
 		m_hCursor = nullptr;//设置鼠标进入后的样式
-// 		delete m_pFont;
-// 		m_pFont = new Gdiplus::Font(L"宋体", 16, Gdiplus::FontStyle::FontStyleRegular, Gdiplus::Unit::UnitPixel);
 	}
 
 	void KrButton::SetMouseHoverColor(Gdiplus::Color color)

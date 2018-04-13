@@ -1,3 +1,10 @@
+/*********************************************************
+Author:MilesYang
+Mail:1961464399@qq.com
+CurrentTime:2018-4-13
+FileName:KrList.cpp
+*********************************************************/
+
 #include "KrList.h"
 #include "KrCore.h"
 namespace KrUI
