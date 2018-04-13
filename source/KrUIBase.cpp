@@ -261,7 +261,7 @@ namespace KrUI
 			}
 				break;
 			case KM_LBTNUP:
-				m_bMouseDown = false;
+				//m_bMouseDown = false;
 				if (m_pKrWindow != nullptr)
 				{
 					m_pKrWindow->SetFocusedCtrl(this);

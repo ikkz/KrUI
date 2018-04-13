@@ -15,7 +15,7 @@ namespace KrUI
 		m_StringFormat.SetAlignment(Gdiplus::StringAlignmentNear);
 		m_pFocusedCtrl = nullptr;
 		m_pKrWindow = nullptr;
-		m_BorderColor = Gdiplus::Color(160,160,160);
+		m_BorderColor = Gdiplus::Color(160, 160, 160);
 	}
 	KrUIBase* KrWindow::GetFocusedCtrl()
 	{

@@ -163,9 +163,17 @@ namespace KrUI
 			m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
 			break;
 		case KM_MOUSEMOVE:
-			if (m_bMouseDown && m_bMouseIn)
+			if (m_bMouseDown&&m_bMouseIn)
 			{
 				m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam));
+				//TODO
+				if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
+			}
+			break;
+		case WM_MOUSEMOVE:
+			if (m_bMouseDown && !m_bMouseIn)
+			{
+				m_SelectTextPosSecond = GetCursorPosByX(GET_X_LPARAM(lParam) - m_rect.left > 0 ? GET_X_LPARAM(lParam) - m_rect.left : 0);
 				//TODO
 				if (m_pKrWindow != nullptr)m_pKrWindow->UpdateUI(this);
 			}
