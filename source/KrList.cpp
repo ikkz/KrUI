@@ -46,8 +46,8 @@ namespace KrUI
 		m_bMultiSelectable = bMultiSelectable;
 		//m_SelectedItems.clear();
 	}
-	std::vector<KrListItem> KrList::GetSelectedItems()
-	{
+	std::vector<KrUI::KrListItem> KrList::GetSelectedItems() const
+{
 		std::vector<KrListItem> kls;
 		for (auto& li : m_ListItems)
 		{

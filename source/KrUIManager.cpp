@@ -143,8 +143,8 @@ namespace KrUI
 	}
 
 
-	int KrUIManager::GetWindowNum()
-	{
+	int KrUIManager::GetWindowNum() const
+{
 		return m_WndVec.size();
 	}
 

@@ -35,7 +35,7 @@ namespace KrUI
 		//Î´Ñ¡ÖÐÊ±return KrListItem{ L"",0,0 }
 		void SetMultiSelectable(bool bMultiSelectable);
 		//KrListItem GetSelectedItem();
-		std::vector<KrListItem> GetSelectedItems();
+		std::vector<KrListItem> GetSelectedItems()const;
 		virtual void Update();
 		virtual void ItemChange();
 		void SelectAllItems(bool b);

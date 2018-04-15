@@ -43,13 +43,13 @@ namespace KrUI
 		KrUIBase();
 		~KrUIBase();
 		void SetType(KrUIType ut);
-		KrUIType GetType();
+		KrUIType GetType()const;
 		virtual RECT* GetRect();
 		virtual void SetRect(RECT* pRect);
-		virtual unsigned int GetX();
-		virtual unsigned int GetY();
-		virtual unsigned int GetWidth();
-		virtual unsigned int GetHeight();
+		virtual unsigned int GetX()const;
+		virtual unsigned int GetY()const;
+		virtual unsigned int GetWidth()const;
+		virtual unsigned int GetHeight()const;
 		virtual void SetX(unsigned int x);
 		virtual void SetY(unsigned int y);
 		virtual void SetXY(unsigned int x, unsigned int y);

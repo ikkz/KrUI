@@ -36,19 +36,19 @@ namespace KrUI
 	{
 		m_BorderColor = color;
 	}
-	Gdiplus::Color KrButton::GetMouseHoverColor()
+	Gdiplus::Color KrButton::GetMouseHoverColor() const
 	{
 		return m_MouseHoverColor;
 	}
-	Gdiplus::Color KrButton::GetMouseDownColor()
+	Gdiplus::Color KrButton::GetMouseDownColor() const
 	{
 		return m_MouseDownColor;
 	}
-	Gdiplus::Color KrButton::GetMouseLeaveColor()
+	Gdiplus::Color KrButton::GetMouseLeaveColor() const
 	{
 		return m_MouseLeaveColor;
 	}
-	Gdiplus::Color KrButton::GetBorderColor()
+	Gdiplus::Color KrButton::GetBorderColor() const
 	{
 		return m_BorderColor;
 	}

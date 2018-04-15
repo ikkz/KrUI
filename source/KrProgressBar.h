@@ -23,7 +23,7 @@ namespace KrUI
 	public:
 		KrProgressBar();
 		void SetForeColor(Gdiplus::Color c);
-		Gdiplus::Color GetForeColor();
+		Gdiplus::Color GetForeColor() const;
 		void SetPercentage(unsigned int Percentage);
 		unsigned int GetPercentage();
 		virtual void Update();

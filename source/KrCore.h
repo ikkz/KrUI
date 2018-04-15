@@ -57,7 +57,7 @@ namespace KrUI
 		HINSTANCE GetHINSTANCE();
 		int MessageLoop();
 		LRESULT HandleMessage(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
-		int GetWindowNum();
+		int GetWindowNum()const;
 		void DeleteWindow(KrWindow* pKrWindow);
 		KrWindow* GetpKrWindow(HWND hwnd);
 		~KrUIManager();

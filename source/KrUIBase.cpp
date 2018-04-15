@@ -14,22 +14,22 @@ namespace KrUI
 		return &m_rect;
 	}
 
-	unsigned int KrUIBase::GetX()
+	unsigned int KrUIBase::GetX() const
 	{
 		return m_rect.left;
 	}
 
-	unsigned int KrUIBase::GetY()
+	unsigned int KrUIBase::GetY() const
 	{
 		return m_rect.top;
 	}
 
-	unsigned int KrUIBase::GetWidth()
+	unsigned int KrUIBase::GetWidth() const
 	{
 		return m_rect.right - m_rect.left;
 	}
 
-	unsigned int KrUIBase::GetHeight()
+	unsigned int KrUIBase::GetHeight() const
 	{
 		return m_rect.bottom - m_rect.top;
 	}
@@ -265,7 +265,7 @@ namespace KrUI
 					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(LoadCursor(nullptr, IDC_ARROW)));
 #endif
 
-			}
+				}
 				break;
 			case KM_LBTNUP:
 				//m_bMouseDown = false;
@@ -273,24 +273,24 @@ namespace KrUI
 				{
 					m_pKrWindow->SetFocusedCtrl(this);
 				}
+			}
+			// 			for (auto p : m_MsgProcMap)
+			// 			{
+			// 				if (p.first == Message)
+			// 				{
+			// 					p.second(this, wParam, lParam);
+			// 				}
+			// 			}
 		}
-// 			for (auto p : m_MsgProcMap)
-// 			{
-// 				if (p.first == Message)
-// 				{
-// 					p.second(this, wParam, lParam);
-// 				}
-// 			}
-	}
 
 		KrMessageHandler::CallMsgProc(Message, wParam, lParam);
-}
+	}
 
 	void KrUIBase::SetType(KrUIType ut)
 	{
 		m_UIType = ut;
 	}
-	KrUIType KrUIBase::GetType()
+	KrUI::KrUIType KrUIBase::GetType() const
 	{
 		return m_UIType;
 	}

@@ -22,10 +22,10 @@ namespace KrUI
 		void SetMouseDownColor(Gdiplus::Color color);
 		void SetMouseLeaveColor(Gdiplus::Color color);
 		void SetBorderColor(Gdiplus::Color color);
-		Gdiplus::Color GetMouseHoverColor();
-		Gdiplus::Color GetMouseDownColor();
-		Gdiplus::Color GetMouseLeaveColor();
-		Gdiplus::Color GetBorderColor();
+		Gdiplus::Color GetMouseHoverColor()const;
+		Gdiplus::Color GetMouseDownColor()const;
+		Gdiplus::Color GetMouseLeaveColor()const;
+		Gdiplus::Color GetBorderColor()const;
 		virtual void DrawMouseDownBmp();
 		virtual void DrawMouseHoverBmp();
 		virtual void DrawMouseLeaveBmp();

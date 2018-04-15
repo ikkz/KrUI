@@ -21,8 +21,8 @@ namespace KrUI
 		m_ForeColor = c;
 	}
 
-	Gdiplus::Color KrProgressBar::GetForeColor()
-	{
+	Gdiplus::Color KrProgressBar::GetForeColor() const
+{
 		return m_ForeColor;
 	}
 
