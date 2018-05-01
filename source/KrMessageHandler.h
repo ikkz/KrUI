@@ -13,6 +13,8 @@ FileName:KrMessageHandler.h
 #include <windows.h>
 #include <functional>
 
+#define MSGFUNC_ARGS KrUI::KrMessageHandler* kmh, WPARAM wp, LPARAM lp
+#define MSGFUNC_HEAD(_Func) LRESULT _Func (MSGFUNC_ARGS)
 namespace KrUI
 {
 	class KrMessageHandler;
@@ -32,6 +34,28 @@ namespace KrUI
 		virtual	LRESULT HandleMessage(UINT Message, WPARAM wParam, LPARAM lParam);
 		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 	};
+
+	template<typename _Fn>
+	class MsgFuncAdapterClass
+	{
+	private:
+		_Fn m_MsgFunc;
+	public:
+		MsgFuncAdapterClass(_Fn MsgFunc)
+		{
+			m_MsgFunc = MsgFunc;
+		}
+
+		LRESULT operator()(KrMessageHandler*, WPARAM, LPARAM)
+		{
+			m_MsgFunc();
+			return 0;
+		}
+
+	};
+
+	MSGFUNC MsgFuncAdapter(std::function<void(void)> _Func);
+
 }//!KrUI
 #endif
 

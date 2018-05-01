@@ -54,4 +54,9 @@ namespace KrUI
 			}
 		}
 	}
+
+	MSGFUNC MsgFuncAdapter(std::function<void(void)> _Func)
+	{
+		return MsgFuncAdapterClass<std::function<void(void)>>(_Func);
+	}
 } // namespace KrUI

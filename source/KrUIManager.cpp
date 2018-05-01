@@ -66,7 +66,9 @@ namespace KrUI
 
 	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle)
 	{
-		return AddWindow(new KrWindow, lpWindowName, x, y, width, height, dwStyle);
+		KrWindow* pKrWindow = AddWindow(new KrWindow, lpWindowName, x, y, width, height, dwStyle);
+		pKrWindow->SetCaptionHeight(0);
+		return pKrWindow;
 	}
 
 	KrWindow* KrUIManager::AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height)
@@ -144,7 +146,7 @@ namespace KrUI
 
 
 	int KrUIManager::GetWindowNum() const
-{
+	{
 		return m_WndVec.size();
 	}
 
