@@ -1,9 +1,10 @@
 /*********************************************************
 Author:MilesYang
 Mail:1961464399@qq.com
-CurrentTime:2018-4-13
+CurrentTime:2018-5-3
 FileName:KrMessageHandler.h
 *********************************************************/
+
 
 #ifndef _KR_MESSAGEHANDLER_H
 #define _KR_MESSAGEHANDLER_H
@@ -35,23 +36,22 @@ namespace KrUI
 		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 	};
 
-	template<typename _Fn>
+
+	template<typename _Ty>
 	class MsgFuncAdapterClass
 	{
 	private:
-		_Fn m_MsgFunc;
+		std::function<_Ty> m_MsgFunc;
 	public:
-		MsgFuncAdapterClass(_Fn MsgFunc)
+		MsgFuncAdapterClass(std::function<_Ty> _Func)
 		{
-			m_MsgFunc = MsgFunc;
+			m_MsgFunc = _Func;
 		}
-
 		LRESULT operator()(KrMessageHandler*, WPARAM, LPARAM)
 		{
 			m_MsgFunc();
 			return 0;
 		}
-
 	};
 
 	MSGFUNC MsgFuncAdapter(std::function<void(void)> _Func);

@@ -109,6 +109,10 @@ namespace KrUI
 		delete m_pBmp;
 		m_pBmp = new Gdiplus::Bitmap(m_hBmp, nullptr);
 		m_pGraphics = new Gdiplus::Graphics(m_pBmp);
+		if (m_pKrWindow != nullptr)
+		{
+			m_pKrWindow->UpdateUI(nullptr);
+		}
 		//m_pGraphics->SetTextRenderingHint(Gdiplus::TextRenderingHint::TextRenderingHintAntiAlias);
 		//this->Update();
 	}
@@ -265,7 +269,7 @@ namespace KrUI
 					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(LoadCursor(nullptr, IDC_ARROW)));
 #endif
 
-				}
+			}
 				break;
 			case KM_LBTNUP:
 				//m_bMouseDown = false;
@@ -273,7 +277,7 @@ namespace KrUI
 				{
 					m_pKrWindow->SetFocusedCtrl(this);
 				}
-			}
+		}
 			// 			for (auto p : m_MsgProcMap)
 			// 			{
 			// 				if (p.first == Message)
@@ -281,10 +285,10 @@ namespace KrUI
 			// 					p.second(this, wParam, lParam);
 			// 				}
 			// 			}
-		}
+	}
 
 		KrMessageHandler::CallMsgProc(Message, wParam, lParam);
-	}
+}
 
 	void KrUIBase::SetType(KrUIType ut)
 	{

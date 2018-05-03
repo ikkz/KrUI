@@ -35,23 +35,40 @@ namespace KrUI
 		virtual void CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam);
 	};
 
-	template<typename _Fn>
+	// 	template<typename _Fn>
+	// 	class MsgFuncAdapterClass
+	// 	{
+	// 	private:
+	// 		_Fn m_MsgFunc;
+	// 	public:
+	// 		MsgFuncAdapterClass(_Fn MsgFunc)
+	// 		{
+	// 			m_MsgFunc = MsgFunc;
+	// 		}
+	// 
+	// 		LRESULT operator()(KrMessageHandler*, WPARAM, LPARAM)
+	// 		{
+	// 			m_MsgFunc();
+	// 			return 0;
+	// 		}
+	// 
+	// 	};
+
+	template<typename _Ty>
 	class MsgFuncAdapterClass
 	{
 	private:
-		_Fn m_MsgFunc;
+		std::function<_Ty> m_MsgFunc;
 	public:
-		MsgFuncAdapterClass(_Fn MsgFunc)
+		MsgFuncAdapterClass(std::function<_Ty> _Func)
 		{
-			m_MsgFunc = MsgFunc;
+			m_MsgFunc = _Func;
 		}
-
 		LRESULT operator()(KrMessageHandler*, WPARAM, LPARAM)
 		{
 			m_MsgFunc();
 			return 0;
 		}
-
 	};
 
 	MSGFUNC MsgFuncAdapter(std::function<void(void)> _Func);

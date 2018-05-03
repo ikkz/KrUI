@@ -1,9 +1,10 @@
 /*********************************************************
 Author:MilesYang
 Mail:1961464399@qq.com
-CurrentTime:2018-4-13
+CurrentTime:2018-5-3
 FileName:KrMessageHandler.cpp
 *********************************************************/
+
 
 #include "KrMessageHandler.h"
 namespace KrUI
@@ -57,6 +58,7 @@ namespace KrUI
 
 	MSGFUNC MsgFuncAdapter(std::function<void(void)> _Func)
 	{
-		return MsgFuncAdapterClass<std::function<void(void)>>(_Func);
+		return MsgFuncAdapterClass<void(void)>(_Func);
 	}
+
 } // namespace KrUI

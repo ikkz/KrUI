@@ -2,7 +2,6 @@
 *.obj
 *.pch
 *.tlog
-*.pdb
 *.log
 *.filters
 *.vcxproj
@@ -37,3 +36,9 @@ source/KrCheckBox.cpp
 source/KrCheckBox.cpp
 source/KrCore.h
 source/KrList.cpp
+Debug/vc141.pdb
+KrUI1.aps
+Release/KrUI.pdb
+x64/Debug/vc140.pdb
+x64/Release/vc140.pdb
+Debug/KrUI.pdb
