@@ -280,6 +280,9 @@ namespace KrUI
 			//TODO
 			UpdateUI();
 			break;
+		case WM_ERASEBKGND:
+			return 1;
+			break;
 		}
 		//调用窗口消息处理函数
 		CallMsgProc(Message, wParam, lParam);
