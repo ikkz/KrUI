@@ -46,7 +46,6 @@ namespace KrUI
 
 	void KrMessageHandler::CallMsgProc(UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-
 		for (auto p : m_MsgProcMap)
 		{
 			if (p.first == Message)

@@ -284,8 +284,6 @@ namespace KrUI
 			return 1;
 			break;
 		}
-		//调用窗口消息处理函数
-		CallMsgProc(Message, wParam, lParam);
 		//传递消息给控件
 		for (auto p : m_UIVec)
 		{
