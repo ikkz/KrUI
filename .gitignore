@@ -11,7 +11,6 @@ targetver.h
 stdafx.h
 stdafx.cpp
 KrUI.cpp
-KrUI.h
 *.res
 KrUI.ico
 KrUI.rc
