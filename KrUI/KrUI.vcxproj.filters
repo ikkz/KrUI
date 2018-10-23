@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{6c510da0-7e6d-4b1a-b825-81356b04f053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{8cef5fdf-99ee-47d3-adb3-f5a487097617}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\KrButton.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KrCheckBox.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KrCore.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KrDefine.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KrEdit.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KrLabel.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KrList.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KrMessageHandler.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KrProgressBar.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KrRadio.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KrTools.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KrUI.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KrUIBase.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\KrButton.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\KrCheckBox.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\KrEdit.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\KrLabel.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\KrList.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\KrMessageHandler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\KrProgressBar.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\KrRadio.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\KrTools.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\KrUIBase.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\KrUIManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\KrWindow.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sample.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

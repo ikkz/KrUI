@@ -1,10 +1,5 @@
-#include "KrUI/KrUI.h"
+#include "KrUI.h"
 //选择静态库版本
-#ifdef _DEBUG
-#pragma comment(lib,"KrUI/Debug/KrUI.lib")
-#else
-#pragma comment(lib,"KrUI/Release/KrUI.lib")
-#endif
 
 //一些控件的指针声明，也可以使用面向对象的方式组织
 KrUI::KrUIManager* pUM = KrUI::KrUIManager::GetpKrUIManager();
