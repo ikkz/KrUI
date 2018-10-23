@@ -41,7 +41,7 @@ namespace KrUI
 	public:
 		friend class KrWindow;
 		KrUIBase();
-		~KrUIBase();
+		virtual ~KrUIBase();
 		void SetType(KrUIType ut);
 		KrUIType GetType()const;
 		virtual RECT* GetRect();

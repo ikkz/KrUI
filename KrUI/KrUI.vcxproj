@@ -130,6 +130,7 @@
     <ClInclude Include="..\include\KrMessageHandler.h" />
     <ClInclude Include="..\include\KrProgressBar.h" />
     <ClInclude Include="..\include\KrRadio.h" />
+    <ClInclude Include="..\include\KrScrollBar.h" />
     <ClInclude Include="..\include\KrTools.h" />
     <ClInclude Include="..\include\KrUI.h" />
     <ClInclude Include="..\include\KrUIBase.h" />
@@ -144,6 +145,7 @@
     <ClCompile Include="..\src\KrMessageHandler.cpp" />
     <ClCompile Include="..\src\KrProgressBar.cpp" />
     <ClCompile Include="..\src\KrRadio.cpp" />
+    <ClCompile Include="..\src\KrScrollBar.cpp" />
     <ClCompile Include="..\src\KrTools.cpp" />
     <ClCompile Include="..\src\KrUIBase.cpp" />
     <ClCompile Include="..\src\KrUIManager.cpp" />

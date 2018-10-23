@@ -60,6 +60,9 @@
     <ClInclude Include="..\include\KrUIBase.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\KrScrollBar.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\KrButton.cpp">
@@ -100,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="..\sample.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\KrScrollBar.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -17,7 +17,7 @@ namespace KrUI
 	{
 	public:
 		KrButton();
-		~KrButton();
+		virtual ~KrButton();
 		void SetMouseHoverColor(Gdiplus::Color color);
 		void SetMouseDownColor(Gdiplus::Color color);
 		void SetMouseLeaveColor(Gdiplus::Color color);
@@ -51,7 +51,7 @@ namespace KrUI
  		virtual void DrawContent();
 		UINT GetMargin();
 		KrCloseButton();
-		~KrCloseButton();
+		virtual ~KrCloseButton();
 		static LRESULT DestroyKrWindow(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
 	protected:
 		UINT m_Margin;

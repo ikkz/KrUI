@@ -32,15 +32,11 @@ namespace KrUI
 	{
 		m_pFocusedCtrl = pui;
 	}
-	LPCWSTR KrWindow::GetWindowName()
-	{
-		return m_lpName;
-	}
 
-	void KrWindow::SetWindowName(LPCWSTR lpWindowName)
+	void KrWindow::SetName(const std::wstring& name)
 	{
-		if (IsCreated())SetWindowTextW(m_hwnd, lpWindowName);
-		m_lpName = lpWindowName;
+		if (IsCreated())SetWindowTextW(m_hwnd, name.c_str());
+		m_strName = name;
 	}
 
 	void KrWindow::SetHWND(HWND hwnd)
@@ -48,7 +44,7 @@ namespace KrUI
 		m_hwnd = hwnd;
 		m_hDC = ::GetDC(hwnd);
 		m_pGraphicsDC = new Gdiplus::Graphics(m_hDC);
-		SetWindowTextW(m_hwnd, m_lpName);
+		SetName(m_strName);
 		ChangeBmpSize();
 		RegMsg(WM_SIZE, KrWindow::SizeChange);
 		SetTimer(hwnd, reinterpret_cast<unsigned int>(hwnd), TIMER_INTERVAL, NULL);
@@ -348,7 +344,7 @@ namespace KrUI
 			if (m_CaptionHeight > 0)
 			{
 				m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_CaptionColor), 0, 0, m_pBmp->GetWidth(), m_CaptionHeight);
-				m_pGraphics->DrawString((WCHAR*)m_lpName, -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(m_pBmp->GetWidth() - 10), static_cast<Gdiplus::REAL>(m_CaptionHeight)), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
+				m_pGraphics->DrawString(m_strName.c_str(), -1, m_pFont, Gdiplus::RectF(static_cast<Gdiplus::REAL>(10), static_cast<Gdiplus::REAL>(0), static_cast<Gdiplus::REAL>(m_pBmp->GetWidth() - 10), static_cast<Gdiplus::REAL>(m_CaptionHeight)), &m_StringFormat, &Gdiplus::SolidBrush(m_FontColor));
 			}
 			this->Draw();
 			for (auto p : m_UIVec)

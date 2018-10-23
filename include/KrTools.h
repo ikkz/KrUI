@@ -5,6 +5,16 @@
 #include <string>
 #include <windows.h>
 #include <codecvt>
+
+#ifdef _DEBUG
+#define KrDebugOut(format, ...)  std::wprintf(format, __VA_ARGS__)
+#define KrLastError() KrDebugOut(L"in function: <%s>, line:<%d> GetLastError returned <%d>\n", \
+	KrUI::StringToWideString(__FUNCTION__).c_str(), __LINE__, GetLastError())
+#else
+#define KrDebugOut(format, ...)
+#define KrLastError()
+#endif
+
 namespace KrUI
 {
 

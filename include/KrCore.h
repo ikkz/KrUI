@@ -49,10 +49,10 @@ namespace KrUI
 		static LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
 		static void CALLBACK TimerProc(HWND hWnd, UINT nMsg, UINT_PTR nTimerid, DWORD dwTime);
 		bool Initialize(HINSTANCE hInstance);
-		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height);
-		KrWindow* AddWindow(KrWindow* pKrWindow, LPCWSTR lpWindowName, int x, int y, int width, int height);
-		KrWindow* AddWindow(LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle);
-		KrWindow* AddWindow(KrWindow* pKrWindow, LPCWSTR lpWindowName, int x, int y, int width, int height, DWORD dwStyle);
+		KrWindow* AddWindow(const std::wstring& name, int x, int y, int width, int height);
+		KrWindow* AddWindow(KrWindow* pKrWindow, const std::wstring& name, int x, int y, int width, int height);
+		KrWindow* AddWindow(const std::wstring& name, int x, int y, int width, int height, DWORD dwStyle);
+		KrWindow* AddWindow(KrWindow* pKrWindow, const std::wstring& name, int x, int y, int width, int height, DWORD dwStyle);
 		LPCWSTR GetWindowClassName();
 		HINSTANCE GetHINSTANCE();
 		int MessageLoop();
@@ -60,7 +60,7 @@ namespace KrUI
 		int GetWindowNum()const;
 		void DeleteWindow(KrWindow* pKrWindow);
 		KrWindow* GetpKrWindow(HWND hwnd);
-		~KrUIManager();
+		virtual ~KrUIManager();
 	private:
 		KrUIManager() { m_lpWindowClassName = L"KrUI"; }
 		static KrUIManager* m_pKrUIManager;
@@ -77,7 +77,6 @@ namespace KrUI
 	class KrWindow :public KrUI::KrUIBase
 	{
 	private:
-		LPCWSTR m_lpName;
 		HWND m_hwnd;
 		DWORD m_dwStyle;
 		POINT m_ptMouse;
@@ -100,10 +99,9 @@ namespace KrUI
 
 		KrWindow();
 		static LRESULT SizeChange(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam);
-		LPCWSTR GetWindowName();
-		void SetWindowName(LPCWSTR lpWindowName);
 		void SetHWND(HWND hwnd);
 		HWND GetHWND();
+		virtual void SetName(const std::wstring& name);
 		void SetStyle(DWORD dwStyle);
 		DWORD GetStyle();
 
