@@ -1,13 +1,6 @@
-/*********************************************************
-Author:MilesYang
-Mail:1961464399@qq.com
-CurrentTime:2018-4-13
-FileName:KrButton.h
-*********************************************************/
-
 #ifndef _KR_BUTTON_H
 #define  _KR_BUTTON_H
-#pragma once
+
 #include "KrUIBase.h"
 #include "KrMessageHandler.h"
 namespace KrUI

@@ -1,13 +1,6 @@
-/*********************************************************
-Author:MilesYang
-Mail:1961464399@qq.com
-CurrentTime:2018-4-13
-FileName:KrCore.h
-*********************************************************/
-
 #ifndef _KR_CORE_H
 #define _KR_CORE_H
-#pragma once
+
 
 #define _CRT_SECURE_NO_WARNINGS
 #define TIMER_ID 1

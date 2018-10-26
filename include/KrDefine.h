@@ -1,10 +1,3 @@
-/*********************************************************
-Author:MilesYang
-Mail:1961464399@qq.com
-CurrentTime:2018-4-13
-FileName:KrDefine.h
-*********************************************************/
-
 #define OUTPUTLASTERROR(x) cout<<#x<<": "<<GetLastError()<<endl
 
 #define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))

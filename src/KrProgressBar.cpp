@@ -1,10 +1,3 @@
-/*********************************************************
-Author:MilesYang
-Mail:1961464399@qq.com
-CurrentTime:2018-4-13
-FileName:KrProgressBar.cpp
-*********************************************************/
-
 #include "KrProgressBar.h"
 #include "KrCore.h"
 namespace KrUI

@@ -1,14 +1,7 @@
-/*********************************************************
-Author:MilesYang
-Mail:1961464399@qq.com
-CurrentTime:2018-4-13
-FileName:KrUIBase.h
-*********************************************************/
-
 #ifndef _KR_UIBASE_H
 #define _KR_UIBASE_H
 
-#pragma once
+
 #include "KrMessageHandler.h"
 #include "KrDefine.h"
 #include <windows.h>

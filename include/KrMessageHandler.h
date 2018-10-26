@@ -1,21 +1,11 @@
-/*********************************************************
-Author:MilesYang
-Mail:1961464399@qq.com
-CurrentTime:2018-5-3
-FileName:KrMessageHandler.h
-*********************************************************/
-
-
 #ifndef _KR_MESSAGEHANDLER_H
 #define _KR_MESSAGEHANDLER_H
-#pragma once
 
 #include <map>
 #include <windows.h>
 #include <functional>
+#include "KrDefine.h"
 
-#define MSGFUNC_ARGS KrUI::KrMessageHandler* kmh, WPARAM wp, LPARAM lp
-#define MSGFUNC_HEAD(_Func) LRESULT _Func (MSGFUNC_ARGS)
 namespace KrUI
 {
 	class KrMessageHandler;

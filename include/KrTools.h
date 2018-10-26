@@ -1,4 +1,4 @@
-#pragma once
+
 #ifndef _KR_EDIT_H_
 #define _KR_EDIT_H_
 #include "KrCore.h"
