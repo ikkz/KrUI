@@ -36,6 +36,7 @@ namespace KrUI
 		{
 			m_Value = value;
 			this->Update();
+			return true;
 		}
 		else
 			return false;

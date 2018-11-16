@@ -6,6 +6,10 @@
 #include <functional>
 #include "KrDefine.h"
 
+#define MSGFUNC_ARGS KrUI::KrMessageHandler* kmh, WPARAM wp, LPARAM lp	
+#define MSGFUNC_HEAD(_Func) LRESULT _Func (MSGFUNC_ARGS)
+
+
 namespace KrUI
 {
 	class KrMessageHandler;
