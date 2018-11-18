@@ -1,8 +1,7 @@
 # KrUI
 
-- 采用DirectUI思想，所有控件均无句柄
-- 使用GDI+绘制
-- 实现了窗口和控件的双缓冲绘制
+[![Build Status](https://travis-ci.com/cildhdi/KrUI.svg?branch=master)](https://travis-ci.com/cildhdi/KrUI)
+
 ## 环境：
 - 使用vs2017
 - 生成的exe请右键属性在兼容性中禁止高DPI自动缩放
