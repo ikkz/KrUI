@@ -105,14 +105,14 @@ namespace KrUI
 	}
 
 
-	int  KrUIManager::MessageLoop()
+	int KrUIManager::MessageLoop()
 	{
 		while (GetMessage(&m_msg, NULL, 0, 0) > 0)
 		{
 			TranslateMessage(&m_msg);
 			DispatchMessage(&m_msg);
 		}
-		return m_msg.wParam;
+		return static_cast<int>(m_msg.wParam);
 	}
 
 
@@ -141,7 +141,7 @@ namespace KrUI
 
 	int KrUIManager::GetWindowNum() const
 	{
-		return m_WndVec.size();
+		return static_cast<int>(m_WndVec.size());
 	}
 
 

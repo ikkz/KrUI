@@ -235,18 +235,18 @@ namespace KrUI
 		// 0 1 2
 		//转换为文本矩形的横坐标
 		if (x < (m_Margin + GetXByCursorPos(1)) / 2)return 0;
-		if (x >= GetXByCursorPos(m_strText.size()))return m_strText.size();
+		if (x >= GetXByCursorPos(static_cast<unsigned int>(m_strText.size())))return static_cast<unsigned int>(m_strText.size());
 		for (unsigned int i = 0; i <= m_strText.size(); i++)
 		{
 			if (x >= ((GetXByCursorPos(i - 1) + GetXByCursorPos(i)) / 2) && x <= ((GetXByCursorPos(i) + GetXByCursorPos(i + 1)) / 2)) return i;
 		}
-		return m_strText.size();
+		return static_cast<unsigned int>(m_strText.size());
 	}
 
 	unsigned int KrEdit::GetXByCursorPos(unsigned int CursorPos)
 	{
 		if (CursorPos <= 0) return m_Margin;
-		if (CursorPos > m_strText.size()) CursorPos = m_strText.size();
+		if (CursorPos > m_strText.size()) CursorPos = static_cast<unsigned int>(m_strText.size());
 		return m_Margin + m_StringLength[CursorPos] + 2;
 	}
 	/*

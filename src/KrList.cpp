@@ -282,7 +282,7 @@ namespace KrUI
 				current_total += m_ListItems[i].m_Height;
 			}
 			//如果未找到最后一项即从开始位置画到末尾
-			if (end_item = -1)end_item = m_ListItems.size() - 1;
+			if (end_item = -1)end_item = static_cast<int>(m_ListItems.size() - 1);
 			for (int i = start_item; i <= end_item; i++)
 			{
 				this->DrawItem(i, start_position);

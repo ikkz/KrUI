@@ -1,4 +1,4 @@
-#include "include/KrUI.h"
+#include "KrUI.h"
 
 //一些控件的指针声明，也可以使用面向对象的方式组织
 KrUI::KrUIManager* pUM = KrUI::KrUIManager::GetpKrUIManager();
