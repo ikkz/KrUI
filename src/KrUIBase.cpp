@@ -200,6 +200,7 @@ namespace KrUI
 		}
 		return KrMessageHandler::HandleMessage(Message, wParam, lParam);
 	}
+
 	KrUIBase::KrUIBase()
 	{
 		m_bMouseIn = false;
@@ -246,24 +247,27 @@ namespace KrUI
 			case KM_MOUSEENTER:
 				if (m_pKrWindow != nullptr&&m_hCursor != nullptr)
 				{
-
+					SetClassLongPtr(m_pKrWindow->GetHWND(), GCLP_HCURSOR, reinterpret_cast
 #ifdef _WIN64
-					SetClassLong(m_pKrWindow->GetHWND(), (-12), reinterpret_cast<LONG>(m_hCursor));
+						<LONG_PTR>
 #else
-					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(m_hCursor));
-#endif
+						<LONG>
+#endif // WIN64
+						(m_hCursor)
+					);
 				}
 				break;
 			case KM_MOUSELEAVE:
 				if (m_pKrWindow != nullptr&&m_hCursor != nullptr)
 				{
+					SetClassLongPtr(m_pKrWindow->GetHWND(), GCLP_HCURSOR, reinterpret_cast
 #ifdef _WIN64
-					SetClassLong(m_pKrWindow->GetHWND(), (-12), reinterpret_cast<LONG>(LoadCursor(nullptr, IDC_ARROW)));
+						<LONG_PTR>
 #else
-					SetClassLong(m_pKrWindow->GetHWND(), GCL_HCURSOR, reinterpret_cast<LONG>(LoadCursor(nullptr, IDC_ARROW)));
-#endif
-
-			}
+						<LONG>
+#endif // WIN64
+						(LoadCursor(nullptr, IDC_ARROW)));
+				}
 				break;
 			case KM_LBTNUP:
 				//m_bMouseDown = false;
@@ -271,7 +275,7 @@ namespace KrUI
 				{
 					m_pKrWindow->SetFocusedCtrl(this);
 				}
-		}
+			}
 			// 			for (auto p : m_MsgProcMap)
 			// 			{
 			// 				if (p.first == Message)
@@ -279,10 +283,10 @@ namespace KrUI
 			// 					p.second(this, wParam, lParam);
 			// 				}
 			// 			}
-	}
+		}
 
 		KrMessageHandler::CallMsgProc(Message, wParam, lParam);
-}
+	}
 
 	void KrUIBase::SetType(KrUIType ut)
 	{

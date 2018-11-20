@@ -26,7 +26,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	//³õÊ¼»¯
 	if (!pUM->Initialize(hInstance)) return 0;
-	pWnd = pUM->AddWindow(L"kfldsjf", 100, 100, 700, 700, WS_OVERLAPPEDWINDOW);
+	pWnd = pUM->AddWindow(std::wstring(L"kfldsjf"), 100, 100, 700, 700, WS_OVERLAPPEDWINDOW);
 	pBtn = pWnd->AddButton(L"Button", 100, 50, 150, 35);
 	pBtn->RegMsg(KM_CLICK, click);
 	pBtn->SetMouseLeaveColor(Gdiplus::Color::Gray);
