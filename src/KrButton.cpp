@@ -25,26 +25,22 @@ namespace KrUI
 	{
 		m_MouseLeaveColor = color;
 	}
-	void KrButton::SetBorderColor(Gdiplus::Color color)
-	{
-		m_BorderColor = color;
-	}
+
 	Gdiplus::Color KrButton::GetMouseHoverColor() const
 	{
 		return m_MouseHoverColor;
 	}
+
 	Gdiplus::Color KrButton::GetMouseDownColor() const
 	{
 		return m_MouseDownColor;
 	}
+
 	Gdiplus::Color KrButton::GetMouseLeaveColor() const
 	{
 		return m_MouseLeaveColor;
 	}
-	Gdiplus::Color KrButton::GetBorderColor() const
-	{
-		return m_BorderColor;
-	}
+
 	void KrButton::Update()
 	{
 		if (m_bMouseIn && (!m_bMouseDown))
@@ -62,6 +58,7 @@ namespace KrUI
 			this->DrawMouseLeaveBmp();
 			this->DrawContent();
 		}
+		m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, m_BorderWidth), 0, 0, GetWidth() - static_cast<INT>(m_BorderWidth), GetHeight() - static_cast<INT>(m_BorderWidth));
 		KrUIBase::Update();
 	}
 

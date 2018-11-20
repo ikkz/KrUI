@@ -28,8 +28,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (!pUM->Initialize(hInstance)) return 0;
 	pWnd = pUM->AddWindow(L"kfldsjf", 100, 100, 700, 700, WS_OVERLAPPEDWINDOW);
 	pBtn = pWnd->AddButton(L"Button", 100, 50, 150, 35);
-	pBtn->RegMsg(KM_CLICK, click);//´«Èëº¯Êý
-
+	pBtn->RegMsg(KM_CLICK, click);
+	pBtn->SetMouseLeaveColor(Gdiplus::Color::Gray);
+	pBtn->SetBorderColor(Gdiplus::Color::Black);
+	pBtn->SetBorderWidth(2.0);
 	pBtn1 = pWnd->AddButton(L"Button1", 300, 50, 150, 35);
 	pBtn1->RegMsg(KM_CLICK, [](MSGFUNC_ARGS)-> LRESULT
 	{

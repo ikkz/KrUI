@@ -348,7 +348,7 @@ namespace KrUI
 					p->Update();
 				}
 			}
-			if (m_CaptionHeight > 0)m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, 1), 0, 0, GetWidth() - 1, GetHeight() - 1);
+			if (m_CaptionHeight > 0)m_pGraphics->DrawRectangle(&Gdiplus::Pen(m_BorderColor, m_BorderWidth), 0, 0, GetWidth() - static_cast<INT>(m_BorderWidth), GetHeight() - static_cast<INT>(m_BorderWidth));
 			m_pGraphicsDC->DrawImage(m_pBmp, 0, 0, GetWidth(), GetHeight());
 		}
 	}

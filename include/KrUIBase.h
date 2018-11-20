@@ -27,6 +27,7 @@ namespace KrUI
 		Gdiplus::Font* m_pFont;
 		Gdiplus::Color m_FontColor;
 		Gdiplus::Color m_BorderColor;
+		Gdiplus::REAL m_BorderWidth;
 		Gdiplus::Color m_BgColor;
 		bool m_bMouseIn;
 		bool m_bMouseDown;
@@ -59,6 +60,10 @@ namespace KrUI
 		Gdiplus::Color GetFontColor();
 		Gdiplus::Color GetBgColor();
 		void SetBgColor(Gdiplus::Color c);
+		void SetBorderColor(Gdiplus::Color color);
+		Gdiplus::Color GetBorderColor() const;
+		void SetBorderWidth(Gdiplus::REAL width);
+		Gdiplus::REAL GetBorderWidth();
 		virtual void Update();
 		virtual void ChangeBmpSize();
 		Gdiplus::Graphics* GetBmpGraphics();

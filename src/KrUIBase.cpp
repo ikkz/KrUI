@@ -213,6 +213,7 @@ namespace KrUI
 		m_pFont = new Gdiplus::Font(L"Î¢ÈíÑÅºÚ", 16, Gdiplus::FontStyle::FontStyleRegular, Gdiplus::Unit::UnitPixel);
 		m_FontColor = Gdiplus::Color(255, 255, 255);
 		m_BorderColor = Gdiplus::Color(24, 132, 218);
+		m_BorderWidth = 1.0;
 		m_BgColor = Gdiplus::Color::White;
 		m_hCursor = LoadCursor(nullptr, IDC_ARROW);
 	}
@@ -325,6 +326,27 @@ namespace KrUI
 	{
 		m_BgColor = c;
 	}
+
+	void KrUIBase::SetBorderColor(Gdiplus::Color color)
+	{
+		m_BorderColor = color;
+	}
+
+	Gdiplus::Color KrUIBase::GetBorderColor() const
+	{
+		return m_BorderColor;
+	}
+
+	void KrUIBase::SetBorderWidth(Gdiplus::REAL width)
+	{
+		m_BorderWidth = width;
+	}
+
+	Gdiplus::REAL KrUIBase::GetBorderWidth()
+	{
+		return m_BorderWidth;
+	}
+
 	void KrUIBase::Update()
 	{
 		m_pKrWindow->GetBmpGraphics()->DrawImage(m_pBmp, static_cast<int>(GetX()), GetY(), GetWidth(), GetHeight());
