@@ -14,21 +14,16 @@ namespace KrUI
 			Horizontal, Vertical
 		};
 	private:
-		unsigned int m_Length = 10;
-		int m_MinValue = 0;
-		int m_MaxValue = 0;
-		int m_Value = 0;
 		unsigned int m_MouseDownPos;
 		Direction m_Direction = Direction::Horizontal;
+		double m_Percentage = 0.0;
+		unsigned int m_SliderLength = 10;
+		Gdiplus::Color m_SliderColor;
 	public:
-		bool SetMinValue(int value);
-		bool SetMaxValue(int value);
-		bool SetValue(int value);
-		int GetMinValue() const;
-		int GetMaxValue() const;
-		int GetValue() const;
-		void SetLength(unsigned int length);
-		unsigned int GetLength() const;
+		void SetPercentage(double percent);
+		double GetPercentage() const;
+		void SetMovableLength(unsigned int length);
+		unsigned int GetMovableLength() const;
 		KrScrollBar::Direction GetDirection() const;
 		void SetDirection(Direction direction);
 

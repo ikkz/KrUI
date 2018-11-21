@@ -1,74 +1,32 @@
 #include "KrScrollBar.h"
+#include <iostream>
 
 namespace KrUI
 {
-	bool KrScrollBar::SetMinValue(int value)
+
+	void KrScrollBar::SetPercentage(double percent)
 	{
-		if (value < m_MaxValue)
-		{
-			m_MinValue = value;
-			this->Update();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		if (percent < 0.0)percent = 0;
+		if (percent > 1.0) percent = 1;
+		m_Percentage = percent;
+		this->Update();
 	}
 
-	bool KrScrollBar::SetMaxValue(int value)
+	double KrScrollBar::GetPercentage() const
 	{
-		if (value > m_MinValue)
-		{
-			m_MaxValue = value;
-			this->Update();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return m_Percentage;
 	}
 
-	bool KrScrollBar::SetValue(int value)
+	void KrScrollBar::SetMovableLength(unsigned int length)
 	{
-		if (value >= m_MinValue && value <= m_MaxValue)
-		{
-			m_Value = value;
-			this->Update();
-			return true;
-		}
-		else
-			return false;
+		length = length > (m_Direction == Horizontal ? GetWidth() : GetHeight()) ? (m_Direction == Horizontal ? GetWidth() : GetHeight()) : length;
+		m_SliderLength = length;
+		this->Update();
 	}
 
-	int KrScrollBar::GetMinValue() const
+	unsigned int KrScrollBar::GetMovableLength() const
 	{
-		return m_MinValue;
-	}
-
-	int KrScrollBar::GetMaxValue() const
-	{
-		return m_MaxValue;
-	}
-
-	int KrScrollBar::GetValue() const
-	{
-		return m_Value;
-	}
-
-	void KrScrollBar::SetLength(unsigned int length)
-	{
-		if (length > 0 && length != m_Length)
-		{
-			m_Length = length;
-			this->Update();
-		}
-	}
-
-	unsigned int KrScrollBar::GetLength() const
-	{
-		return m_Length;
+		return m_SliderLength;
 	}
 
 	KrScrollBar::Direction KrScrollBar::GetDirection() const
@@ -85,7 +43,18 @@ namespace KrUI
 
 	void KrScrollBar::Update()
 	{
-
+		m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_BgColor), 0, 0, GetWidth(), GetHeight());
+		switch (m_Direction)
+		{
+		case KrUI::KrScrollBar::Horizontal:
+			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_SliderColor), static_cast<INT>((GetWidth() - m_SliderLength) * m_Percentage), 0, m_SliderLength, GetHeight());
+			break;
+		case KrUI::KrScrollBar::Vertical:
+			m_pGraphics->FillRectangle(&Gdiplus::SolidBrush(m_SliderColor), 0, static_cast<INT>((GetHeight() - m_SliderLength) * m_Percentage), GetWidth(), m_SliderLength);
+			break;
+		default:
+			break;
+		}
 		KrUIBase::Update();
 	}
 
@@ -93,8 +62,27 @@ namespace KrUI
 	{
 		switch (Message)
 		{
-		case KM_LBTNDOWN:
-
+		case WM_LBUTTONDOWN:
+			if (m_bMouseIn)
+			{
+				m_MouseDownPos = m_Direction == Horizontal ? GET_X_LPARAM(lParam) : GET_Y_LPARAM(lParam);
+				std::cout << "mouse down.\n";
+			}
+			break;
+		case WM_MOUSEMOVE:
+			if (m_bMouseDown)
+			{
+				std::cout << "mouse move.\n";
+				if (m_Direction == Horizontal)
+				{
+					SetPercentage(GetPercentage() + (GET_X_LPARAM(lParam) - static_cast<int>(m_MouseDownPos)) / static_cast<double>(GetWidth() - m_SliderLength));
+				}
+				else
+				{
+					SetPercentage(GetPercentage() + (GET_Y_LPARAM(lParam) - static_cast<int>(m_MouseDownPos)) / static_cast<double>(GetHeight() - m_SliderLength));
+				}
+			}
+			break;
 		default:
 			break;
 		}

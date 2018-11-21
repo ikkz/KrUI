@@ -26,6 +26,7 @@
 #include "KrRadio.h"
 #include "KrCheckBox.h"
 #include "KrTools.h"
+#include "KrScrollBar.h"
 
 namespace KrUI
 {
@@ -123,6 +124,7 @@ namespace KrUI
 		KrRadio* AddRadio(LPCWSTR lpName, int x, int y, int width, int height);
 		KrCheckBox* AddCheckBox(LPCWSTR lpName, int x, int y, int width, int height);
 		KrProgressBar* AddProgressBar(LPCWSTR lpName, int x, int y, int width, int height);
+		KrScrollBar* AddScrollBar(LPCWSTR lpName, int x, int y, int width, int height);
 		void RemoveControl(KrUIBase* pui);
 		void SetCaptionHeight(unsigned int ch);
 		unsigned int GetCaptionHeight();

@@ -11,6 +11,7 @@ KrUI::KrEdit* pEdit = nullptr;
 KrUI::KrRadio* pRadio = nullptr;
 KrUI::KrCheckBox* pCheckBox = nullptr;
 KrUI::KrProgressBar* pProgressBar = nullptr;
+KrUI::KrScrollBar* pScrollBar = nullptr;
 
 //点击事件响应函数
 MSGFUNC_HEAD(click)//展开即 LRESULT click (KrUI::KrMessageHandler* kmh,WPARAM wp,LPARAM lp)
@@ -26,12 +27,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	//初始化
 	if (!pUM->Initialize(hInstance)) return 0;
-	pWnd = pUM->AddWindow(std::wstring(L"kfldsjf"), 100, 100, 700, 700, WS_OVERLAPPEDWINDOW);
+	pWnd = pUM->AddWindow(std::wstring(L"kfldsjf"), 100, 100, 700, 700);
 	pBtn = pWnd->AddButton(L"Button", 100, 50, 150, 35);
 	pBtn->RegMsg(KM_CLICK, click);
 	pBtn->SetMouseLeaveColor(Gdiplus::Color::Gray);
 	pBtn->SetBorderColor(Gdiplus::Color::Black);
-	pBtn->SetBorderWidth(2.0);
+	pBtn->SetBorderWidth(0.5);
 	pBtn1 = pWnd->AddButton(L"Button1", 300, 50, 150, 35);
 	pBtn1->RegMsg(KM_CLICK, [](MSGFUNC_ARGS)-> LRESULT
 	{
@@ -47,7 +48,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//只要是callable的对象，比如重载了operator()的struct/class，均可以作为参数传入
 
 	pEdit = pWnd->AddEdit(L"单行编辑", 100, 100, 200, 35);
-
+	pEdit->RegMsg(KM_TEXTCHANGE, [](MSGFUNC_ARGS) 
+	{
+		pBtn->SetName(pEdit->GetText());
+		return 0;
+	});
 	pProgressBar = pWnd->AddProgressBar(L"", 100, 150, 200, 30);
 	pProgressBar->SetPercentage(24);
 
@@ -59,6 +64,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	pRadio = pWnd->AddRadio(L"", 350, 200, 200, 400);
 	pCheckBox = pWnd->AddCheckBox(L"", 350, 400, 200, 400);
 
+	pScrollBar = pWnd->AddScrollBar(L"", 400, 150, 200, 35);
 
 	for (int i = 0; i < 5; i++)
 	{

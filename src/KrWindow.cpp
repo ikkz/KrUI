@@ -40,7 +40,7 @@ namespace KrUI
 		SetName(m_strName);
 		ChangeBmpSize();
 		RegMsg(WM_SIZE, KrWindow::SizeChange);
-		SetTimer(hwnd, reinterpret_cast<unsigned int>(hwnd), TIMER_INTERVAL, NULL);
+		SetTimer(hwnd, reinterpret_cast<UINT_PTR>(hwnd), TIMER_INTERVAL, NULL);
 		//TODO
 		//Ìí¼Ó¹Ø±Õ°´Å¥
 		if (m_CaptionHeight == 0)return;
@@ -89,6 +89,10 @@ namespace KrUI
 	{
 		return dynamic_cast<KrProgressBar*>(AddControl(KrProgressBar_t, lpName, x, y, width, height));
 	}
+	KrScrollBar * KrWindow::AddScrollBar(LPCWSTR lpName, int x, int y, int width, int height)
+	{
+		return dynamic_cast<KrScrollBar*>(AddControl(KrScrollBar_t, lpName, x, y, width, height));
+	}
 	KrRadio* KrWindow::AddRadio(LPCWSTR lpName, int x, int y, int width, int height)
 	{
 		return dynamic_cast<KrRadio*>(AddControl(KrRadio_t, lpName, x, y, width, height));
@@ -123,6 +127,9 @@ namespace KrUI
 			break;
 		case KrCheckBox_t:
 			pui = new KrCheckBox(m_BgColor);
+			break;
+		case KrScrollBar_t:
+			pui = new KrScrollBar;
 			break;
 		}
 		if (pui == nullptr)return nullptr;
