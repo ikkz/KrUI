@@ -14,11 +14,12 @@ namespace KrUI
 			Horizontal, Vertical
 		};
 	private:
-		unsigned int m_MouseDownPos;
+		unsigned int m_MouseDownPos = 0;
 		Direction m_Direction = Direction::Horizontal;
 		double m_Percentage = 0.0;
-		unsigned int m_SliderLength = 10;
-		Gdiplus::Color m_SliderColor;
+		unsigned int m_SliderLength = 50;
+		Gdiplus::Color m_SliderColor = Gdiplus::Color::Gray;
+		bool m_MouseCaptured = false;
 	public:
 		void SetPercentage(double percent);
 		double GetPercentage() const;

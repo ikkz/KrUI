@@ -1,7 +1,7 @@
 #include "KrUI.h"
 
 //一些控件的指针声明，也可以使用面向对象的方式组织
-KrUI::KrUIManager* pUM = KrUI::KrUIManager::GetpKrUIManager();
+KrUI::KrUIManager* pUM = KrUI::KrUIManager::Instance();
 KrUI::KrWindow* pWnd = nullptr;
 KrUI::KrButton* pBtn = nullptr;
 KrUI::KrButton* pBtn1 = nullptr;
@@ -27,7 +27,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	//初始化
 	if (!pUM->Initialize(hInstance)) return 0;
-	pWnd = pUM->AddWindow(std::wstring(L"kfldsjf"), 100, 100, 700, 700);
+	pWnd = pUM->AddWindow(std::wstring(L"kfldsjf"), 100, 100, 700, 700, WS_OVERLAPPEDWINDOW);
 	pBtn = pWnd->AddButton(L"Button", 100, 50, 150, 35);
 	pBtn->RegMsg(KM_CLICK, click);
 	pBtn->SetMouseLeaveColor(Gdiplus::Color::Gray);
@@ -58,7 +58,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	pList = pWnd->AddList(L"", 100, 200, 200, 400);
 	pList->SetMultiSelectable(false);
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 100; i++)
 		pList->AddItem(L"ListItem_" + std::to_wstring(i));
 
 	pRadio = pWnd->AddRadio(L"", 350, 200, 200, 400);

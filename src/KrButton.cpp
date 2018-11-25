@@ -148,7 +148,7 @@ namespace KrUI
 	LRESULT KrCloseButton::DestroyKrWindow(KrMessageHandler* pKrMessageHandler, WPARAM wParam, LPARAM lParam)
 	{
 		dynamic_cast<KrCloseButton*>(pKrMessageHandler)->m_pKrWindow->CallMsgProc(KM_WNDDELETE, wParam, lParam);
-		KrUIManager::GetpKrUIManager()->DeleteWindow(dynamic_cast<KrCloseButton*>(pKrMessageHandler)->GetParantWindow());
+		KrUIManager::Instance()->DeleteWindow(dynamic_cast<KrCloseButton*>(pKrMessageHandler)->GetParantWindow());
 		return 0;
 	}
 }//!KrUI

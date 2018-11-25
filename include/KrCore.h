@@ -7,14 +7,18 @@
 #define TIMER_INTERVAL 100
 #ifdef _DEBUG
 #include <iostream>
+#define DEBUG
 #endif
 
+#include <utility/Logger/Logger.h>
+#define KRLOG LOG(KrUIManager::Instance()->GetLogger())
 #include <windows.h>
 #include <vector>
 #include <map>
 #include <algorithm>
 #include <gdiplus.h>
 #pragma comment(lib,"gdiplus.lib")
+
 #include "KrMessageHandler.h"
 #include "KrUIBase.h"
 #include "KrDefine.h"
@@ -39,7 +43,7 @@ namespace KrUI
 	class KrUIManager
 	{
 	public:
-		static KrUIManager* GetpKrUIManager();
+		static KrUIManager* Instance();
 		static LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam);
 		static void CALLBACK TimerProc(HWND hWnd, UINT nMsg, UINT_PTR nTimerid, DWORD dwTime);
 		bool Initialize(HINSTANCE hInstance);
@@ -54,6 +58,7 @@ namespace KrUI
 		int GetWindowNum()const;
 		void DeleteWindow(KrWindow* pKrWindow);
 		KrWindow* GetpKrWindow(HWND hwnd);
+		cl::Logger& GetLogger();
 		virtual ~KrUIManager();
 	private:
 		KrUIManager() { m_lpWindowClassName = L"KrUI"; }
@@ -62,6 +67,7 @@ namespace KrUI
 		HINSTANCE m_hInstance;//
 		MSG m_msg;
 		std::vector<KrWindow*> m_WndVec;//
+		cl::Logger m_Logger;
 	};
 
 

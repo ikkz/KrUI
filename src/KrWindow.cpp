@@ -250,7 +250,7 @@ namespace KrUI
 
 		case WM_DESTROY:
 			//本窗口被销毁时，检查程序是否存在窗口
-			KrUIManager::GetpKrUIManager()->DeleteWindow(this);
+			KrUIManager::Instance()->DeleteWindow(this);
 			break;
 		case WM_SIZE:
 			Update();

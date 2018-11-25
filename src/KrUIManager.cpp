@@ -8,10 +8,10 @@ namespace KrUI
 	//把消息传递给UIManager统一处理分发
 	LRESULT CALLBACK KrUIManager::WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
-		return KrUIManager::GetpKrUIManager()->HandleMessage(hwnd, Message, wParam, lParam);
+		return KrUIManager::Instance()->HandleMessage(hwnd, Message, wParam, lParam);
 	}
 
-	KrUIManager* KrUIManager::GetpKrUIManager()
+	KrUIManager* KrUIManager::Instance()
 	{
 
 		if (m_pKrUIManager == nullptr)
@@ -30,6 +30,7 @@ namespace KrUI
 		AllocConsole();
 		freopen("conin$", "r+t", stdin);
 		freopen("conout$", "w+t", stdout);
+		GetLogger().add_output(std::cout);
 #endif
 		m_lpWindowClassName = L"KrUI";
 		m_hInstance = hInstance;
@@ -49,10 +50,11 @@ namespace KrUI
 
 		//SetTimer(NULL, TIMER_ID, TIMER_INTERVAL, TimerProc);
 		Gdiplus::GdiplusStartup(&m_pGdiToken, &m_gdiplusStartupInput, nullptr);
-		KrDebugOut(L"%s", L"初始化Gdi+\n");
+		KrUIManager::Instance()->GetLogger().set_loglevel(cl::LogLevel::Information);
+		KRLOG << "初始化GDI+";
 		if (!RegisterClassExW(&wcex))
 			return false;
-		KrDebugOut(L"%s", L"注册窗口类成功\n");
+		KRLOG << "注册窗口类成功";
 		return true;
 		//TODO
 	}
@@ -84,12 +86,12 @@ namespace KrUI
 		rect.bottom = y + height;
 		pKrWindow->SetRect(&rect);
 		pKrWindow->SetName(name);
-		HWND hwnd = CreateWindowExW(WS_EX_WINDOWEDGE, KrUIManager::GetpKrUIManager()->GetWindowClassName(), pKrWindow->GetName().c_str(),
+		HWND hwnd = CreateWindowExW(WS_EX_WINDOWEDGE, KrUIManager::Instance()->GetWindowClassName(), pKrWindow->GetName().c_str(),
 			dwStyle, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
 		pKrWindow->SetHWND(hwnd);
 		m_WndVec.push_back(pKrWindow);
 		pKrWindow->CallMsgProc(KM_CREATE, NULL, NULL);
-		KrDebugOut(L"添加窗口，name：%s, x:%d, y:%d, width:%d, height:%d\n", name.c_str(), x, y, width, height);
+		KRLOG << "添加窗口，name" << WideStringToString(name) << ",x:" << x << ",y:" << y << ",width:" << width << ",height:" << height;
 		return pKrWindow;
 	}
 
@@ -138,6 +140,11 @@ namespace KrUI
 		return nullptr;
 	}
 
+	cl::Logger & KrUIManager::GetLogger()
+	{
+		return m_Logger;
+	}
+
 
 	int KrUIManager::GetWindowNum() const
 	{
@@ -184,7 +191,7 @@ namespace KrUI
 	//typedef VOID(CALLBACK* TIMERPROC)(HWND, UINT, UINT_PTR, DWORD);
 	void  KrUIManager::TimerProc(HWND hWnd, UINT nMsg, UINT_PTR nTimerid, DWORD dwTime)
 	{
-		for (auto p : GetpKrUIManager()->m_WndVec)
+		for (auto p : Instance()->m_WndVec)
 		{
 			if (p != nullptr)p->Update();
 			//if (p->IsVisible())SendMessage(p->GetHWND(), WM_PAINT, NULL, NULL);

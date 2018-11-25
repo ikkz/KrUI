@@ -1,3 +1,4 @@
+#include "KrCore.h"
 #include "KrScrollBar.h"
 #include <iostream>
 
@@ -9,6 +10,7 @@ namespace KrUI
 		if (percent < 0.0)percent = 0;
 		if (percent > 1.0) percent = 1;
 		m_Percentage = percent;
+		KRLOG << percent;
 		this->Update();
 	}
 
@@ -65,21 +67,34 @@ namespace KrUI
 		case WM_LBUTTONDOWN:
 			if (m_bMouseIn)
 			{
-				m_MouseDownPos = m_Direction == Horizontal ? GET_X_LPARAM(lParam) : GET_Y_LPARAM(lParam);
-				std::cout << "mouse down.\n";
-			}
-			break;
-		case WM_MOUSEMOVE:
-			if (m_bMouseDown)
-			{
-				std::cout << "mouse move.\n";
 				if (m_Direction == Horizontal)
 				{
-					SetPercentage(GetPercentage() + (GET_X_LPARAM(lParam) - static_cast<int>(m_MouseDownPos)) / static_cast<double>(GetWidth() - m_SliderLength));
+					m_MouseDownPos = GET_X_LPARAM(lParam) - GetX();
+					if (m_MouseDownPos > (GetWidth() - m_SliderLength) * m_Percentage && m_MouseDownPos < (GetWidth() - m_SliderLength) * m_Percentage + m_SliderLength)
+						m_MouseCaptured = true;
 				}
 				else
 				{
-					SetPercentage(GetPercentage() + (GET_Y_LPARAM(lParam) - static_cast<int>(m_MouseDownPos)) / static_cast<double>(GetHeight() - m_SliderLength));
+					m_MouseDownPos = GET_Y_LPARAM(lParam) - GetY();
+					if (m_MouseDownPos > (GetHeight() - m_SliderLength) * m_Percentage && m_MouseDownPos < (GetHeight() - m_SliderLength) * m_Percentage + m_SliderLength)
+						m_MouseCaptured = true;
+				}
+				if (m_MouseCaptured)KRLOG << "mouse captured.pos:" << m_MouseDownPos;
+			}
+			break;
+		case WM_LBUTTONUP:
+			m_MouseCaptured = false;
+		case WM_MOUSEMOVE:
+			if (m_MouseCaptured)
+			{
+				//KRLOG << "mouse move.";
+				if (m_Direction == Horizontal)
+				{
+					SetPercentage((m_Percentage * (GetWidth() - m_SliderLength) + GET_X_LPARAM(lParam) - GetX() + m_MouseDownPos) / (GetWidth() - m_SliderLength));
+				}
+				else
+				{
+					SetPercentage((m_Percentage*(GetHeight() - m_SliderLength) + GET_Y_LPARAM(lParam) - GetY() + m_MouseDownPos) / (GetHeight() - m_SliderLength));
 				}
 			}
 			break;
