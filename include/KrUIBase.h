@@ -6,6 +6,7 @@
 #include "KrDefine.h"
 #include <windows.h>
 #include <gdiplus.h>
+#include <string>
 //using namespace Gdiplus;
 namespace KrUI
 {
